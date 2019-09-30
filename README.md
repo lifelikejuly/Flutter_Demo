@@ -2,8 +2,11 @@
 
 Personal flutter demo：customer widget、sample and etc.
 
-## something
+## Demo
 
-### customerWidget
+### CustomerWidget
 - FlipText
 - DragDrawerView
+
+### Sample
+- Animation

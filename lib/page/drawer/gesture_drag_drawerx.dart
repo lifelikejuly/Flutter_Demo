@@ -19,11 +19,11 @@ class GestureDragDrawer extends StatefulWidget {
   final double parentHeight;
 
   GestureDragDrawer(
-      {this.child,
-      this.childSize = 0,
-      this.originOffset = 0,
-      this.parentWidth = 0,
-      this.parentHeight = 0,
+      {this.child, //拖拽组件要展示的子内容
+      this.childSize = 0, //子内容的大小
+      this.originOffset = 0, //预设偏移量
+      this.parentWidth = 0, //父级组件的宽度 当拖拽组件在bottom和right时需要用到
+      this.parentHeight = 0, //父级组件的高度
       this.direction = DragDirection.left});
 
   @override
@@ -38,7 +38,8 @@ class _GestureDragDrawerState extends State<GestureDragDrawer>
     minOffset = -width / 2;
     midOffset = -width / 3;
     maxOffset = 0;
-    /// 底部和右边的偏移量需要特殊计算初始值
+
+    /// 底部和右边的偏移量需要特殊计算初始值（右边和底部的值偏移量 = 父组件的宽或高 - 初始预设偏移量）
     switch (widget.direction) {
       case DragDirection.bottom:
         originOffset = widget.parentHeight - widget.originOffset;
@@ -64,6 +65,7 @@ class _GestureDragDrawerState extends State<GestureDragDrawer>
   _setCallBackAnimation() {
     double offset;
     switch (widget.direction) {
+      //根据方向设置起始偏移值
       case DragDirection.top:
       case DragDirection.bottom:
         offset = offsetY;
@@ -98,6 +100,7 @@ class _GestureDragDrawerState extends State<GestureDragDrawer>
   _setToMaxAnimation() {
     double offset;
     switch (widget.direction) {
+      //根据方向设置起始偏移值
       case DragDirection.top:
       case DragDirection.bottom:
         offset = offsetY;
@@ -128,23 +131,34 @@ class _GestureDragDrawerState extends State<GestureDragDrawer>
       });
   }
 
-  ///展开最大值
+  /// 偏移量最大值
   double maxOffset = 300;
 
   ///偏移量中间值
   double midOffset = 250;
 
+  /// 偏移量最小值
   double minOffset = 200;
 
+  /// 组件宽度
   double width;
 
+  /// 初始偏移量
   double originOffset = -100;
 
+  /// 水平偏移量
   double offsetY = 0;
+
+  /// 垂直偏移量
   double offsetX = 0;
 
+  ///缩回动画控制器
   AnimationController _callbackAnimationController;
+
+  ///展开动画控制器
   AnimationController _toMaxAnimationController;
+
+  /// 动画对象
   Animation _animation;
 
   @override
