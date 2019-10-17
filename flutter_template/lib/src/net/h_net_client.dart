@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-class NetClient {
+class HNetClient {
   ///域名
   static String BASE_URL = "";
   ///超时时间设置 默认20秒

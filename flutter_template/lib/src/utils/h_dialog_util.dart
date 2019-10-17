@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppDialogUtil {
+class HDialogUtil {
   static showAlertDialog(
     BuildContext context,
     List<Widget> actions, {

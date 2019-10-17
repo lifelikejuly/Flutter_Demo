@@ -7,6 +7,7 @@ import 'package:flutter_demo/page/drawer/drag_drawer_demo.dart';
 import 'package:flutter_demo/page/flip/flip_demo.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/page/ui/bottom_nav_demo.dart';
+import 'package:flutter_demo/page/ui/ui_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/primeval/native_demo.dart';
@@ -67,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
     demos["http"] = HttpDemo();
     demos["part_swiper"] = SwiperDemo();
     demos["part_refresh"] = RefreshDemo();
-    demos["ui_bottom_nav"] = BottomNavDemo();
     demos["native"] = NativeDemo();
+    demos["UI"] = UIDemo();
   }
 
   @override

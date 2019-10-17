@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.hjapp.flutter_app_plugin">
+    <application>
+
+        <activity
+            android:name="com.hjapp.ui.activity.WebActivity"
+            android:theme="@style/AppTheme"
+            />
+    </application>
+</manifest>

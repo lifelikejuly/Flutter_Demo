@@ -17,7 +17,7 @@ class _DialogDemoState extends State<DialogDemo> {
             RaisedButton(
               child: Text("showDialog"),
               onPressed: () {
-                AppDialogUtil.showAlertDialog(
+                HDialogUtil.showAlertDialog(
                   context,
                   [
                     FlatButton(
@@ -34,7 +34,7 @@ class _DialogDemoState extends State<DialogDemo> {
             RaisedButton(
               child: Text("showLoading"),
               onPressed: () {
-                AppDialogUtil.showLoadingDialog(
+                HDialogUtil.showLoadingDialog(
                   context,
                 );
               },

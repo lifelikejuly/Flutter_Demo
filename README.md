@@ -7,6 +7,11 @@ Personal flutter demo：customer widget、sample and etc.
 
 ## FlutterTemplate(package)
 
+### Widgets
+* app_bottom_nav_page 
+底部导航栏封装，包含页面切换加载。
+sample -> bottom_nav_demo
+
 ### utils
 * app_dialog_util 弹窗UI
 
