@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/page/flip/flip_num_text.dart';
+import 'package:flutter_demo/demo/flip/flip_num_text.dart';
 
 class FlipDemo extends StatefulWidget {
   @override

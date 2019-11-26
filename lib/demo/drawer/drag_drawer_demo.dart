@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/page/drawer/gesture_drag_drawerx.dart';
+import 'package:flutter_demo/demo/drawer/gesture_drag_drawerx.dart';
 
 class DrawerDemo extends StatefulWidget {
   @override

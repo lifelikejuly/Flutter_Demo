@@ -1,15 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/page/animation/animation_demo.dart';
-import 'package:flutter_demo/page/dialog/dialog_demo.dart';
-import 'package:flutter_demo/page/drawer/drag_drawer_demo.dart';
-import 'package:flutter_demo/page/flip/flip_demo.dart';
+import 'package:flutter_demo/demo_page.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
-import 'package:flutter_demo/page/ui/bottom_nav_demo.dart';
-import 'package:flutter_demo/page/ui/ui_demo.dart';
-import 'package:flutter_demo/part/refresh_demo.dart';
-import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/primeval/native_demo.dart';
 
 void main() => runApp(MyApp());
@@ -61,15 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    demos["drawer"] = DrawerDemo();
-    demos["flip"] = FlipDemo();
-    demos["animation"] = AnimationDemo();
-    demos["dialog"] = DialogDemo();
-    demos["http"] = HttpDemo();
-    demos["part_swiper"] = SwiperDemo();
-    demos["part_refresh"] = RefreshDemo();
-    demos["native"] = NativeDemo();
-    demos["UI"] = UIDemo();
+    demos["网络"] = HttpDemo();
+    demos["原生调用"] = NativeDemo();
+    demos["UI组件库"] = DemoPage("ui");
+    demos["第三方组件库"] = DemoPage("part");
+    demos["语法"] = DemoPage("dart");
+    demos["其他"] = DemoPage("other");
   }
 
   @override

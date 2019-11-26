@@ -46,6 +46,8 @@ class _BottomNavDemoState extends State<BottomNavDemo> {
     ),
   ];
 
+  /// 底部栏新增和删除只能通过重新赋值更新，直接操作数组remove和add方法不行
+  ///
   _updateAddNavs() {
     _navItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -93,10 +95,7 @@ class _BottomNavDemoState extends State<BottomNavDemo> {
     ];
     _selectedIndex = 0;
   }
-
   _updateReduceNavs() {
-    _navItems.removeAt(0);
-    _widgetOptions.removeAt(0);
     _navItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.home),
@@ -130,42 +129,6 @@ class _BottomNavDemoState extends State<BottomNavDemo> {
 
   @override
   Widget build(BuildContext context) {
-//    return Stack(
-//      children: <Widget>[
-//        Scaffold(
-//          appBar: AppBar(),
-//          body: Center(
-//            child: _widgetOptions.elementAt(_selectedIndex),
-//          ),
-//          bottomNavigationBar: BottomNavigationBar(
-//            items: _navItems,
-//            currentIndex: _selectedIndex,
-//            selectedItemColor: Colors.amber[800],
-//            onTap: _onItemTapped,
-//          ),
-//        ),
-//        Row(
-//          children: <Widget>[
-//            RaisedButton(
-//              child: Text("+"),
-//              onPressed: () {
-//                setState(() {
-//                  _updateAddNavs();
-//                });
-//              },
-//            ),
-//            RaisedButton(
-//              child: Text("-"),
-//              onPressed: () {
-//                setState(() {
-//                  _updateReduceNavs();
-//                });
-//              },
-//            )
-//          ],
-//        )
-//      ],
-//    );
     return Stack(
       children: <Widget>[
         HBottomNavPage.builder(
