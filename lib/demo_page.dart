@@ -8,9 +8,11 @@ import 'package:flutter_demo/demo/drawer/drag_drawer_demo.dart';
 import 'package:flutter_demo/demo/flip/flip_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statefullifecycle_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statelessLifecycle_demo.dart';
+import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
+import 'package:flutter_demo/part/charts_flutter_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
@@ -35,10 +37,12 @@ class _UIDemoState extends State<DemoPage> {
       case "ui":
         demos["底部导航"] = BottomNavDemo();
         demos["弹窗"] = DialogDemo();
+        demos["画布"] = PainterDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
         demos["列表刷新组件"] = RefreshDemo();
+        demos["charts_flutter"] = ChartsDemo();
         break;
       case "other":
         demos["drawer"] = DrawerDemo();
@@ -75,8 +79,10 @@ class _UIDemoState extends State<DemoPage> {
               onPressed: () {
                 if (item.key == "RootRouter") {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (BuildContext context) => item.value),
-                      ModalRoute.withName('/222'),);
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => item.value),
+                    ModalRoute.withName('/222'),
+                  );
                 } else {
                   Navigator.of(context).push(
                     MaterialPageRoute(
