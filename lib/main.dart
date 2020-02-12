@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/demo/router/router_data_demo.dart';
+import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/primeval/native_demo.dart';
@@ -12,7 +14,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [UserNavigatorObserver()],
       title: 'Flutter Demo',
+      initialRoute: "/",
+      routes: {
+        "/router": (context) => RouterDemo(),
+        "/router/next1": (context) => NextPage1(),
+        "/router/next2": (context) => NextPage2(),
+        "/router/next3": (context) => NextPage3(),
+        "/router/next4": (context) => NextPage4(),
+        "/router/next5": (context) => NextPage5(),
+        "/router/data2": (context) => RouterChildDateDemo2(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -48,7 +61,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   HashMap<String, Widget> demos = new HashMap();
 
   @override
@@ -60,6 +73,15 @@ class _MyHomePageState extends State<MyHomePage> {
     demos["第三方组件库"] = DemoPage("part");
     demos["语法"] = DemoPage("dart");
     demos["其他"] = DemoPage("other");
+    demos["生命周期"] = DemoPage("life");
+    demos["路由"] = DemoPage("router");
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -85,5 +107,39 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print("MyHomePage ${state.toString()} ");
+//    if (state == AppLifecycleState.paused) {
+//      // went to Background
+//      print("MyHomePage Background");
+//    }
+//    if (state == AppLifecycleState.resumed) {
+//      // came back to Foreground
+//      print("MyHomePage  Foreground");
+//    }
+  }
+
+  @override
+  void didHaveMemoryPressure() {
+    super.didHaveMemoryPressure();
+    print("MyHomePage didHaveMemoryPressure");
+  }
+}
+
+class UserNavigatorObserver extends NavigatorObserver {
+  @override
+  void didPop(Route route, Route previousRoute) {
+    super.didPop(route, previousRoute);
+    print("UserNavigatorObserver didPop");
+  }
+
+  @override
+  void didPush(Route route, Route previousRoute) {
+    super.didPush(route, previousRoute);
+    print("UserNavigatorObserver didPush");
   }
 }

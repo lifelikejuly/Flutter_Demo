@@ -3,13 +3,18 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/demo/animation/animation_demo.dart';
 import 'package:flutter_demo/demo/dart/async_demo.dart';
+import 'package:flutter_demo/demo/dart/stream_demo.dart';
 import 'package:flutter_demo/demo/drawer/drag_drawer_demo.dart';
 import 'package:flutter_demo/demo/flip/flip_demo.dart';
+import 'package:flutter_demo/demo/lifecycle/statefullifecycle_demo.dart';
+import 'package:flutter_demo/demo/lifecycle/statelessLifecycle_demo.dart';
+import 'package:flutter_demo/demo/router/router_ani_demo.dart';
+import 'package:flutter_demo/demo/router/router_data_demo.dart';
+import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
-
 
 class DemoPage extends StatefulWidget {
   String type;
@@ -42,6 +47,18 @@ class _UIDemoState extends State<DemoPage> {
         break;
       case "dart":
         demos["async"] = AsyncDemo();
+        demos["stream"] = StreamDemo();
+        demos["stream"] = StreamDemo();
+        break;
+      case "life":
+        demos["Stateful"] = StatefulLifecycleDemo();
+        demos["Stateless"] = StatelessLifecycleDemo();
+        break;
+      case "router":
+        demos["router"] = RouterDemo();
+        demos["RootRouter"] = RouterDemo();
+        demos["DataRouter"] = RouterDataDemo();
+        demos["AniRouter"] = RouterDAniDemo();
         break;
     }
   }
@@ -56,11 +73,17 @@ class _UIDemoState extends State<DemoPage> {
             return RaisedButton(
               child: Text(item.key),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => item.value,
-                  ),
-                );
+                if (item.key == "RootRouter") {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => item.value),
+                      ModalRoute.withName('/222'),);
+                } else {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => item.value,
+                    ),
+                  );
+                }
               },
             );
           }).toList(),

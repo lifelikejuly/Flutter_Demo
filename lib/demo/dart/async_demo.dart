@@ -72,45 +72,33 @@ class _AsyncDemoState extends State<AsyncDemo> {
     }
   }
 
-  Future<int> sumStream(Stream<int> stream) async {
-    var sum = 0;
-    await for (var value in stream) {
-      sum += value;
-    }
-    return sum;
+  _doAsync6() async {
+    int nowTime = DateTime.now().millisecondsSinceEpoch;
+    Future.wait([
+      Future.delayed(Duration(seconds: 2), () => "2"),
+      Future.delayed(Duration(seconds: 4), () => "4"),
+    ]).then((reslut) {
+      print(
+          "${reslut[0]}-${reslut[1]} use ${DateTime.now().millisecondsSinceEpoch - nowTime}");
+    });
+    nowTime = DateTime.now().millisecondsSinceEpoch;
+    String text1 = await Future.delayed(Duration(seconds: 2), () => "2");
+    String text2 = await Future.delayed(Duration(seconds: 4), () => "4");
+    print(
+        "$text1-$text2 use ${DateTime.now().millisecondsSinceEpoch - nowTime}");
+
+    Future.any([
+      Future.delayed(Duration(seconds: 1), () => "1"),
+      Future.delayed(Duration(seconds: 2), () => "2"),
+      Future.delayed(Duration(seconds: 3), () => "3"),
+      Future.delayed(Duration(seconds: 4), () => "4"),
+    ]).then((reslut) {
+      print(
+          "$reslut use ${DateTime.now().millisecondsSinceEpoch - nowTime}");
+    });
   }
 
-  Stream<int> countStream(int to) async* {
-    for (int i = 1; i <= to; i++) {
-      yield i;
-    }
-  }
 
-  _doStream6() async {
-    var stream = countStream(10);
-    var sum = await sumStream(stream);
-    print(sum); // 55
-  }
-
-  Stream<int> foo2() async* {
-    print('foo2 start');
-    for (int i = 0; i < 3; i++) {
-      print('运行了foo2，当前index：${i}');
-      yield i;
-    }
-    print('foo2 stop');
-  }
-
-//  _doStream7() {
-//    var b = foo2().;
-//    print('还没开始调用 moveNext');
-//    b.moveNext();
-//    print('第${b.current}次moveNext');
-//    b.moveNext();
-//    print('第${b.current}次moveNext');
-//    b.moveNext();
-//    print('第${b.current}次moveNext');
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,12 +128,8 @@ class _AsyncDemoState extends State<AsyncDemo> {
           ),
           RaisedButton(
             child: Text("test6"),
-            onPressed: _doStream6,
+            onPressed: _doAsync6,
           ),
-//          RaisedButton(
-//            child: Text("test7"),
-//            onPressed: _doStream7,
-//          )
         ],
       ),
     );
