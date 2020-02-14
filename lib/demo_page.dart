@@ -8,6 +8,7 @@ import 'package:flutter_demo/demo/drawer/drag_drawer_demo.dart';
 import 'package:flutter_demo/demo/flip/flip_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statefullifecycle_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statelessLifecycle_demo.dart';
+import 'package:flutter_demo/demo/painter/canvas_douyin_demo.dart';
 import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
@@ -37,7 +38,6 @@ class _UIDemoState extends State<DemoPage> {
       case "ui":
         demos["底部导航"] = BottomNavDemo();
         demos["弹窗"] = DialogDemo();
-        demos["画布"] = PainterDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
@@ -63,6 +63,10 @@ class _UIDemoState extends State<DemoPage> {
         demos["RootRouter"] = RouterDemo();
         demos["DataRouter"] = RouterDataDemo();
         demos["AniRouter"] = RouterDAniDemo();
+        break;
+      case "canvas":
+        demos["画布基础"] = PainterDemo();
+        demos["画布抖音"] = CanvasDouyinDemo();
         break;
     }
   }
