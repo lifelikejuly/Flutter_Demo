@@ -6,6 +6,9 @@ import 'package:flutter_demo/demo/dart/async_demo.dart';
 import 'package:flutter_demo/demo/dart/stream_demo.dart';
 import 'package:flutter_demo/demo/drawer/drag_drawer_demo.dart';
 import 'package:flutter_demo/demo/flip/flip_demo.dart';
+import 'package:flutter_demo/demo/floatbox/float_dragable_demo.dart';
+import 'package:flutter_demo/demo/floatbox/float_overlay_demo.dart';
+import 'package:flutter_demo/demo/floatbox/float_stack_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statefullifecycle_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statelessLifecycle_demo.dart';
 import 'package:flutter_demo/demo/painter/canvas_douyin_demo.dart';
@@ -13,6 +16,7 @@ import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
+import 'package:flutter_demo/demo/scroll/scroll_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
@@ -38,6 +42,7 @@ class _UIDemoState extends State<DemoPage> {
       case "ui":
         demos["底部导航"] = BottomNavDemo();
         demos["弹窗"] = DialogDemo();
+        demos['Scroll'] = ScrollableDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
@@ -68,6 +73,10 @@ class _UIDemoState extends State<DemoPage> {
         demos["画布基础"] = PainterDemo();
         demos["画布抖音"] = CanvasDouyinDemo();
         break;
+      case "float":
+        demos["OverlayFloat"] = FloatOverLayDemo();
+        demos["StackFloat"] = FloatStackDemo();
+        demos["DraggableFloat"] = FloatDraggableDemo();
     }
   }
 
