@@ -17,6 +17,7 @@ import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo/scroll/scroll_demo.dart';
+import 'package:flutter_demo/demo/scroll/scroll_view_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
@@ -42,7 +43,7 @@ class _UIDemoState extends State<DemoPage> {
       case "ui":
         demos["底部导航"] = BottomNavDemo();
         demos["弹窗"] = DialogDemo();
-        demos['Scroll'] = ScrollableDemo();
+        demos['Scroll'] = ScrollViewDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
