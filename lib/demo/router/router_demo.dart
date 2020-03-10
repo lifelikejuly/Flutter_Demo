@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/main.dart';
 
 class RouterDemo extends StatefulWidget {
   @override
@@ -19,6 +20,16 @@ class _RouterDemoState extends State<RouterDemo> {
                 MaterialPageRoute(
                   builder: (_) => NextPage1(),
                 ),
+              );
+            },
+          ),
+          RaisedButton(
+            child: Text("push NextPage1 by RouteSettings"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (_) => NextPage1(),
+                    settings: RouteSettings(name: "NextPage1")),
               );
             },
           ),
@@ -91,15 +102,13 @@ class _NextPage1State extends State<NextPage1> {
           RaisedButton(
             child: Text("pushNamed next2"),
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamed("/router/next2");
+              Navigator.of(context).pushNamed("/router/next2");
             },
           ),
           RaisedButton(
             child: Text("pushReplacementNamed next2"),
             onPressed: () {
-              Navigator.of(context)
-                  .pushReplacementNamed("/router/next2");
+              Navigator.of(context).pushReplacementNamed("/router/next2");
             },
           ),
 //          RaisedButton(
@@ -137,10 +146,9 @@ class _NextPage2State extends State<NextPage2> {
             },
           ),
           RaisedButton(
-            child: Text("popUntil"),
+            child: Text("popUntil /"),
             onPressed: () {
-              Navigator.of(context)
-                  .popUntil(ModalRoute.withName("/router/next3"));
+              Navigator.of(context).popUntil(ModalRoute.withName("/"));
             },
           ),
           RaisedButton(
@@ -161,7 +169,7 @@ class _NextPage2State extends State<NextPage2> {
             },
           ),
           RaisedButton(
-            child: Text(" push next1"),
+            child: Text("push next1"),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -203,6 +211,42 @@ class _NextPage2State extends State<NextPage2> {
               setState(() {
                 this.result = result.toString();
               });
+            },
+          ),
+          RaisedButton(
+            child: Text("removeRoute this"),
+            onPressed: () {
+              Navigator.of(context).removeRoute(ModalRoute.of(context));
+            },
+          ),
+          RaisedButton(
+            child: Text("removeRouteBelow this"),
+            onPressed: () {
+              Navigator.of(context).removeRouteBelow(ModalRoute.of(context));
+            },
+          ),
+          RaisedButton(
+            child: Text("replace before to  NextPage1"),
+            onPressed: () {
+              Navigator.of(context).replace(
+                oldRoute: UserNavigatorObserver
+                    .history[UserNavigatorObserver.history.length - 2],
+                newRoute: MaterialPageRoute(
+                  builder: (_) => NextPage1(),
+                ),
+              );
+            },
+          ),
+          RaisedButton(
+            child: Text("replace beforeBelow to  NextPage1"),
+            onPressed: () {
+              Navigator.of(context).replaceRouteBelow(
+                anchorRoute: UserNavigatorObserver
+                    .history[UserNavigatorObserver.history.length - 2],
+                newRoute: MaterialPageRoute(
+                  builder: (_) => NextPage1(),
+                ),
+              );
             },
           ),
         ],

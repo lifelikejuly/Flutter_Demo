@@ -23,6 +23,8 @@ import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
+import 'package:flutter_demo/ui/table_demo.dart';
+import 'package:flutter_demo/ui/text_demo.dart';
 
 class DemoPage extends StatefulWidget {
   String type;
@@ -44,6 +46,8 @@ class _UIDemoState extends State<DemoPage> {
         demos["底部导航"] = BottomNavDemo();
         demos["弹窗"] = DialogDemo();
         demos['Scroll'] = ScrollViewDemo();
+        demos['文本'] = TextDemo();
+        demos['表格'] = TableDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();

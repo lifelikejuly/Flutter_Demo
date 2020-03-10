@@ -133,15 +133,63 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 }
 
 class UserNavigatorObserver extends NavigatorObserver {
+  static List<Route<dynamic>> history = <Route<dynamic>>[];
+
   @override
   void didPop(Route route, Route previousRoute) {
     super.didPop(route, previousRoute);
-    print("UserNavigatorObserver didPop");
+    history.remove(route);
+    print("UserNavigatorObserver didPop route ${route?.settings.toString()} "
+        "previousRoute ${previousRoute?.settings?.toString()}");
+    print("UserNavigatorObserver didPop _history: ${history.length}");
+    ///调用Navigator.of(context).pop() 出栈时回调
   }
 
   @override
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
-    print("UserNavigatorObserver didPush");
+    history.add(route);
+    print("UserNavigatorObserver didPush route ${route.settings.toString()} "
+        "previousRoute ${previousRoute?.settings?.toString()}");
+    print("UserNavigatorObserver didPush _history: ${history.length}");
+    ///调用Navigator.of(context).push(Route()) 进栈时回调
+  }
+
+  @override
+  void didRemove(Route route, Route previousRoute) {
+    super.didRemove(route, previousRoute);
+    history.remove(route);
+    print("UserNavigatorObserver didRemove route ${route.settings.toString()} "
+        "previousRoute ${previousRoute?.settings?.toString()}");
+    print("UserNavigatorObserver didRemove _history: ${history.length}");
+    ///调用Navigator.of(context).removeRoute(Route()) 移除某个路由回调
+
+  }
+
+  @override
+  void didReplace({Route newRoute, Route oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    history.remove(oldRoute);
+    history.add(newRoute);
+    print(
+        "UserNavigatorObserver didReplace route ${newRoute.settings.toString()} "
+        "previousRoute ${oldRoute?.settings?.toString()}");
+    ///调用Navigator.of(context).replace( oldRoute:Route("old"),newRoute:Route("new)) 替换路由时回调
+  }
+
+  @override
+  void didStartUserGesture(Route route, Route previousRoute) {
+    super.didStartUserGesture(route, previousRoute);
+    print(
+        "UserNavigatorObserver didStartUserGesture route ${route.settings.toString()} "
+        "previousRoute ${previousRoute?.settings?.toString()}");
+    ///iOS侧边手势滑动触发回调 手势开始时回调
+  }
+
+  @override
+  void didStopUserGesture() {
+    super.didStopUserGesture();
+    print("UserNavigatorObserver didStopUserGesture ");
+    ///iOS侧边手势滑动触发停止时回调 不管页面是否退出了都会调用
   }
 }
