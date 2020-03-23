@@ -3,18 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class StreamDemo extends StatefulWidget {
-
   @override
   _StreamDemoState createState() => _StreamDemoState();
 }
 
 class _StreamDemoState extends State<StreamDemo> {
-
-
-
-
-
-
   Future<int> sumStream(Stream<int> stream) async {
     var sum = 0;
     await for (var value in stream) {
@@ -49,6 +42,8 @@ class _StreamDemoState extends State<StreamDemo> {
         Stream<int>.periodic(Duration(seconds: 1), (x) => x).take(15);
     counterStream.forEach(print);
   }
+
+  StreamController<int> numController;
 
   Stream<int> timedCounter(Duration interval, [int maxCount]) {
     var controller = StreamController<int>();
@@ -86,11 +81,17 @@ class _StreamDemoState extends State<StreamDemo> {
   static const int a = 1;
   static final int b = 2;
 
+  int num = 0;
 
   @override
   void initState() {
     super.initState();
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    numController?.close();
   }
 
   @override
@@ -114,6 +115,45 @@ class _StreamDemoState extends State<StreamDemo> {
           RaisedButton(
             child: Text("test9"),
             onPressed: _doStream9,
+          ),
+          RaisedButton(
+            child: Text("createController"),
+            onPressed: () {
+              numController = StreamController<int>();
+              for (var i = 0; i < 10; i++) {
+                numController.add(i);
+              }
+              numController.onListen = () {
+                print("numController onListen");
+              };
+              numController.onCancel = () {
+                print("numController onCancel");
+              };
+              numController.onPause = () {
+                print("numController onPause");
+              };
+              numController.onResume = () {
+                print("numController onResume");
+              };
+            },
+          ),
+          RaisedButton(
+            child: Text("ControllerAdd"),
+            onPressed: () {
+              if (!numController.isClosed) {
+                numController.add(num);
+                num++;
+              }
+            },
+          ),
+          RaisedButton(
+            child: Text("print Controller"),
+            onPressed: () async {
+              await for (int n in numController.stream) {
+                print("print numController $n"); // 每秒打印输出一个整数，共打印 15 次。
+//                numController.close();
+              }
+            },
           )
         ],
       ),

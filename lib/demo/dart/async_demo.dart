@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -129,6 +130,12 @@ class _AsyncDemoState extends State<AsyncDemo> {
           RaisedButton(
             child: Text("test6"),
             onPressed: _doAsync6,
+          ),
+          RaisedButton(
+            child: Text("test7"),
+            onPressed: (){
+              Future.value(Future<int>.sync(() => 10));
+            },
           ),
         ],
       ),

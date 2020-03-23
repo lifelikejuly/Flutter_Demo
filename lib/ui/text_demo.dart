@@ -119,7 +119,39 @@ class _TextDemoState extends State<TextDemo> {
                   ),
                 )
               ],
-            )
+            ),
+            Text(
+              "SSSSssssSSSJAKC湿哒哒多所SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付多所多付付付付",
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: "",
+                height: 1,
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                Text(
+                  "在Row里面显示 SSSSssssSSSJAKC湿哒哒多所SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付多所多付付付付",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "",
+                    height: 1,
+                  ),
+                )
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  "在Column里面显示 SSSSssssSSSJAKC湿哒哒多所SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付SSSSssssSSSJAKC湿哒哒多所多所多付付付付多所多付付付付",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "",
+                    height: 1,
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),

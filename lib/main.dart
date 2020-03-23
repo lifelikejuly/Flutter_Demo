@@ -6,8 +6,14 @@ import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/primeval/native_demo.dart';
+import 'package:flutter_demo/ui/theme_demo.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(ChangeNotifierProvider<ThemeNotifier>.value(
+      //ChangeNotifierProvider调用value()方法，里面传出value和child
+      value: ThemeNotifier(), //value设置了默认的Counter()
+      child: MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -15,6 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorObservers: [UserNavigatorObserver()],
+      themeMode: Provider.of<ThemeNotifier>(context).isDark ? ThemeMode.dark : ThemeMode.light,
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
       title: 'Flutter Demo',
       initialRoute: "/",
       routes: {
@@ -69,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     super.initState();
     demos["网络"] = HttpDemo();
     demos["原生调用"] = NativeDemo();
-    demos["UI组件库"] = DemoPage("ui");
+    demos["UI"] = DemoPage("ui");
     demos["第三方组件库"] = DemoPage("part");
     demos["语法"] = DemoPage("dart");
     demos["其他"] = DemoPage("other");
@@ -77,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     demos["路由"] = DemoPage("router");
     demos["画布"] = DemoPage("canvas");
     demos["悬浮窗"] = DemoPage("float");
+    demos["手势操作"] = DemoPage("gesture");
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -142,6 +153,7 @@ class UserNavigatorObserver extends NavigatorObserver {
     print("UserNavigatorObserver didPop route ${route?.settings.toString()} "
         "previousRoute ${previousRoute?.settings?.toString()}");
     print("UserNavigatorObserver didPop _history: ${history.length}");
+
     ///调用Navigator.of(context).pop() 出栈时回调
   }
 
@@ -152,6 +164,7 @@ class UserNavigatorObserver extends NavigatorObserver {
     print("UserNavigatorObserver didPush route ${route.settings.toString()} "
         "previousRoute ${previousRoute?.settings?.toString()}");
     print("UserNavigatorObserver didPush _history: ${history.length}");
+
     ///调用Navigator.of(context).push(Route()) 进栈时回调
   }
 
@@ -162,8 +175,8 @@ class UserNavigatorObserver extends NavigatorObserver {
     print("UserNavigatorObserver didRemove route ${route.settings.toString()} "
         "previousRoute ${previousRoute?.settings?.toString()}");
     print("UserNavigatorObserver didRemove _history: ${history.length}");
-    ///调用Navigator.of(context).removeRoute(Route()) 移除某个路由回调
 
+    ///调用Navigator.of(context).removeRoute(Route()) 移除某个路由回调
   }
 
   @override
@@ -174,6 +187,7 @@ class UserNavigatorObserver extends NavigatorObserver {
     print(
         "UserNavigatorObserver didReplace route ${newRoute.settings.toString()} "
         "previousRoute ${oldRoute?.settings?.toString()}");
+
     ///调用Navigator.of(context).replace( oldRoute:Route("old"),newRoute:Route("new)) 替换路由时回调
   }
 
@@ -183,6 +197,7 @@ class UserNavigatorObserver extends NavigatorObserver {
     print(
         "UserNavigatorObserver didStartUserGesture route ${route.settings.toString()} "
         "previousRoute ${previousRoute?.settings?.toString()}");
+
     ///iOS侧边手势滑动触发回调 手势开始时回调
   }
 
@@ -190,6 +205,7 @@ class UserNavigatorObserver extends NavigatorObserver {
   void didStopUserGesture() {
     super.didStopUserGesture();
     print("UserNavigatorObserver didStopUserGesture ");
+
     ///iOS侧边手势滑动触发停止时回调 不管页面是否退出了都会调用
   }
 }
