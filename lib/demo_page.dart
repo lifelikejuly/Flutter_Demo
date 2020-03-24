@@ -12,6 +12,9 @@ import 'package:flutter_demo/demo/floatbox/float_overlay_demo.dart';
 import 'package:flutter_demo/demo/floatbox/float_stack_demo.dart';
 import 'package:flutter_demo/demo/gesture/gestrue_scale_demo1.dart';
 import 'package:flutter_demo/demo/gesture/gestrue_scale_demo2.dart';
+import 'package:flutter_demo/demo/gesture/gesture_click_demo.dart';
+import 'package:flutter_demo/demo/gesture/gesture_drag_demo.dart';
+import 'package:flutter_demo/demo/gesture/gesture_scale_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statefullifecycle_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statelessLifecycle_demo.dart';
 import 'package:flutter_demo/demo/painter/canvas_douyin_demo.dart';
@@ -98,8 +101,11 @@ class _UIDemoState extends State<DemoPage> {
         demos["DraggableFloat"] = FloatDraggableDemo();
         break;
       case "gesture":
+        demos["-点击操作"] = GestureClickDemo();
+        demos["-拖拽操作"] = GestureDragDemo();
+        demos["-缩放旋转操作"] = GestureScaleDemo();
         demos["图片缩放和位移"] = GestureScaleDemo1();
-        demos["图片缩放"] = GestureScaleDemo2();
+//        demos["图片缩放"] = GestureScaleDemo2();
         break;
     }
   }
