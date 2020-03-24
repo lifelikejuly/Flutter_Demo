@@ -1,6 +1,10 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/demo/animation/animatedBuilder_demo.dart';
+import 'package:flutter_demo/demo/animation/animatedContainer_demo.dart';
+import 'package:flutter_demo/demo/animation/animatedWidget_demo.dart';
+import 'package:flutter_demo/demo/animation/animationController_demo.dart';
 import 'package:flutter_demo/demo/animation/animation_demo.dart';
 import 'package:flutter_demo/demo/dart/async_demo.dart';
 import 'package:flutter_demo/demo/dart/stream_demo.dart';
@@ -106,6 +110,12 @@ class _UIDemoState extends State<DemoPage> {
         demos["-缩放旋转操作"] = GestureScaleDemo();
         demos["图片缩放和位移"] = GestureScaleDemo1();
 //        demos["图片缩放"] = GestureScaleDemo2();
+        break;
+      case "animation":
+        demos["AnimationController"] = AnimationControllerDemo();
+        demos["AnimationContainer"] = AnimatedContainerDemo();
+        demos["AnimationWidget"] = AnimatedWidgetDemo();
+        demos["AnimationBuilder"] = AnimatedBuilderDemo();
         break;
     }
   }

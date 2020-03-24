@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     demos["画布"] = DemoPage("canvas");
     demos["悬浮窗"] = DemoPage("float");
     demos["手势操作"] = DemoPage("gesture");
+    demos["动画"] = DemoPage("animation");
     WidgetsBinding.instance.addObserver(this);
   }
 
