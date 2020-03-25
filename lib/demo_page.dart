@@ -15,7 +15,6 @@ import 'package:flutter_demo/demo/floatbox/float_dragable_demo.dart';
 import 'package:flutter_demo/demo/floatbox/float_overlay_demo.dart';
 import 'package:flutter_demo/demo/floatbox/float_stack_demo.dart';
 import 'package:flutter_demo/demo/gesture/gestrue_scale_demo1.dart';
-import 'package:flutter_demo/demo/gesture/gestrue_scale_demo2.dart';
 import 'package:flutter_demo/demo/gesture/gesture_click_demo.dart';
 import 'package:flutter_demo/demo/gesture/gesture_drag_demo.dart';
 import 'package:flutter_demo/demo/gesture/gesture_scale_demo.dart';
@@ -26,8 +25,6 @@ import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
-import 'package:flutter_demo/demo/scroll/scroll_demo.dart';
-import 'package:flutter_demo/demo/scroll/scroll_view_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
@@ -36,6 +33,8 @@ import 'package:flutter_demo/ui/container_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
 import 'package:flutter_demo/ui/icon_demo.dart';
 import 'package:flutter_demo/ui/image_demo.dart';
+import 'package:flutter_demo/ui/scroll_view_demo.dart';
+import 'package:flutter_demo/ui/stack_demo.dart';
 import 'package:flutter_demo/ui/table_demo.dart';
 import 'package:flutter_demo/ui/textField_demo.dart';
 import 'package:flutter_demo/ui/text_demo.dart';
@@ -60,7 +59,7 @@ class _UIDemoState extends State<DemoPage> {
       case "ui":
         demos["底部导航"] = BottomNavDemo();
         demos["弹窗"] = DialogDemo();
-        demos['Scroll'] = ScrollViewDemo();
+        demos['Scroll'] = ScrollDemo();
         demos['文本'] = TextDemo();
         demos['表格'] = TableDemo();
         demos['主题模式'] = ThemeDemo();
@@ -68,6 +67,7 @@ class _UIDemoState extends State<DemoPage> {
         demos['container'] = ContainerDemo();
         demos['输入框'] = TextFieldDemo();
         demos['icon资源'] = IconDemo();
+        demos['Stack'] = StackDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();

@@ -24,13 +24,19 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
 
   double _originScaleValue = 1.0;
 
-  //
+  //原始图片大小矩阵
   Rect _rect;
 
   Size _screenSize = Size.zero;
   Size _imageSize = Size.zero;
 
+  double _multipleX = 1;
+  double _multipleY = 1;
   double _maxSize;
+
+  double _double2(double value) {
+    return double.parse(value.toStringAsFixed(2));
+  }
 
   _onHandleScaleEnd(ScaleEndDetails details) {
 //    print("GestureScaleDemo _OnHandleScaleEnd \n ${details.toString()}");
@@ -45,10 +51,13 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
 
   _onHandleScaleUpdate(ScaleUpdateDetails details) {
     print("GestureScaleDemo _OnHandleScaleUpdate \n ${details.toString()}");
+    //判断位移操作或是缩放操作
 
     if (details.rotation == 0.0 && details.scale == 1.0) {
     } else {
-      double _tempScale = _scale + (details.scale - 1);
+      //缩放操作
+      double _tempScale = _double2(_scale + (details.scale - 1));
+
       if (_tempScale >= _minScale && _tempScale <= _maxScale) {
         _scale = _tempScale;
       } else {
@@ -59,33 +68,26 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
         }
       }
     }
-
-//    print(
-//        "GestureScaleDemo details.focalPoint \n ${details.focalPoint.toString()}");
-//    print(
-//        "GestureScaleDemo _normalizedOffset \n ${_normalizedOffset.toString()}");
-//    print(
-//        "GestureScaleDemo _tempOffset \n ${_tempOffset.toString()}");
-//    print("GestureScaleDemo _tempOffset \n ${_tempOffset.toString()}");
+    //位移操作
     double _moreScale = (_scale - _originScaleValue);
 
     Offset _tempOffset = (details.focalPoint - _normalizedOffset);
-    Offset _moveOffset = (_tempOffset - _moveTempOffset);
-    double _moveDx = _moveOffset.dx.abs();
-    double _moveDy = _moveOffset.dy.abs();
-//    print("GestureScaleDemo _moveOffset \n ${_moveOffset.toString()}");
+//    Offset _moveOffset = (_tempOffset - _moveTempOffset);
+    double _moveDx = _tempOffset.dx.abs();
+    double _moveDy = _tempOffset.dy.abs();
 
     print(
-        "GestureScaleDemo _moveOffset _moreScale $_moreScale _moveDx $_moveDx _rect.width  ${((_rect.width - (_maxSize - 50)) / 2) * _moreScale}");
-    print("GestureScaleDemo _moveOffset _tempOffset ${_tempOffset.toString()}");
+        "GestureScaleDemo _moveOffset _moreScale $_moreScale _moveDx $_moveDx width  ${25 * _moreScale}");
+//      print(
+//          "GestureScaleDemo _moveOffset _tempOffset ${_tempOffset.toString()}");
 
-    if (_moveDy <= ((_rect.height - (_maxSize - 50)) / 2) &&
-        _moveDx <= ((_rect.width - (_maxSize - 50)) / 2) * _moreScale) {
+
+    if (_moveDy <= 25 * _moreScale && _moveDx <= 25 * _moreScale) {
       // 减去初始值偏移量 获取真实偏移值
       _offset = _tempOffset;
     } else {
-      if (_moveDy > (_rect.height - (_maxSize - 50)) / 2) {
-        _moveDy = (_rect.height - (_maxSize - 50)) / 2;
+      if (_moveDy > 25 * _moreScale) {
+        _moveDy = 25 * _moreScale;
         if (_tempOffset.dy > 0) {
           _tempOffset = Offset(_tempOffset.dx, _moveDy);
         } else {
@@ -93,8 +95,8 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
         }
       }
 
-      if (_moveDx > ((_rect.width - (_maxSize - 50)) / 2 * _moreScale)) {
-        _moveDx = (_rect.width - (_maxSize - 50)) / 2 * _moreScale;
+      if (_moveDx > 25 * _moreScale) {
+        _moveDx = 25 * _moreScale;
         if (_tempOffset.dx > 0) {
           _tempOffset = Offset(_moveDx, _tempOffset.dy);
         } else {
@@ -103,7 +105,9 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
       }
       _offset = _tempOffset;
     }
-//    print("GestureScaleDemo _moveOffset _offset  ${_offset.toString()}");
+//    _rect = Offset(_screenSize.width / 2 + _offset.dx,
+//            _screenSize.height / 2 + _offset.dy) &
+//        Size(_rect.width * _moreScale, _rect.height * _moreScale);
 
     setState(() {});
   }
@@ -121,10 +125,9 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
       width: _imageSize.width * _scale,
       height: _imageSize.height * _scale,
     );
-//    _image = Image.asset(
-//      "res/img/jay.jpg",
-//      scale: _scale,
-//    );
+
+    _multipleX = 50 / _imageSize.width * _scale;
+    _multipleY = 50 / _imageSize.height * _scale;
   }
 
   /// 初始化计算图片的大小 主要在做缩放和移动时控制最大和最小的缩放和移动范围
@@ -155,19 +158,10 @@ class _GestureScaleDemoState extends State<GestureScaleDemo1> {
         // 屏幕大小和图片大小做比较
         double scaleHeight = screenHeight / imageHeight;
         double scaleWidth = screenWidth / imageWidth;
-        _minScale = min(scaleHeight, scaleWidth);
+        _minScale = _double2(min(scaleHeight, scaleWidth));
         _scale = _minScale;
-        _maxScale = _minScale + 0.5;
+        _maxScale = _minScale + 2;
         _originScaleValue = _scale - 1;
-//        if (_scale < 1) {
-//          _offset = Offset(
-//              (_imageSize.width * _scale - _imageSize.width) * _scale / 2,
-//              (_imageSize.height * _scale - _imageSize.height) * _scale);
-//        } else {
-//          _offset = Offset(
-//              -(_imageSize.width * _scale - _imageSize.width) * _scale / 2,
-//              -(_imageSize.height * _scale - _imageSize.height) * _scale);
-//        }
         _moveTempOffset = _offset;
         //算出初始缩放值以及最大和最小 和 移动边界
         _calMoveSize();
