@@ -8,12 +8,16 @@ class StreamDemo extends StatefulWidget {
 }
 
 class _StreamDemoState extends State<StreamDemo> {
-  Future<int> sumStream(Stream<int> stream) async {
-    var sum = 0;
-    await for (var value in stream) {
-      sum += value;
-    }
-    return sum;
+  List<String> logs = List();
+
+  _addLog(String value) {
+    logs.add(value);
+    setState(() {});
+  }
+
+  _removeLog() {
+    logs.clear();
+    setState(() {});
   }
 
   Stream<int> countStream(int to) async* {
@@ -21,67 +25,6 @@ class _StreamDemoState extends State<StreamDemo> {
       yield i;
     }
   }
-
-  _doStream6() async {
-    var stream = countStream(10);
-    var sum = await sumStream(stream);
-    print(sum); // 55
-  }
-
-  Stream<int> foo2() async* {
-    print('foo2 start');
-    for (int i = 0; i < 3; i++) {
-      print('运行了foo2，当前index：${i}');
-      yield i;
-    }
-    print('foo2 stop');
-  }
-
-  _doStream7() {
-    var counterStream =
-        Stream<int>.periodic(Duration(seconds: 1), (x) => x).take(15);
-    counterStream.forEach(print);
-  }
-
-  StreamController<int> numController;
-
-  Stream<int> timedCounter(Duration interval, [int maxCount]) {
-    var controller = StreamController<int>();
-    int counter = 0;
-    void tick(Timer timer) {
-      counter++;
-      controller.add(counter); // 请求 Stream 将计数器值作为事件发送。
-      if (maxCount != null && counter >= maxCount) {
-        timer.cancel();
-        controller.close(); // 请求 Stream 关闭并告知监听器。
-      }
-    }
-
-    Timer.periodic(interval, tick); // 缺点：在其拥有订阅者之前开始了。
-    return controller.stream;
-  }
-
-  _doStream8() async {
-    var counterStream = timedCounter(const Duration(seconds: 1), 5);
-    // 5 秒后添加一个监听器。
-    await for (int n in counterStream) {
-      print(n); // 每秒打印输出一个整数，共打印 15 次。
-    }
-  }
-
-  _doStream9() async {
-    var counterStream = timedCounter(const Duration(seconds: 1), 5);
-    await Future.delayed(const Duration(seconds: 5));
-    // 5 秒后添加一个监听器。
-    await for (int n in counterStream) {
-      print(n); // 每秒打印输出一个整数，共打印 15 次。
-    }
-  }
-
-  static const int a = 1;
-  static final int b = 2;
-
-  int num = 0;
 
   @override
   void initState() {
@@ -91,8 +34,12 @@ class _StreamDemoState extends State<StreamDemo> {
   @override
   void dispose() {
     super.dispose();
-    numController?.close();
   }
+
+  StreamSubscription<int> subscription;
+  StreamSubscription<int> subscriptionListen;
+  Stream<int> stream;
+  NumberCreator numberCreator;
 
   @override
   Widget build(BuildContext context) {
@@ -100,63 +47,193 @@ class _StreamDemoState extends State<StreamDemo> {
       appBar: AppBar(),
       body: Column(
         children: <Widget>[
-          RaisedButton(
-            child: Text("test6"),
-            onPressed: _doStream6,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("Stream"),
+                    onPressed: () {
+                      _removeLog();
+                      countStream(10).listen(
+                        (data) => _addLog("Stream $data"),
+                      );
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("Stream Error"),
+                    onPressed: () {
+                      _removeLog();
+                      subscription = countStream(10).listen((data) {
+                        _addLog("Stream $data");
+                        throw "Error";
+                      }, onDone: () {
+                        _addLog("Stream Done");
+                      }, onError: () {
+                        _addLog("Stream onError");
+                      });
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("BroadcastStream"),
+                    onPressed: () {
+                      _removeLog();
+                      final stream = countStream(10).asBroadcastStream();
+                      stream.listen(
+                        (data) => _addLog("Stream1 $data"),
+                      );
+                      stream.listen(
+                        (data) => _addLog("Stream2 $data"),
+                      );
+                    },
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        RaisedButton(
+                          child: Text("createStream"),
+                          onPressed: () {
+                            _removeLog();
+                            stream = countStream(10);
+                          },
+                        ),
+
+                        RaisedButton(
+                          child: Text("setValueToStream"),
+                          onPressed: () {
+                            if (stream != null) {
+//                            stream.add(1000);
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("listen"),
+                          onPressed: () {
+                            subscriptionListen = stream.listen((value) {
+                              _addLog("ListenStream $value");
+                            });
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("pause"),
+                          onPressed: () {
+                            _addLog("subscriptionListen pause");
+                            if (subscriptionListen != null) {
+                              subscriptionListen.pause();
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("resume"),
+                          onPressed: () {
+                            _addLog("subscriptionListen resume");
+                            if (subscriptionListen != null) {
+                              subscriptionListen.resume();
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("cancel"),
+                          onPressed: () async{
+                            _removeLog();
+                            if (subscriptionListen != null) {
+                             await subscriptionListen.cancel();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        RaisedButton(
+                          child: Text("createStreamController"),
+                          onPressed: () {
+                            _removeLog();
+                            numberCreator = NumberCreator();
+                          },
+                        ),
+
+                        RaisedButton(
+                          child: Text("setValue"),
+                          onPressed: () {
+                            if (numberCreator != null) {
+                              numberCreator._controller.add(100);
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("Listen"),
+                          onPressed: () {
+                            subscriptionListen =
+                                numberCreator.stream.listen((value) {
+                                  _addLog("ListenStreamController $value");
+                                });
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("pause"),
+                          onPressed: () {
+                            if (subscriptionListen != null) {
+                              subscriptionListen.pause();
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("resume"),
+                          onPressed: () {
+                            if (subscriptionListen != null) {
+                              subscriptionListen.resume();
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          child: Text("cancel"),
+                          onPressed: () {
+                            _removeLog();
+                            if (subscriptionListen != null) {
+                              subscriptionListen.cancel();
+                            }
+                            if(numberCreator != null){
+//                              numberCreator.stream.listen(onData)
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-          RaisedButton(
-            child: Text("test7"),
-            onPressed: _doStream7,
-          ),
-          RaisedButton(
-            child: Text("test8"),
-            onPressed: _doStream8,
-          ),
-          RaisedButton(
-            child: Text("test9"),
-            onPressed: _doStream9,
-          ),
-          RaisedButton(
-            child: Text("createController"),
-            onPressed: () {
-              numController = StreamController<int>();
-              for (var i = 0; i < 10; i++) {
-                numController.add(i);
-              }
-              numController.onListen = () {
-                print("numController onListen");
-              };
-              numController.onCancel = () {
-                print("numController onCancel");
-              };
-              numController.onPause = () {
-                print("numController onPause");
-              };
-              numController.onResume = () {
-                print("numController onResume");
-              };
-            },
-          ),
-          RaisedButton(
-            child: Text("ControllerAdd"),
-            onPressed: () {
-              if (!numController.isClosed) {
-                numController.add(num);
-                num++;
-              }
-            },
-          ),
-          RaisedButton(
-            child: Text("print Controller"),
-            onPressed: () async {
-              await for (int n in numController.stream) {
-                print("print numController $n"); // 每秒打印输出一个整数，共打印 15 次。
-//                numController.close();
-              }
-            },
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: logs.map((value) {
+                  return Text(value);
+                }).toList(),
+              ),
+            ),
           )
         ],
       ),
     );
   }
+}
+
+class NumberCreator {
+  NumberCreator() {
+    for (int i = 0; i < 10; i++) {
+      _controller.sink.add(_count);
+      _count++;
+    }
+  }
+
+  var _count = 1;
+  StreamController<int> _controller = StreamController<int>();
+
+  Stream<int> get stream => _controller.stream;
 }

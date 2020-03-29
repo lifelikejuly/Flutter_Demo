@@ -11,95 +11,23 @@ class AsyncDemo extends StatefulWidget {
 }
 
 class _AsyncDemoState extends State<AsyncDemo> {
-  _test() async {
-    Future.delayed(Duration(seconds: 1), () => print("Hello World async1"));
-    Future.delayed(Duration(seconds: 2), () => print("Hello World async2"));
-    print("Hello World async3");
+  List<String> logs = List();
+
+  _addLog(String value) {
+    logs.add(value);
+    setState(() {});
   }
 
-  _doAsync() {
-    _test();
+  _removeLog() {
+    logs.clear();
+    setState(() {});
   }
 
-  Future<String> _test2() async {
-    return Future.delayed(Duration(seconds: 2), () => 'Large Latte');
-  }
-
-  Future<String> _test3(value) async {
-    return Future.delayed(Duration(seconds: 2), () => '$value + Large Latte');
-  }
-
-  _doAsync2() async {
-    Future.delayed(Duration(seconds: 1), () => print("Hello World before"));
-    Future.delayed(Duration(seconds: 2), () => print("Hello World seconds 2"));
-    String rest = await _test2();
-    print("Hello World $rest");
-    Future.delayed(Duration(seconds: 1), () => print("Hello World after"));
-  }
-
-  _doAsync3() {
-    _test2().then((value) {
-      print("_test2 result: $value");
-      _test3(value).then((value) {
-        print("_doAsync3 result: $value");
-      }).catchError((error) {
-        error.toString();
-      });
-    }).catchError((error) {
-      error.toString();
-    });
-  }
-
-  _doAsync4() async {
-    String result2 = await _test2();
-    print("_test2 result: $result2");
-    String result = await _test3(result2);
-    print("_doAsync4 result: $result");
-  }
-
-  Future<String> _test5(value) async {
-    return Future.delayed(
-        Duration(seconds: 2), () => throw "throw Error HAHAHA");
-  }
-
-  _doAsync5() async {
-    try {
-      String result2 = await _test2();
-      print("_test2 result: $result2");
-      String result = await _test5(result2);
-      print("_doAsync5 result: $result");
-    } catch (e) {
-      print("catch ${e.toString()}");
+  Stream<int> countStream(int to) async* {
+    for (int i = 1; i <= to; i++) {
+      yield i;
     }
   }
-
-  _doAsync6() async {
-    int nowTime = DateTime.now().millisecondsSinceEpoch;
-    Future.wait([
-      Future.delayed(Duration(seconds: 2), () => "2"),
-      Future.delayed(Duration(seconds: 4), () => "4"),
-    ]).then((reslut) {
-      print(
-          "${reslut[0]}-${reslut[1]} use ${DateTime.now().millisecondsSinceEpoch - nowTime}");
-    });
-    nowTime = DateTime.now().millisecondsSinceEpoch;
-    String text1 = await Future.delayed(Duration(seconds: 2), () => "2");
-    String text2 = await Future.delayed(Duration(seconds: 4), () => "4");
-    print(
-        "$text1-$text2 use ${DateTime.now().millisecondsSinceEpoch - nowTime}");
-
-    Future.any([
-      Future.delayed(Duration(seconds: 1), () => "1"),
-      Future.delayed(Duration(seconds: 2), () => "2"),
-      Future.delayed(Duration(seconds: 3), () => "3"),
-      Future.delayed(Duration(seconds: 4), () => "4"),
-    ]).then((reslut) {
-      print(
-          "$reslut use ${DateTime.now().millisecondsSinceEpoch - nowTime}");
-    });
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,36 +35,146 @@ class _AsyncDemoState extends State<AsyncDemo> {
       appBar: AppBar(),
       body: Column(
         children: <Widget>[
-          RaisedButton(
-            child: Text("test1"),
-            onPressed: _doAsync,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text("delayed"),
+                    onPressed: () {
+                      _removeLog();
+                      Future.delayed(Duration(seconds: 1),
+                          () => _addLog("Hello World async1"));
+                      Future.delayed(Duration(seconds: 2),
+                          () => _addLog("Hello World async2"));
+                      _addLog("Hello World async3");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("await"),
+                    onPressed: () async {
+                      _removeLog();
+                      _addLog("start");
+                      String last =
+                          await Future.delayed(Duration(seconds: 2), () {
+//                        throw "throw error";
+                        return 'Large Latte';
+                      }).catchError((value) {
+                        _addLog(value);
+                      });
+                      _addLog(last);
+                      _addLog("end");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("await try/catch"),
+                    onPressed: () async {
+                      _removeLog();
+                      _addLog("start");
+                      try {
+                        String last =
+                            await Future.delayed(Duration(seconds: 2), () {
+                          throw "throw error";
+                        }).whenComplete(() {
+                          _addLog("whenComplete");
+                        });
+                        _addLog(last);
+                      } catch (e) {
+                        _addLog("catch $e");
+                      }
+                      _addLog("end");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("then"),
+                    onPressed: () {
+                      _removeLog();
+                      _addLog("start");
+                      Future.delayed(Duration(seconds: 2), () => 'Large Latte')
+                          .then((result) {
+                        _addLog(result);
+                      });
+                      _addLog("end");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("throw"),
+                    onPressed: () {
+                      _removeLog();
+                      _addLog("start");
+                      Future.delayed(Duration(seconds: 2), () {
+                        throw "error";
+                      }).then((result) {
+                        _addLog(result);
+                      }).catchError((error) {
+                        _addLog(error);
+                      });
+                      _addLog("end");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("value"),
+                    onPressed: () {
+                      _removeLog();
+                      _addLog("value");
+                      Future.value(true).then((value) {
+                        _addLog(value.toString());
+                      });
+                      _addLog("value2");
+                      _addLog("end");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("error"),
+                    onPressed: () {
+                      _removeLog();
+                      _addLog("error1");
+                      Future.error("error").then((value) {
+                        _addLog(value.toString());
+                      });
+                      _addLog("error2");
+                      _addLog("end");
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("wait"),
+                    onPressed: () {
+                      _removeLog();
+                      _addLog("wait start");
+                      Future.wait([
+                        Future.delayed(Duration(seconds: 1), () => 1),
+                        Future.delayed(Duration(seconds: 2), () => 2),
+                      ]).then((values) {
+                        _addLog("values ${values[0]} ${values[1]}");
+                      });
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text("Completer"),
+                    onPressed: () {
+                      _removeLog();
+                      _addLog("Completer start");
+                      final completer = new Completer<String>();
+                      completer.future.then((value) {
+                        _addLog(value);
+                      });
+                      completer.complete('Hello World');
+                      _addLog("Completer end");
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
-          RaisedButton(
-            child: Text("test2"),
-            onPressed: _doAsync2,
-          ),
-          RaisedButton(
-            child: Text("test3"),
-            onPressed: _doAsync3,
-          ),
-          RaisedButton(
-            child: Text("test4"),
-            onPressed: _doAsync4,
-          ),
-          RaisedButton(
-            child: Text("test5"),
-            onPressed: _doAsync5,
-          ),
-          RaisedButton(
-            child: Text("test6"),
-            onPressed: _doAsync6,
-          ),
-          RaisedButton(
-            child: Text("test7"),
-            onPressed: (){
-              Future.value(Future<int>.sync(() => 10));
-            },
-          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: logs.map((value) {
+                  return Text(value);
+                }).toList(),
+              ),
+            ),
+          )
         ],
       ),
     );
