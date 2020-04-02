@@ -41,6 +41,7 @@ class _StreamDemoState extends State<StreamDemo> {
   Stream<int> stream;
   NumberCreator numberCreator;
 
+  int value = 10;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +125,8 @@ class _StreamDemoState extends State<StreamDemo> {
                           child: Text("setValue"),
                           onPressed: () {
                             if (numberCreator != null) {
-                              numberCreator._controller.add(100);
+                              value++;
+                              numberCreator._controller.add(value);
                             }
                           },
                         ),
@@ -167,6 +169,17 @@ class _StreamDemoState extends State<StreamDemo> {
                         ),
                       ],
                     ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      StreamBuilder<int>(
+                        builder: (context, data) {
+                          return Text(data.data.toString());
+                        },
+                        initialData: 10000,
+                        stream: numberCreator?.stream,
+                      ),
+                    ],
                   )
                 ],
               ),
