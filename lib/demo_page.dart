@@ -7,8 +7,10 @@ import 'package:flutter_demo/demo/animation/animatedWidget_demo.dart';
 import 'package:flutter_demo/demo/animation/animationController_demo.dart';
 import 'package:flutter_demo/demo/animation/animation_demo.dart';
 import 'package:flutter_demo/demo/dart/async_demo.dart';
+import 'package:flutter_demo/demo/dart/isolate_demo.dart';
 import 'package:flutter_demo/demo/dart/stream_demo.dart';
 import 'package:flutter_demo/demo/dart/timer_demo.dart';
+import 'package:flutter_demo/demo/dart/zone_demo.dart';
 import 'package:flutter_demo/demo/drawer/drag_drawer_demo.dart';
 import 'package:flutter_demo/demo/flip/flip_demo.dart';
 import 'package:flutter_demo/demo/floatbox/float_dragable_demo.dart';
@@ -25,6 +27,8 @@ import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
+import 'package:flutter_demo/page/http/http_demo.dart';
+import 'package:flutter_demo/page/http/httpserver_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
@@ -33,8 +37,10 @@ import 'package:flutter_demo/ui/container_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
 import 'package:flutter_demo/ui/icon_demo.dart';
 import 'package:flutter_demo/ui/image_demo.dart';
+import 'package:flutter_demo/ui/listview_demo.dart';
 import 'package:flutter_demo/ui/scroll_view_demo.dart';
 import 'package:flutter_demo/ui/stack_demo.dart';
+import 'package:flutter_demo/ui/tab_bar_demo.dart';
 import 'package:flutter_demo/ui/table_demo.dart';
 import 'package:flutter_demo/ui/textField_demo.dart';
 import 'package:flutter_demo/ui/text_demo.dart';
@@ -68,6 +74,8 @@ class _UIDemoState extends State<DemoPage> {
         demos['输入框'] = TextFieldDemo();
         demos['icon资源'] = IconDemo();
         demos['Stack'] = StackDemo();
+        demos['列表'] = ListViewDemo();
+        demos['Tab'] = TabBarDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
@@ -84,6 +92,8 @@ class _UIDemoState extends State<DemoPage> {
         demos["stream"] = StreamDemo();
         demos["stream"] = StreamDemo();
         demos["计时器Timer"] = TimerDemo();
+        demos["isolate"] = IsolateDemo();
+        demos["ZONE"] = ZoneDemo();
         break;
       case "life":
         demos["Stateful"] = StatefulLifecycleDemo();
@@ -116,6 +126,10 @@ class _UIDemoState extends State<DemoPage> {
         demos["AnimationContainer"] = AnimatedContainerDemo();
         demos["AnimationWidget"] = AnimatedWidgetDemo();
         demos["AnimationBuilder"] = AnimatedBuilderDemo();
+        break;
+      case "net":
+        demos["dio"] = HttpDemo();
+        demos["IOWebSocket"] = HttpServerDemo();
         break;
     }
   }

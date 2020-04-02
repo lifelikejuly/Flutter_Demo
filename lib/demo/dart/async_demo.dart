@@ -48,6 +48,9 @@ class _AsyncDemoState extends State<AsyncDemo> {
                       Future.delayed(Duration(seconds: 2),
                           () => _addLog("Hello World async2"));
                       _addLog("Hello World async3");
+                      Future.value(200).then((value){
+                        _addLog("Hello World value $value");
+                      });
                     },
                   ),
                   RaisedButton(

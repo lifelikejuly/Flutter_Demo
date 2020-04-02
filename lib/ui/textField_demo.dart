@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,17 +9,47 @@ class TextFieldDemo extends StatefulWidget {
 }
 
 class _TextFieldDemoState extends State<TextFieldDemo> {
+  TextEditingController textEditingController = TextEditingController();
+
+  StreamController<String> streamController = StreamController<String>();
+  Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController.addListener(() {
+//      streamController.add(textEditingController.text);
+      timer?.cancel();
+      timer = Timer.periodic(Duration(milliseconds: 700), (_) {
+        print("streamController ${textEditingController.text}");
+        timer?.cancel();
+      });
+    });
+    streamController.stream.timeout(Duration(seconds: 2)).listen((value) {
+      print("streamController.stream $value");
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    textEditingController?.dispose();
+    timer?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
         children: <Widget>[
+          Text(textEditingController.text),
           TextField(
             textInputAction: TextInputAction.search,
             onSubmitted: (text) {
               print("TextField $text");
             },
+            controller: textEditingController,
           ),
           Container(
             margin: EdgeInsets.only(bottom: 15, left: 28, right: 28),

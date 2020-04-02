@@ -98,48 +98,12 @@ class _StreamDemoState extends State<StreamDemo> {
                             stream = countStream(10);
                           },
                         ),
-
-                        RaisedButton(
-                          child: Text("setValueToStream"),
-                          onPressed: () {
-                            if (stream != null) {
-//                            stream.add(1000);
-                            }
-                          },
-                        ),
                         RaisedButton(
                           child: Text("listen"),
                           onPressed: () {
                             subscriptionListen = stream.listen((value) {
                               _addLog("ListenStream $value");
                             });
-                          },
-                        ),
-                        RaisedButton(
-                          child: Text("pause"),
-                          onPressed: () {
-                            _addLog("subscriptionListen pause");
-                            if (subscriptionListen != null) {
-                              subscriptionListen.pause();
-                            }
-                          },
-                        ),
-                        RaisedButton(
-                          child: Text("resume"),
-                          onPressed: () {
-                            _addLog("subscriptionListen resume");
-                            if (subscriptionListen != null) {
-                              subscriptionListen.resume();
-                            }
-                          },
-                        ),
-                        RaisedButton(
-                          child: Text("cancel"),
-                          onPressed: () async{
-                            _removeLog();
-                            if (subscriptionListen != null) {
-                             await subscriptionListen.cancel();
-                            }
                           },
                         ),
                       ],
@@ -156,7 +120,6 @@ class _StreamDemoState extends State<StreamDemo> {
                             numberCreator = NumberCreator();
                           },
                         ),
-
                         RaisedButton(
                           child: Text("setValue"),
                           onPressed: () {
@@ -170,8 +133,8 @@ class _StreamDemoState extends State<StreamDemo> {
                           onPressed: () {
                             subscriptionListen =
                                 numberCreator.stream.listen((value) {
-                                  _addLog("ListenStreamController $value");
-                                });
+                              _addLog("ListenStreamController $value");
+                            });
                           },
                         ),
                         RaisedButton(
@@ -197,7 +160,7 @@ class _StreamDemoState extends State<StreamDemo> {
                             if (subscriptionListen != null) {
                               subscriptionListen.cancel();
                             }
-                            if(numberCreator != null){
+                            if (numberCreator != null) {
 //                              numberCreator.stream.listen(onData)
                             }
                           },

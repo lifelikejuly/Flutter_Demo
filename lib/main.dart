@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    demos["网络"] = HttpDemo();
+    demos["网络"] = DemoPage("net");
     demos["原生调用"] = NativeDemo();
     demos["UI"] = DemoPage("ui");
     demos["第三方组件库"] = DemoPage("part");
