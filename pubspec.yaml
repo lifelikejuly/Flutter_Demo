@@ -37,6 +37,8 @@ dependencies:
   charts_flutter: 0.8.1
   provider: ^3.1.0+1
   web_socket_channel: 1.1.0
+  fish_redux: 0.3.3
+  flutter_redux: 0.6.0
 
 dev_dependencies:
   flutter_test:

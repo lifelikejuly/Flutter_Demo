@@ -1,12 +1,17 @@
 import 'dart:collection';
 
+import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
-import 'package:flutter_demo/page/http/http_demo.dart';
+import 'package:flutter_demo/part/fishredux/demopage1/page.dart';
+import 'package:flutter_demo/part/fishredux/demopage2/page.dart';
+import 'package:flutter_demo/part/redux_demo.dart';
 import 'package:flutter_demo/primeval/native_demo.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart' as FlutterRedux;
 import 'package:provider/provider.dart';
 
 void main() => runApp(ChangeNotifierProvider<ThemeNotifier>.value(
@@ -15,40 +20,78 @@ void main() => runApp(ChangeNotifierProvider<ThemeNotifier>.value(
       child: MyApp(),
     ));
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AbstractRoutes routes = PageRoutes(
+    pages: <String, Page<Object, dynamic>>{
+      /// 注册TodoList主页面
+      'fishPage1': FishDemoPage1Page(),
+      'fishPage2': FishDemoPage2Page(),
+    },
+  );
+
+  FlutterRedux.Store<AppState> store;
+
+  @override
+  void initState() {
+    super.initState();
+    store = FlutterRedux.Store<AppState>(
+      counterReducer,
+      initialState: AppState(),
+      middleware: [
+//        (store,action,action2){
+//
+//        },
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorObservers: [UserNavigatorObserver()],
-      themeMode: Provider.of<ThemeNotifier>(context).isDark ? ThemeMode.dark : ThemeMode.light,
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
+    return StoreProvider<AppState>(
+      store: store,
+      child: MaterialApp(
+        navigatorObservers: [UserNavigatorObserver()],
+        themeMode: Provider.of<ThemeNotifier>(context).isDark
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        title: 'Flutter Demo',
+        initialRoute: "/",
+        routes: {
+          "/router": (context) => RouterDemo(),
+          "/router/next1": (context) => NextPage1(),
+          "/router/next2": (context) => NextPage2(),
+          "/router/next3": (context) => NextPage3(),
+          "/router/next4": (context) => NextPage4(),
+          "/router/next5": (context) => NextPage5(),
+          "/router/data2": (context) => RouterChildDateDemo2(),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute<Object>(builder: (BuildContext context) {
+            return routes.buildPage(settings.name, settings.arguments);
+          });
+        },
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      title: 'Flutter Demo',
-      initialRoute: "/",
-      routes: {
-        "/router": (context) => RouterDemo(),
-        "/router/next1": (context) => NextPage1(),
-        "/router/next2": (context) => NextPage2(),
-        "/router/next3": (context) => NextPage3(),
-        "/router/next4": (context) => NextPage4(),
-        "/router/next5": (context) => NextPage5(),
-        "/router/data2": (context) => RouterChildDateDemo2(),
-      },
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

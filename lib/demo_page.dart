@@ -30,8 +30,11 @@ import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/page/http/httpserver_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
+import 'package:flutter_demo/part/fish_redux_demo.dart';
+import 'package:flutter_demo/part/redux_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
+import 'package:flutter_demo/ui/Inherited_view_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
 import 'package:flutter_demo/ui/container_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
@@ -76,11 +79,14 @@ class _UIDemoState extends State<DemoPage> {
         demos['Stack'] = StackDemo();
         demos['列表'] = ListViewDemo();
         demos['Tab'] = TabBarDemo();
+        demos['Inherited'] = InheritedWidgetTestContainer();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
         demos["列表刷新组件"] = RefreshDemo();
         demos["charts_flutter"] = ChartsDemo();
+        demos["FishRedux"] = FishReduxDemo();
+        demos["FlutterRedux"] = ReduxDemo();
         break;
       case "other":
         demos["drawer"] = DrawerDemo();
