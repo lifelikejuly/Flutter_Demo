@@ -2,8 +2,9 @@ import 'package:fish_redux/fish_redux.dart';
 
 import 'action.dart';
 import 'state.dart';
-
+//在effect之后接收action的做state数据变化操作
 Reducer<FishDemoPage1State> buildReducer() {
+
   return asReducer(
     <Object, Reducer<FishDemoPage1State>>{
       FishDemoPage1Action.actionAdd: _onAddAction,

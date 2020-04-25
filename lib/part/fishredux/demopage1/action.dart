@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 
+// 要做的操作在这里定义
 //TODO replace with your own action
 enum FishDemoPage1Action { add, reduce, actionAdd,actionReduce, Next }
 

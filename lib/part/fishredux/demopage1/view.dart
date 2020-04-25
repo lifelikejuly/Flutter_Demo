@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'action.dart';
 import 'state.dart';
-
+// state 状态数据 dispatch 分发action
 Widget buildView(FishDemoPage1State state, Dispatch dispatch, ViewService viewService) {
   return Scaffold(
     appBar: AppBar(),

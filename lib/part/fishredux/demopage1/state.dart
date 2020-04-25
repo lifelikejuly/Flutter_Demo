@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-
+//状态管理类
 class FishDemoPage1State implements Cloneable<FishDemoPage1State> {
   int total = 0;
   bool add = false;

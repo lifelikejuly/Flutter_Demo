@@ -7,6 +7,7 @@ import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
 import 'package:flutter_demo/part/fishredux/demopage1/page.dart';
 import 'package:flutter_demo/part/fishredux/demopage2/page.dart';
+import 'package:flutter_demo/part/fishredux/demopage3/page.dart';
 import 'package:flutter_demo/part/redux_demo.dart';
 import 'package:flutter_demo/primeval/native_demo.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
@@ -31,6 +32,7 @@ class _MyAppState extends State<MyApp> {
       /// 注册TodoList主页面
       'fishPage1': FishDemoPage1Page(),
       'fishPage2': FishDemoPage2Page(),
+      'fishPage3': FishDemoListPagePage(),
     },
   );
 
