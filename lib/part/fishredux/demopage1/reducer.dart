@@ -9,6 +9,7 @@ Reducer<FishDemoPage1State> buildReducer() {
     <Object, Reducer<FishDemoPage1State>>{
       FishDemoPage1Action.actionAdd: _onAddAction,
       FishDemoPage1Action.actionReduce: _onReduceAction,
+      FishDemoPage1Action.updateState: _onUpdateAction,
     },
   );
 }
@@ -24,5 +25,11 @@ FishDemoPage1State _onReduceAction(FishDemoPage1State state, Action action) {
   final FishDemoPage1State newState = state.clone();
   print("buildReducer _onReduceAction");
   newState.total -= 1;
+  return newState;
+}
+
+FishDemoPage1State _onUpdateAction(FishDemoPage1State state, Action action){
+  final FishDemoPage1State newState = action.payload;
+  print("buildReducer _onUpdateAction ${state.total}");
   return newState;
 }

@@ -17,6 +17,12 @@ Widget buildView(
               onPressed: () {
                 dispatch(fishdemepage2ActionCreator.onLoadData());
               },
+            ),
+            RaisedButton(
+              child: Text("loadAsync"),
+              onPressed: () {
+                dispatch(fishdemepage2ActionCreator.onActionAsync());
+              },
             )
           ],
         ),

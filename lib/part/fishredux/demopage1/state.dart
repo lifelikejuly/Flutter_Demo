@@ -14,6 +14,6 @@ class FishDemoPage1State implements Cloneable<FishDemoPage1State> {
   }
 }
 
-FishDemoPage1State initState(Map<String, dynamic> args) {
+FishDemoPage1State initMainState(Map<String, dynamic> args) {
   return FishDemoPage1State();
 }

@@ -2,9 +2,16 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/widgets.dart' hide Action;
 import 'action.dart';
 import 'state.dart';
+
 //dispatch做action 先执行这里
 Effect<FishDemoPage1State> buildEffect() {
   return combineEffects(<Object, Effect<FishDemoPage1State>>{
+    Lifecycle.initState: (action, ctx) {
+      print("buildEffect initState");
+      FishDemoPage1State state = ctx.state.clone();
+      state.total = 100;
+      ctx.dispatch(FishDemoPage1ActionCreator.updateState(state));
+    },
     FishDemoPage1Action.add: _onAddAction,
     FishDemoPage1Action.reduce: _onReduceAction,
     FishDemoPage1Action.Next: _gotoPage,

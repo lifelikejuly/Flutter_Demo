@@ -40,6 +40,7 @@ import 'package:flutter_demo/ui/container_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
 import 'package:flutter_demo/ui/icon_demo.dart';
 import 'package:flutter_demo/ui/image_demo.dart';
+import 'package:flutter_demo/ui/image_list_demo.dart';
 import 'package:flutter_demo/ui/listview_demo.dart';
 import 'package:flutter_demo/ui/scroll_view_demo.dart';
 import 'package:flutter_demo/ui/stack_demo.dart';
@@ -47,6 +48,7 @@ import 'package:flutter_demo/ui/tab_bar_demo.dart';
 import 'package:flutter_demo/ui/table_demo.dart';
 import 'package:flutter_demo/ui/textField_demo.dart';
 import 'package:flutter_demo/ui/text_demo.dart';
+import 'package:flutter_demo/ui/text_list_demo.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
 
 class DemoPage extends StatefulWidget {
@@ -73,6 +75,8 @@ class _UIDemoState extends State<DemoPage> {
         demos['表格'] = TableDemo();
         demos['主题模式'] = ThemeDemo();
         demos['图片'] = ImageDemo();
+        demos['图片列表'] = ImageListDemo();
+        demos['文本列表'] = TextListDemo();
         demos['container'] = ContainerDemo();
         demos['输入框'] = TextFieldDemo();
         demos['icon资源'] = IconDemo();

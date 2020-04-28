@@ -9,6 +9,7 @@ Reducer<fishdemepage2State> buildReducer() {
     <Object, Reducer<fishdemepage2State>>{
       fishdemepage2Action.action: _onAction,
       fishdemepage2Action.loadData: _onLoad,
+      fishdemepage2Action.loadDataAsync: _onLoadAsync,
     },
   );
 }
@@ -27,5 +28,12 @@ fishdemepage2State _onLoad(fishdemepage2State state, Action action) {
   modles.add(FishModel("ppppp2311"));
   modles.add(FishModel("ppppp2311"));
   final fishdemepage2State newState = state.clone()..models.addAll(modles);
+  return newState;
+}
+
+
+fishdemepage2State _onLoadAsync(fishdemepage2State state, Action action) {
+
+  final fishdemepage2State newState = state.clone()..models.addAll(action.payload);
   return newState;
 }

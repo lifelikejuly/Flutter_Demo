@@ -1,43 +1,33 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 
-import 'action.dart';
+import '../action.dart';
 import 'state.dart';
-// state 状态数据 dispatch 分发action
 
-Widget buildView(FishDemoPage1State state, Dispatch dispatch, ViewService viewService) {
-
-  return Scaffold(
-    appBar: AppBar(),
-    body: Container(
+Widget buildView(
+    Demo1ChildViewState state, Dispatch dispatch, ViewService viewService) {
+  print("childView buildView");
+  return Container(
+      color: Colors.yellow,
       child: Column(
         children: <Widget>[
-          Text("page1 ${state.total}"),
+          Text("子布局调用Action更新顶级视图"),
           Row(
             children: <Widget>[
               RaisedButton(
                 child: Text("add"),
-                onPressed: (){
+                onPressed: () {
                   dispatch(FishDemoPage1ActionCreator.onAddAction());
                 },
               ),
               RaisedButton(
                 child: Text("reduce"),
-                onPressed: (){
+                onPressed: () {
                   dispatch(FishDemoPage1ActionCreator.onReduceAction());
                 },
               ),
             ],
           ),
-          RaisedButton(
-            child: Text("GotoPage2"),
-            onPressed: (){
-              dispatch(FishDemoPage1ActionCreator.goToPage2());
-            },
-          ),
-          viewService.buildComponent("child"),
         ],
-      ),
-    ),
-  );
+      ));
 }
