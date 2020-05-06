@@ -9,7 +9,8 @@ enum FishDemoPage1Action {
   reduce,
   actionAdd,
   actionReduce,
-  Next
+  Next,
+  changeNum,
 }
 
 class FishDemoPage1ActionCreator {
@@ -30,5 +31,9 @@ class FishDemoPage1ActionCreator {
 
   static Action updateState(FishDemoPage1State page1state) {
     return Action(FishDemoPage1Action.updateState, payload: page1state);
+  }
+
+  static Action changeNumState(FishDemoPage1State state){
+    return Action(FishDemoPage1Action.updateState,payload: state);
   }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.hjapp.ui.activity.MessengerActivity;
 import com.hjapp.ui.activity.WebActivity;
 
 import io.flutter.plugin.common.MethodCall;
@@ -20,6 +21,7 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
 
     private Activity activity;
     private Context context;
+    private static MethodChannel channel;
 
     public FlutterAppPlugin(Activity activity, Context context) {
         this.activity = activity;
@@ -30,8 +32,17 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
      * Plugin registration.
      */
     public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_app_plugin");
+        channel = new MethodChannel(registrar.messenger(), "flutter_app_plugin");
         channel.setMethodCallHandler(new FlutterAppPlugin(registrar.activity(), registrar.activeContext()));
+    }
+
+
+    public static void invokeMethod(MethodChannel.Result result) {
+        channel.invokeMethod("flutter_app_plugin", "hello",result);
+    }
+
+    public static void setMethodCallHandler(MethodChannel.MethodCallHandler handler){
+        channel.setMethodCallHandler(handler);
     }
 
     @Override
@@ -40,9 +51,14 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
             result.success("Android " + android.os.Build.VERSION.RELEASE);
         } else if (call.method.equals("goToNativePage")) { //跳转原生Activity入口
             String path = call.argument("router");
+            Intent intent = null;
             switch (path) {
                 case "web":
-                    Intent intent = new Intent(activity, WebActivity.class);
+                    intent = new Intent(activity, WebActivity.class);
+                    activity.startActivity(intent);
+                    break;
+                case "messenger":
+                    intent = new Intent(activity, MessengerActivity.class);
                     activity.startActivity(intent);
                     break;
                 default:

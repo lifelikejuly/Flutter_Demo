@@ -8,6 +8,7 @@ import 'package:flutter_demo/demo/animation/animationController_demo.dart';
 import 'package:flutter_demo/demo/animation/animation_demo.dart';
 import 'package:flutter_demo/demo/dart/async_demo.dart';
 import 'package:flutter_demo/demo/dart/isolate_demo.dart';
+import 'package:flutter_demo/demo/dart/plugin_channel_demo.dart';
 import 'package:flutter_demo/demo/dart/stream_demo.dart';
 import 'package:flutter_demo/demo/dart/timer_demo.dart';
 import 'package:flutter_demo/demo/dart/zone_demo.dart';
@@ -63,6 +64,10 @@ class DemoPage extends StatefulWidget {
 class _UIDemoState extends State<DemoPage> {
   HashMap<String, Widget> demos = new HashMap();
 
+  _textDemo() {
+    demos["TextView使用"] = TextDemo();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -104,6 +109,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["计时器Timer"] = TimerDemo();
         demos["isolate"] = IsolateDemo();
         demos["ZONE"] = ZoneDemo();
+        demos["原生交互PlguinChannel"] = PluginChannelDemo();
         break;
       case "life":
         demos["Stateful"] = StatefulLifecycleDemo();
