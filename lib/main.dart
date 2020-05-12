@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';

@@ -39,6 +39,10 @@ dependencies:
   web_socket_channel: 1.1.0
   fish_redux: 0.3.3
   flutter_redux: 0.6.0
+  # 官方的视频播放插件
+  video_player: 0.10.10
+  # 瀑布布局
+  flutter_staggered_grid_view: 0.3.0
 
 dev_dependencies:
   flutter_test:

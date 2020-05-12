@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
 final String networkPic =
@@ -33,6 +34,12 @@ class _ImageListDemoState extends State<ImageListDemo> {
 //      ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    PaintingBinding.instance.imageCache.clear();
+  }
 }
 
 class ListWidget extends StatefulWidget {
@@ -41,13 +48,28 @@ class ListWidget extends StatefulWidget {
 }
 
 class _ListWidgetState extends State<ListWidget> {
+  bool show = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        show = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, position) {
-        return ImageBuilder(position);
-      },
-      itemCount: 1000,
+    return Visibility(
+      visible: show,
+      child: ListView.builder(
+        itemBuilder: (context, position) {
+          return ImageBuilder(position);
+        },
+        itemCount: 10,
+      ),
     );
   }
 }
@@ -60,23 +82,48 @@ class ImageBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("ImageBuilder --- num --- $index");
-    return Image.network(
-      networkPic,
-      loadingBuilder: (context, widget, loadingProgress) {
-        if (loadingProgress == null) {
-          print("ImageBuilder --- num --- $index -- success");
-          return widget;
-        }
-        return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes
-                : null,
-          ),
-        );
-      },
+//    return Image.network(
+//      networkPic,
+//      loadingBuilder: (context, widget, loadingProgress) {
+//        if (loadingProgress == null) {
+//          print("ImageBuilder --- num --- $index -- success");
+//          return widget;
+//        }
+//        return Center(
+//          child: CircularProgressIndicator(
+//            value: loadingProgress.expectedTotalBytes != null
+//                ? loadingProgress.cumulativeBytesLoaded /
+//                    loadingProgress.expectedTotalBytes
+//                : null,
+//          ),
+//        );
+//      },
+//    );
+//  return Text("sss");
+//    return Column(
+//      children: <Widget>[
+//        Text("sss"),
+//        Image.network(
+//          networkPic,
+//          loadingBuilder: (context, widget, loadingProgress) {
+//            if (loadingProgress == null) {
+//              print("ImageBuilder --- num --- $index -- success");
+//              return widget;
+//            }
+//            return Center(
+//              child: CircularProgressIndicator(
+//                value: loadingProgress.expectedTotalBytes != null
+//                    ? loadingProgress.cumulativeBytesLoaded /
+//                        loadingProgress.expectedTotalBytes
+//                    : null,
+//              ),
+//            );
+//          },
+//        )
+//      ],
+//    );
+    return Container(
+      child: Image.asset("res/img/jay.jpg"),
     );
-//  return Text("$index");
   }
 }

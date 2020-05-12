@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ImageDemo extends StatefulWidget {
   @override
@@ -8,6 +12,60 @@ class ImageDemo extends StatefulWidget {
 class _ImageDemoState extends State<ImageDemo> {
   final String networkPic =
       "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2502384351,886196727&fm=26&gp=0.jpg";
+  final String netPic =
+      "https:\/\/i.pximg.net\/c\/480x960\/img-master\/img\/2020\/04\/11\/00\/00\/27\/80699361_p0_master1200.jpg";
+  final List<int> datas = [11, 22, 33, 44, 55, 44, 11, 233, 34, 22, 43];
+
+  Uint8List data;
+  Uint8List data2;
+  Timer timer;
+  int offerIndex = 0;
+  StreamController<Uint8List> stream = new StreamController<Uint8List>();
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+    loadData2();
+  }
+
+  void loadData() async {
+    ByteBuffer byteBuffer = (await rootBundle.load('res/img/jay.jpg')).buffer;
+    data = byteBuffer.asUint8List(0, byteBuffer.lengthInBytes ~/ 2);
+    setState(() {});
+  }
+
+  void loadData2() async {
+    ByteBuffer byteBuffer = (await rootBundle.load('res/img/jay.jpg')).buffer;
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      print("Timer Duration");
+      offerIndex += byteBuffer.lengthInBytes ~/ 10;
+      if (offerIndex > byteBuffer.lengthInBytes) {
+        offerIndex = byteBuffer.lengthInBytes;
+        timer.cancel();
+      }
+      data2 = byteBuffer.asUint8List(0, offerIndex);
+      stream.add(data2);
+      setState(() {});
+    });
+  }
+
+  Widget _ImageWrapper() {
+    if (data == null) {
+      return CircularProgressIndicator();
+    }
+
+    return Image.memory(data);
+  }
+
+  Widget _ImageWrapper2() {
+    if (data2 == null) {
+      return CircularProgressIndicator();
+    }
+
+    return Image.memory(data2);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +74,33 @@ class _ImageDemoState extends State<ImageDemo> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Image.asset("res/img/jay.jpg"),
+//            Image.asset("res/img/jay.jpg"),
+//            Image.asset("res/img/ic_run.gif"),
             Image.network(networkPic),
-            SizeImage(imageProvider: NetworkImage(networkPic)),
+            Image.network(netPic),
+//            _ImageWrapper(),
+//            _ImageWrapper2(),
+//            StreamBuilder(
+//                stream: stream.stream,
+//                builder:
+//                    (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
+//                  return Image.memory(snapshot.data);
+//                }),
+            SizeImage(
+              imageProvider: NetworkImage(networkPic),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    /// 退出时清除图片缓存
+    PaintingBinding.instance.imageCache.clear();
   }
 }
 
@@ -73,6 +151,7 @@ class _SizeImageState extends State<SizeImage> {
   }
 
   void _updateImage(ImageInfo imageInfo, bool synchronousCall) {
+    print("ImageInfo   ${imageInfo.toString()}");
     setState(() {
       // Trigger a build whenever the image changes.
       _imageInfo = imageInfo;

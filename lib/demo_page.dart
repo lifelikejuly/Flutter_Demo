@@ -28,12 +28,14 @@ import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
+import 'package:flutter_demo/demo/video/video_demo.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/page/http/httpserver_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
 import 'package:flutter_demo/part/fish_redux_demo.dart';
 import 'package:flutter_demo/part/redux_demo.dart';
 import 'package:flutter_demo/part/refresh_demo.dart';
+import 'package:flutter_demo/part/staggered_grid_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/ui/Inherited_view_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
@@ -88,6 +90,7 @@ class _UIDemoState extends State<DemoPage> {
         demos['Stack'] = StackDemo();
         demos['列表'] = ListViewDemo();
         demos['Tab'] = TabBarDemo();
+        demos['视频播放'] = VideoDemo();
         demos['Inherited'] = InheritedWidgetTestContainer();
         break;
       case "part":
@@ -96,6 +99,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["charts_flutter"] = ChartsDemo();
         demos["FishRedux"] = FishReduxDemo();
         demos["FlutterRedux"] = ReduxDemo();
+        demos["StaggeredGridDemo"] = StaggeredGridDemo();
         break;
       case "other":
         demos["drawer"] = DrawerDemo();
