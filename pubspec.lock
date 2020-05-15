@@ -118,6 +118,15 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  flutter_boost:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "1.12.13"
+      resolved-ref: "69a752f870253bec15413b2a85f6577edf1b4b93"
+      url: "https://github.com/alibaba/flutter_boost.git"
+    source: git
+    version: "1.12.13"
   flutter_page_indicator:
     dependency: transitive
     description:

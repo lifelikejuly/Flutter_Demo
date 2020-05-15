@@ -12,9 +12,9 @@ public class MainActivity extends FlutterActivity {
 
 
 
-    @NonNull
-    @Override
-    protected FlutterActivityLaunchConfigs.BackgroundMode getBackgroundMode() {
-        return FlutterActivityLaunchConfigs.BackgroundMode.transparent;
-    }
+//    @NonNull
+//    @Override
+//    protected FlutterActivityLaunchConfigs.BackgroundMode getBackgroundMode() {
+//        return FlutterActivityLaunchConfigs.BackgroundMode.transparent;
+//    }
 }

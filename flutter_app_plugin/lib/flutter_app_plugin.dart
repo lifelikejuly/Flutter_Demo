@@ -13,8 +13,12 @@ class FlutterAppPlugin {
 
   static Future<bool> nativePage(String path) async {
     final args = <String, dynamic>{"router": path};
-    final bool result =
-        await _channel.invokeMethod('goToNativePage',args);
+    final bool result = await _channel.invokeMethod('goToNativePage', args);
+    return result;
+  }
+
+  static Future<bool> makeJavaCrash() async {
+    final bool result = await _channel.invokeMethod('crash');
     return result;
   }
 

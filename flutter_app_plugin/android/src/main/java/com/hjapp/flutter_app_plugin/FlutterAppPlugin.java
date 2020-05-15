@@ -61,6 +61,8 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
                     intent = new Intent(activity, MessengerActivity.class);
                     activity.startActivity(intent);
                     break;
+                case "crash":
+                    throw new IllegalStateException("This is Java exception");
                 default:
                     result.notImplemented();
                     break;

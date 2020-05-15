@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:collection';
+import 'dart:ui';
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Page;
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
@@ -15,13 +18,58 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart' as FlutterRedux;
 import 'package:provider/provider.dart';
 
-void main() => runApp(ChangeNotifierProvider<ThemeNotifier>.value(
+String CRASH_TAG = "---CRASH_TAG--- ";
+
+Future<Null> _reportError(dynamic error, dynamic stackTrace) {
+  print('$CRASH_TAG _reportError ');
+  print('$CRASH_TAG Caught error: $error');
+  print("$CRASH_TAG stackTrace: $stackTrace");
+}
+
+void main() {
+  final defaultOnError = FlutterError.onError;
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    print("$CRASH_TAG  run FlutterError.onError ");
+    FlutterError.dumpErrorToConsole(details);
+    defaultOnError(details);
+//    if (MyApp.isInDebugMode) {
+//      print("$CRASH_TAG  FlutterError.dumpErrorToConsole ");
+//      FlutterError.dumpErrorToConsole(details);
+//    } else {
+//      print("$CRASH_TAG  Zone.current.handleUncaughtError");
+//      Zone.current.handleUncaughtError(details.exception, details.stack);
+//    }
+  };
+
+  runZoned<Future<Null>>(() async {
+    runApp(ChangeNotifierProvider<ThemeNotifier>.value(
       //ChangeNotifierProvider调用value()方法，里面传出value和child
       value: ThemeNotifier(), //value设置了默认的Counter()
       child: MyApp(),
     ));
 
+//    runApp(MyApp());
+
+    /// 记录帧率信息
+//    SchedulerBinding.instance.addTimingsCallback((timings) {
+//      for (FrameTiming frameTiming in timings) {
+//        println("addTimingsCallback ${frameTiming.toString()}");
+//      }
+//    });
+//    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+//      println("addPostFrameCallback $timeStamp");
+//    });
+  }, onError: (error, stackTrace) {
+//    _reportError(error, stackTrace);
+    FlutterError.resetErrorCount();
+    FlutterError.dumpErrorToConsole(
+        FlutterErrorDetails(exception: error, stack: stackTrace));
+  });
+}
+
 class MyApp extends StatefulWidget {
+  static bool isInDebugMode = true;
+
   @override
   _MyAppState createState() => _MyAppState();
 }
