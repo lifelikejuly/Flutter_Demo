@@ -6,6 +6,7 @@ import 'package:flutter_demo/demo/animation/animatedContainer_demo.dart';
 import 'package:flutter_demo/demo/animation/animatedWidget_demo.dart';
 import 'package:flutter_demo/demo/animation/animationController_demo.dart';
 import 'package:flutter_demo/demo/animation/animation_demo.dart';
+import 'package:flutter_demo/demo/crash/crash_demo.dart';
 import 'package:flutter_demo/demo/dart/async_demo.dart';
 import 'package:flutter_demo/demo/dart/isolate_demo.dart';
 import 'package:flutter_demo/demo/dart/plugin_channel_demo.dart';
@@ -105,6 +106,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["drawer"] = DrawerDemo();
         demos["flip"] = FlipDemo();
         demos["animation"] = AnimationDemo();
+        demos["crash"] = CrashDemo();
         break;
       case "dart":
         demos["async"] = AsyncDemo();
