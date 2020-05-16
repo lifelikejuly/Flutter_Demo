@@ -24,6 +24,13 @@ class _CrashDemoState extends State<CrashDemo> {
               },
             ),
             new RaisedButton(
+              child: new Text(' StackOverflowError'),
+              elevation: 1.0,
+              onPressed: () {
+                throw StackOverflowError();
+              },
+            ),
+            new RaisedButton(
               child: new Text(' Exception'),
               elevation: 1.0,
               onPressed: () {

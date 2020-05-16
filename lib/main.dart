@@ -21,24 +21,25 @@ import 'package:provider/provider.dart';
 String CRASH_TAG = "---CRASH_TAG--- ";
 
 Future<Null> _reportError(dynamic error, dynamic stackTrace) {
-  print('$CRASH_TAG _reportError ');
+  print('$CRASH_TAG --------_reportError -----');
   print('$CRASH_TAG Caught error: $error');
   print("$CRASH_TAG stackTrace: $stackTrace");
 }
 
 void main() {
-  final defaultOnError = FlutterError.onError;
+  /// 捕获Flutter层异常捕获
   FlutterError.onError = (FlutterErrorDetails details) async {
-    print("$CRASH_TAG  run FlutterError.onError ");
+    println("$CRASH_TAG  --------run FlutterError.onError--------");
+    println("${details.exception} ${details.stack}");
+    FlutterError.resetErrorCount();
     FlutterError.dumpErrorToConsole(details);
-    defaultOnError(details);
-//    if (MyApp.isInDebugMode) {
-//      print("$CRASH_TAG  FlutterError.dumpErrorToConsole ");
-//      FlutterError.dumpErrorToConsole(details);
-//    } else {
-//      print("$CRASH_TAG  Zone.current.handleUncaughtError");
-//      Zone.current.handleUncaughtError(details.exception, details.stack);
-//    }
+  };
+ /// widget构建异常捕获
+  var _defaultErrorWidgetBuilder = ErrorWidget.builder;
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    println("$CRASH_TAG  --------run ErrorWidget.builder--------");
+    println("${details.exception} ${details.stack}");
+    return _defaultErrorWidgetBuilder(details);
   };
 
   runZoned<Future<Null>>(() async {
@@ -51,19 +52,23 @@ void main() {
 //    runApp(MyApp());
 
     /// 记录帧率信息
-//    SchedulerBinding.instance.addTimingsCallback((timings) {
-//      for (FrameTiming frameTiming in timings) {
-//        println("addTimingsCallback ${frameTiming.toString()}");
-//      }
-//    });
-//    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-//      println("addPostFrameCallback $timeStamp");
-//    });
+    SchedulerBinding.instance.addTimingsCallback((timings) {
+      for (FrameTiming frameTiming in timings) {
+        println("addTimingsCallback ${frameTiming.toString()}");
+      }
+    });
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      println("addPostFrameCallback $timeStamp");
+    });
   }, onError: (error, stackTrace) {
-//    _reportError(error, stackTrace);
-    FlutterError.resetErrorCount();
+    /// Dart和Native层异常捕获
+    _reportError(error, stackTrace);
+    print('$CRASH_TAG -------- onError dumpErrorToConsole-----');
     FlutterError.dumpErrorToConsole(
         FlutterErrorDetails(exception: error, stack: stackTrace));
+//    FlutterError.resetErrorCount();
+//    FlutterError.dumpErrorToConsole(
+//        FlutterErrorDetails(exception: error, stack: stackTrace));
   });
 }
 

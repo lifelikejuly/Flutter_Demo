@@ -1,7 +1,12 @@
 buildscript {
     repositories {
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
         google()
         jcenter()
+
+
     }
 
     dependencies {
@@ -11,6 +16,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
         google()
         jcenter()
     }
