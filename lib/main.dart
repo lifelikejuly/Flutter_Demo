@@ -52,11 +52,11 @@ void main() {
 //    runApp(MyApp());
 
     /// 记录帧率信息
-    SchedulerBinding.instance.addTimingsCallback((timings) {
-      for (FrameTiming frameTiming in timings) {
-        println("addTimingsCallback ${frameTiming.toString()}");
-      }
-    });
+//    SchedulerBinding.instance.addTimingsCallback((timings) {
+//      for (FrameTiming frameTiming in timings) {
+//        println("addTimingsCallback ${frameTiming.toString()}");
+//      }
+//    });
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       println("addPostFrameCallback $timeStamp");
     });

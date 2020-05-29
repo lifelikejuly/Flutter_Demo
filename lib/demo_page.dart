@@ -6,6 +6,7 @@ import 'package:flutter_demo/demo/animation/animatedContainer_demo.dart';
 import 'package:flutter_demo/demo/animation/animatedWidget_demo.dart';
 import 'package:flutter_demo/demo/animation/animationController_demo.dart';
 import 'package:flutter_demo/demo/animation/animation_demo.dart';
+import 'package:flutter_demo/demo/animation/animation_live_demo.dart';
 import 'package:flutter_demo/demo/crash/crash_demo.dart';
 import 'package:flutter_demo/demo/dart/async_demo.dart';
 import 'package:flutter_demo/demo/dart/isolate_demo.dart';
@@ -148,6 +149,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["AnimationContainer"] = AnimatedContainerDemo();
         demos["AnimationWidget"] = AnimatedWidgetDemo();
         demos["AnimationBuilder"] = AnimatedBuilderDemo();
+        demos["AnimationLive"] = AnimationLiveDemo();
         break;
       case "net":
         demos["dio"] = HttpDemo();

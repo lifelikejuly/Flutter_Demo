@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_demo/demo/animation/animation_live_demo.dart';
 
 final String networkPic =
     "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2502384351,886196727&fm=26&gp=0.jpg";
@@ -123,7 +124,16 @@ class ImageBuilder extends StatelessWidget {
 //      ],
 //    );
     return Container(
-      child: Image.asset("res/img/jay.jpg"),
+      height: 500,
+      child: Column(
+        children: <Widget>[
+          Image.asset("res/img/jay.jpg"),
+          Container(
+            height: 200,
+            child: LiveAnimationWidget(),
+          )
+        ],
+      ),
     );
   }
 }
