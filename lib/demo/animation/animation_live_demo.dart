@@ -27,17 +27,53 @@ class LiveAnimationWidget extends StatelessWidget {
     return Stack(
       children: <Widget>[
         LiveAnimationLogo("res/img/love.png"),
-        LiveAnimationLogo("res/img/start.png", delayed: 200),
-        LiveAnimationLogo("res/img/shopping.png", delayed: 400),
-        LiveAnimationLogo("res/img/flower.png", delayed: 600),
-        LiveAnimationLogo("res/img/yellow_start.png", delayed: 800),
-        LiveAnimationLogo("res/img/wa.png", delayed: 1000),
-        Positioned(
-          bottom: 0,
-          left: (200 - 40) / 2,
-          child: Image.asset("res/img/live.png"),
-        )
+        LiveAnimationLogo(
+          "res/img/start.png",
+          delayed: 200,
+          curves: Curves.easeInOutQuad,
+        ),
+        LiveAnimationLogo(
+          "res/img/shopping.png",
+          delayed: 400,
+          curves: Curves.easeOut,
+        ),
+        LiveAnimationLogo(
+          "res/img/flower.png",
+          delayed: 600,
+          curves: Curves.easeInOutQuart,
+        ),
+        LiveAnimationLogo(
+          "res/img/yellow_start.png",
+          delayed: 800,
+          curves: Curves.easeOutSine,
+        ),
+        LiveAnimationLogo(
+          "res/img/wa.png",
+          delayed: 1000,
+          curves: Curves.easeOut,
+        ),
+        LoveLogo(),
       ],
+    );
+  }
+}
+
+const double logoSize = 20;
+const double mWidth = 40;
+const double mHeight = 75;
+const mAngle = math.pi / 10;
+
+class LoveLogo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      left: (mWidth - logoSize) / 2,
+      child: Image.asset(
+        "res/img/live.png",
+        width: logoSize,
+        height: logoSize,
+      ),
     );
   }
 }
@@ -45,8 +81,10 @@ class LiveAnimationWidget extends StatelessWidget {
 class LiveAnimationLogo extends StatefulWidget {
   final String logoAsset;
   final int delayed;
+  final Curve curves;
 
-  LiveAnimationLogo(this.logoAsset, {this.delayed = 0});
+  LiveAnimationLogo(this.logoAsset,
+      {this.delayed = 0, this.curves = Curves.linear});
 
   @override
   _LiveAnimationState createState() => _LiveAnimationState();
@@ -57,7 +95,6 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
   AnimationController _animationController;
   Animation<double> _animation;
   double _value = 1.0;
-  double _size = 40;
 
   //起始位置
   var x0;
@@ -78,10 +115,6 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
   double left = 0;
   double top = 0;
   double angle = 0.0;
-
-  final mWidth = 200.0;
-  final mHeight = 300.0;
-  final mAngle = math.pi / 10;
 
   TickerFuture tickerFuture;
 
@@ -112,9 +145,9 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
       }
     };
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
     _animation = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: _animationController, curve: Curves.linear))
+        CurvedAnimation(parent: _animationController, curve: widget.curves))
       ..addListener(_animationListener);
     _animationController.addStatusListener((status) {
       if (AnimationStatus.completed == status) {
@@ -138,7 +171,7 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
 //    var x0 = (mWidth - _size) / 2;
 //    var y0 = mHeight - _size;
     x0 = math.Random().nextDouble() * mWidth;
-    y0 = mHeight - _size;
+    y0 = mHeight - logoSize;
     //拐点一
     x1 = math.Random().nextDouble() * mWidth;
     y1 = (mHeight + math.Random().nextDouble() * mHeight) / 2;
@@ -146,8 +179,8 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
     x2 = math.Random().nextDouble() * mWidth;
     y2 = math.Random().nextDouble() * mHeight / 2;
     //终点位置
-    x3 = (mWidth - _size) / 2;
-    y3 = -_size;
+    x3 = (mWidth - logoSize) / 2;
+    y3 = -logoSize;
 
     var tempValue = math.Random().nextDouble();
     angle = (tempValue < 0.5) ? -tempValue * mAngle : tempValue * mAngle;
@@ -156,7 +189,7 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: top + _size,
+      bottom: top + logoSize,
       left: left,
       child: Opacity(
         opacity: (1 - _value),
@@ -164,8 +197,8 @@ class _LiveAnimationState extends State<LiveAnimationLogo>
           angle: angle,
           child: Image.asset(
             widget.logoAsset,
-            width: _size * (1 - _value),
-            height: _size * (1 - _value),
+            width: logoSize * (1 - _value),
+            height: logoSize * (1 - _value),
           ),
         ),
       ),
