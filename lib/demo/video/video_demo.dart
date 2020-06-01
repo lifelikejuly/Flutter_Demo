@@ -25,9 +25,14 @@ class _VideoDemoState extends State<VideoDemo> {
     return Scaffold(
       body: Center(
         child: _controller.value.initialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
+            ? Column(
+                children: <Widget>[
+                  AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  ),
+                  VideoProgressIndicator(_controller, allowScrubbing: true),
+                ],
               )
             : Container(),
       ),

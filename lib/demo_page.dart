@@ -30,6 +30,8 @@ import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
+import 'package:flutter_demo/demo/texture/texture_list_demo.dart';
+import 'package:flutter_demo/demo/texture/texture_main_demo.dart';
 import 'package:flutter_demo/demo/video/video_demo.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/page/http/httpserver_demo.dart';
@@ -93,6 +95,7 @@ class _UIDemoState extends State<DemoPage> {
         demos['列表'] = ListViewDemo();
         demos['Tab'] = TabBarDemo();
         demos['视频播放'] = VideoDemo();
+        demos['Texture外接纹理'] = TextureMainDemo();
         demos['Inherited'] = InheritedWidgetTestContainer();
         break;
       case "part":

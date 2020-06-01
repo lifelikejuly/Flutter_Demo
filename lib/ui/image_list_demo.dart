@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/demo/animation/animation_live_demo.dart';
 
@@ -16,23 +15,12 @@ class _ImageListDemoState extends State<ImageListDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-//      body: ListView(
-//        children: List(1000).map((value){
-//          return ImageBuilder(value);
-//        }).toList(),
-//      ),
-      body: ListWidget(),
-//      body: CustomScrollView(
-//        slivers: <Widget>[
-//          SliverList(
-//              delegate: SliverChildBuilderDelegate(
-//            (_, position) {
-//              return ImageBuilder(position);
-//            },
-//            childCount: 1000,
-//          )),
-//        ],
-//      ),
+      body: ListView.builder(
+        itemBuilder: (context, position) {
+          return ListWidget(position);
+        },
+        itemCount: 300,
+      ),
     );
   }
 
@@ -44,34 +32,33 @@ class _ImageListDemoState extends State<ImageListDemo> {
 }
 
 class ListWidget extends StatefulWidget {
+  final int index;
+
+  ListWidget(this.index);
+
   @override
   _ListWidgetState createState() => _ListWidgetState();
 }
 
 class _ListWidgetState extends State<ListWidget> {
-  bool show = false;
-
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        show = true;
-      });
-    });
+    print("_ListWidgetState initState ${widget.index}");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: show,
-      child: ListView.builder(
-        itemBuilder: (context, position) {
-          return ImageBuilder(position);
-        },
-        itemCount: 10,
-      ),
+    return Container(
+      height: 500,
+      child: Image.asset("res/img/jay.jpg"),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("_ListWidgetState dispose ${widget.index}");
   }
 }
 
@@ -83,55 +70,15 @@ class ImageBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("ImageBuilder --- num --- $index");
-//    return Image.network(
-//      networkPic,
-//      loadingBuilder: (context, widget, loadingProgress) {
-//        if (loadingProgress == null) {
-//          print("ImageBuilder --- num --- $index -- success");
-//          return widget;
-//        }
-//        return Center(
-//          child: CircularProgressIndicator(
-//            value: loadingProgress.expectedTotalBytes != null
-//                ? loadingProgress.cumulativeBytesLoaded /
-//                    loadingProgress.expectedTotalBytes
-//                : null,
-//          ),
-//        );
-//      },
-//    );
-//  return Text("sss");
-//    return Column(
-//      children: <Widget>[
-//        Text("sss"),
-//        Image.network(
-//          networkPic,
-//          loadingBuilder: (context, widget, loadingProgress) {
-//            if (loadingProgress == null) {
-//              print("ImageBuilder --- num --- $index -- success");
-//              return widget;
-//            }
-//            return Center(
-//              child: CircularProgressIndicator(
-//                value: loadingProgress.expectedTotalBytes != null
-//                    ? loadingProgress.cumulativeBytesLoaded /
-//                        loadingProgress.expectedTotalBytes
-//                    : null,
-//              ),
-//            );
-//          },
-//        )
-//      ],
-//    );
     return Container(
       height: 500,
       child: Column(
         children: <Widget>[
           Image.asset("res/img/jay.jpg"),
-          Container(
-            height: 200,
-            child: LiveAnimationWidget(),
-          )
+//          Container(
+//            height: 200,
+//            child: LiveAnimationWidget(),
+//          )
         ],
       ),
     );
