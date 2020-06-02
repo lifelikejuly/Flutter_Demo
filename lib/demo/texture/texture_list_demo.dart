@@ -1,5 +1,5 @@
+import 'package:external_texture_plugin/external_texture_plugin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_plugin/flutter_app_plugin.dart';
 import 'package:flutter_demo/demo/texture/mock.dart';
 
 class TextureListDemo extends StatefulWidget {
@@ -33,6 +33,8 @@ class TextureTemp extends StatefulWidget {
 
 class _TextureTempState extends State<TextureTemp> {
   int textureId;
+  int width;
+  int height;
 
   @override
   void initState() {
@@ -41,17 +43,17 @@ class _TextureTempState extends State<TextureTemp> {
   }
 
   _loadTextureId() async {
-//    if (textureId == null) {
-//      var response = await FlutterAppPlugin.loadTextureId();
-//      textureId = response["textureId"];
-//    }
-    var response = await FlutterAppPlugin.loadTextureImg(textureId ?? -1,
-        url: imgs[widget.num % imgs.length]);
-    textureId = response["textureId"];
-    print(
-        "_TextureTempState -- num: ${widget.num} -- textureId:${textureId.toString()}");
+    var response =
+        await ExternalTexturePlugin.loadImg(imgs[widget.num % imgs.length]);
+    if (response != null && response["textureId"] != null) {
+      textureId = response["textureId"];
+      width = response["width"];
+      height = response["height"];
+      print(
+          "_TextureTempState -- num: ${widget.num} -- textureId:${textureId.toString()}");
 
-    if (mounted) setState(() {});
+      if (mounted) setState(() {});
+    }
   }
 
   @override
@@ -66,9 +68,9 @@ class _TextureTempState extends State<TextureTemp> {
         ? Container(
             child: Column(
               children: <Widget>[
-                Container(
-                  height: 100,
-                  width: 100,
+                AspectRatio(
+                  aspectRatio:
+                      (width?.toDouble() ?? 0) / (height?.toDouble() ?? 0),
                   child: Texture(textureId: textureId),
                 ),
                 SizedBox(),

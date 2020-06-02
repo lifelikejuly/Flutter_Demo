@@ -22,15 +22,6 @@ class FlutterAppPlugin {
     return result;
   }
 
-  static Future<Map> loadTextureId() async {
-    return await _channel.invokeMethod("loadTextureId");
-  }
-
-  static Future<Map> loadTextureImg(int textureId, {String url}) async {
-    final args = <String, dynamic>{"textureId": textureId, "url": url};
-    return await _channel.invokeMethod("loadTextureUrl", args);
-  }
-
   static void setHandler(handler) {
     _channel.setMethodCallHandler(handler);
   }

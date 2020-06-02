@@ -1,28 +1,34 @@
-import 'package:flutter/material.dart';
 import 'package:external_texture_plugin/external_texture_plugin.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_demo/demo/texture/mock.dart';
 
-import 'mock.dart';
-
-class TextureSingleImageDemo extends StatefulWidget {
+class TextureGridListDemo extends StatefulWidget {
   @override
   _TextureDemoState createState() => _TextureDemoState();
 }
 
-class _TextureDemoState extends State<TextureSingleImageDemo> {
+class _TextureDemoState extends State<TextureGridListDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          TextureTemp(),
-        ],
+      body: GridView.builder(
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        itemBuilder: (context, index) {
+          return TextureTemp(index);
+        },
+        itemCount: 300,
       ),
     );
   }
 }
 
 class TextureTemp extends StatefulWidget {
+  final int num;
+
+  TextureTemp(this.num);
+
   @override
   _TextureTempState createState() => _TextureTempState();
 }
@@ -39,15 +45,23 @@ class _TextureTempState extends State<TextureTemp> {
   }
 
   _loadTextureId() async {
-    var response = await ExternalTexturePlugin.loadTextureImg(textureId ?? 0,
-        url: imgs[0]);
+    var response =
+        await ExternalTexturePlugin.loadImg(imgs[widget.num % imgs.length]);
     if (response != null && response["textureId"] != null) {
       textureId = response["textureId"];
       width = response["width"];
       height = response["height"];
-      print("_loadTextureId width $width height $height");
+      print(
+          "_TextureTempState -- num: ${widget.num} -- textureId:${textureId.toString()}");
+
       if (mounted) setState(() {});
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("_TextureTempState -- dispose num: ${widget.num}");
   }
 
   @override
@@ -60,8 +74,9 @@ class _TextureTempState extends State<TextureTemp> {
                     (width?.toDouble() ?? 0) / (height?.toDouble() ?? 0),
                 child: Texture(textureId: textureId),
               ),
+              SizedBox(),
             ],
           )
-        : SizedBox();
+        : Container(height: 100, width: 100, child: SizedBox());
   }
 }

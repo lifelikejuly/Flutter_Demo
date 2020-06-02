@@ -17,7 +17,7 @@ class _ImageListDemoState extends State<ImageListDemo> {
       appBar: AppBar(),
       body: ListView.builder(
         itemBuilder: (context, position) {
-          return ListWidget(position);
+          return ImageBuilder(position);
         },
         itemCount: 300,
       ),
@@ -75,10 +75,10 @@ class ImageBuilder extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Image.asset("res/img/jay.jpg"),
-//          Container(
-//            height: 200,
-//            child: LiveAnimationWidget(),
-//          )
+          Container(
+            height: 200,
+            child: LiveAnimationWidget(),
+          )
         ],
       ),
     );
