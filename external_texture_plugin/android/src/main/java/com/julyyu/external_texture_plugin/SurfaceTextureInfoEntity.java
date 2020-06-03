@@ -7,15 +7,17 @@ import io.flutter.view.TextureRegistry;
  * @date 2020-06-02.
  * description：
  */
-public class TextureEntity {
+public class SurfaceTextureInfoEntity {
 
     private int width;
     private int height;
+    private boolean release = false;
     private TextureRegistry.SurfaceTextureEntry textureEntry;
 
 
 
-    public TextureEntity(int width, int height, TextureRegistry.SurfaceTextureEntry textureEntry) {
+
+    public SurfaceTextureInfoEntity(int width, int height, TextureRegistry.SurfaceTextureEntry textureEntry) {
         this.width = width;
         this.height = height;
         this.textureEntry = textureEntry;
@@ -43,5 +45,13 @@ public class TextureEntity {
 
     public void setTextureEntry(TextureRegistry.SurfaceTextureEntry textureEntry) {
         this.textureEntry = textureEntry;
+    }
+
+    public boolean isRelease() {
+        return release;
+    }
+
+    public void setRelease(boolean release) {
+        this.release = release;
     }
 }

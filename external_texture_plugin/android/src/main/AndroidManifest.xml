@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.julyyu.external_texture_plugin">
+
+    <application android:usesCleartextTraffic="true"></application>
+</manifest>

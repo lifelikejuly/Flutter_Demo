@@ -69,6 +69,10 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
             loadTextureImage(methodCall, result);
         } else if (methodCall.method.equals("loadUrl")) {
             SurfaceTextureFactory.loadImage(context, activity, methodCall, result, registrar);
+        } else if (methodCall.method.equals("loadUrlTest")) {
+            SurfaceTextureFactory.loadImageTest(context, activity, methodCall, result, registrar);
+        } else if (methodCall.method.equals("release")) {
+            SurfaceTextureFactory.release(methodCall, result);
         } else {
             result.notImplemented();
         }
