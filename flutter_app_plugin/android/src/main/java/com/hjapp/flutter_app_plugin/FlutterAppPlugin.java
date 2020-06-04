@@ -35,6 +35,7 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
     public static void registerWith(Registrar registrar) {
         channel = new MethodChannel(registrar.messenger(), "flutter_app_plugin");
         channel.setMethodCallHandler(new FlutterAppPlugin(registrar.activity(), registrar.activeContext()));
+
     }
 
 

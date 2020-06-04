@@ -95,7 +95,6 @@ class _UIDemoState extends State<DemoPage> {
         demos['列表'] = ListViewDemo();
         demos['Tab'] = TabBarDemo();
         demos['视频播放'] = VideoDemo();
-        demos['Texture外接纹理'] = TextureMainDemo();
         demos['Inherited'] = InheritedWidgetTestContainer();
         break;
       case "part":

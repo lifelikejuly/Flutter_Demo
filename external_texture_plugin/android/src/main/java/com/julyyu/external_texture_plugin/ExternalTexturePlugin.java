@@ -62,15 +62,10 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
 
     @Override
     public void onMethodCall(@NonNull MethodCall methodCall, @NonNull MethodChannel.Result result) {
-        Log.i("ExternalTexturePlugin", "Looper " + (Looper.myLooper() == Looper.getMainLooper()));
-        if (methodCall.method.equals("loadTextureId")) {
-            loadTextureId(result);
-        } else if (methodCall.method.equals("loadTextureUrl")) {
+        if (methodCall.method.equals("loadTextureUrl")) {
             loadTextureImage(methodCall, result);
         } else if (methodCall.method.equals("loadUrl")) {
             SurfaceTextureFactory.loadImage(context, activity, methodCall, result, registrar);
-        } else if (methodCall.method.equals("loadUrlTest")) {
-            SurfaceTextureFactory.loadImageTest(context, activity, methodCall, result, registrar);
         } else if (methodCall.method.equals("release")) {
             SurfaceTextureFactory.release(methodCall, result);
         } else {
@@ -78,22 +73,6 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
         }
     }
 
-
-    private void loadTextureId(MethodChannel.Result result) {
-//        TextureRegistry textureRegistry = registrar.textures();
-//        Map<String, Object> reply = new HashMap<>();
-//        if (textureSurfaces.size() == 30) {
-//            TextureRegistry.SurfaceTextureEntry surfaceTextureEntry = textureSurfaces.removeFirst();
-//            reply.put("textureId", surfaceTextureEntry.id());
-//            textureSurfaces.add(surfaceTextureEntry);
-//        } else {
-//            TextureRegistry.SurfaceTextureEntry surfaceTextureEntry = textureRegistry.createSurfaceTexture();
-//            long textureId = surfaceTextureEntry.id();
-//            reply.put("textureId", textureId);
-//            textureSurfaces.addLast(surfaceTextureEntry);
-//        }
-//        result.success(reply);
-    }
 
     /**
      * 加载图片

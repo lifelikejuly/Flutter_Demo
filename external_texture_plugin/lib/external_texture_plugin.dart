@@ -11,20 +11,20 @@ class ExternalTexturePlugin {
 //    return await _channel.invokeMethod("loadTextureId");
 //  }
 
-  static Future<Map> loadTextureImg(int textureId, {String url}) async {
-    final args = <String, dynamic>{"textureId": textureId, "url": url};
-    return await _channel.invokeMethod("loadTextureUrl", args);
-  }
+//  static Future<Map> loadTextureImg(int textureId, {String url}) async {
+//    final args = <String, dynamic>{"textureId": textureId, "url": url};
+//    return await _channel.invokeMethod("loadTextureUrl", args);
+//  }
 
   static Future<Map> loadImg(String url) async {
     final args = <String, dynamic>{"url": url};
     return await _channel.invokeMethod("loadUrl", args);
   }
-
-  static Future<Map> loadImgTest(String url) async {
-    final args = <String, dynamic>{"url": url};
-    return await _channel.invokeMethod("loadUrlTest", args);
-  }
+//
+//  static Future<Map> loadImgTest(String url) async {
+//    final args = <String, dynamic>{"url": url};
+//    return await _channel.invokeMethod("loadUrlTest", args);
+//  }
 
   static Future<String> release(String url) async {
     final args = <String, dynamic>{"url": url};

@@ -30,7 +30,7 @@ class _TextureImageWidgetState extends State<TextureImageWidget> {
       textureId = response["textureId"];
       width = response["width"];
       height = response["height"];
-      print("_loadTextureId textureId $textureId width $width height $height");
+      print("TextureImageWidget _loadTextureId textureId $textureId width $width height $height");
       if (mounted) setState(() {});
     }
   }
@@ -46,14 +46,14 @@ class _TextureImageWidgetState extends State<TextureImageWidget> {
             ),
           )
         : SizedBox(
-            height: 100,
+            height: 200,
           );
   }
 
   @override
   void dispose() {
     _release();
-    print("dispose textureId $textureId");
+    print("TextureImageWidget dispose textureId $textureId");
     super.dispose();
   }
 

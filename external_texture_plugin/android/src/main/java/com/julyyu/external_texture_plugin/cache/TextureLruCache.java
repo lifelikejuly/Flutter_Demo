@@ -32,4 +32,11 @@ public class TextureLruCache extends LruCache<String, SurfaceTextureInfoEntity> 
         return value.getWidth() * value.getHeight();
     }
 
+    @Override
+    protected void entryRemoved(boolean evicted, String key, SurfaceTextureInfoEntity oldValue, SurfaceTextureInfoEntity newValue) {
+        super.entryRemoved(evicted, key, oldValue, newValue);
+        oldValue.setRelease(true);
+        oldValue.getTextureEntry().surfaceTexture().release();
+        oldValue.getTextureEntry().release();
+    }
 }
