@@ -18,6 +18,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart' as FlutterRedux;
 import 'package:provider/provider.dart';
 
+import 'part/fishredux/demopage4/page.dart';
+
 String CRASH_TAG = "---CRASH_TAG--- ";
 
 Future<Null> _reportError(dynamic error, dynamic stackTrace) {
@@ -86,6 +88,7 @@ class _MyAppState extends State<MyApp> {
       'fishPage1': FishDemoPage1Page(),
       'fishPage2': FishDemoPage2Page(),
       'fishPage3': FishDemoListPagePage(),
+      'fishPage4': masterPagePage(),
     },
   );
 

@@ -43,6 +43,7 @@ import 'package:flutter_demo/part/staggered_grid_demo.dart';
 import 'package:flutter_demo/part/swiper_demo.dart';
 import 'package:flutter_demo/ui/Inherited_view_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
+import 'package:flutter_demo/ui/click_animation_demo.dart';
 import 'package:flutter_demo/ui/container_demo.dart';
 import 'package:flutter_demo/ui/dialog_demo.dart';
 import 'package:flutter_demo/ui/icon_demo.dart';
@@ -50,6 +51,7 @@ import 'package:flutter_demo/ui/image_demo.dart';
 import 'package:flutter_demo/ui/image_list_demo.dart';
 import 'package:flutter_demo/ui/listview_demo.dart';
 import 'package:flutter_demo/ui/scroll_view_demo.dart';
+import 'package:flutter_demo/ui/size_demo.dart';
 import 'package:flutter_demo/ui/stack_demo.dart';
 import 'package:flutter_demo/ui/tab_bar_demo.dart';
 import 'package:flutter_demo/ui/table_demo.dart';
@@ -96,6 +98,8 @@ class _UIDemoState extends State<DemoPage> {
         demos['Tab'] = TabBarDemo();
         demos['视频播放'] = VideoDemo();
         demos['Inherited'] = InheritedWidgetTestContainer();
+        demos['点击缩放动画'] = ClickAnimationDemo();
+        demos['设计稿尺寸适配'] = SizeDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();

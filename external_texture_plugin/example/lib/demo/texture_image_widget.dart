@@ -14,7 +14,7 @@ class TextureImageWidget extends StatefulWidget {
 }
 
 class _TextureImageWidgetState extends State<TextureImageWidget> {
-  int textureId;
+  int textureId = -1;
   int width;
   int height;
 
@@ -25,7 +25,7 @@ class _TextureImageWidgetState extends State<TextureImageWidget> {
   }
 
   _loadTextureId() async {
-    var response = await ExternalTexturePlugin.loadImg(widget.url);
+    var response = await ExternalTexturePlugin.loadImg(widget.url,id: textureId);
     if (response != null && response["textureId"] != null) {
       textureId = response["textureId"];
       width = response["width"];
@@ -37,7 +37,7 @@ class _TextureImageWidgetState extends State<TextureImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return textureId != null
+    return textureId != null && textureId != -1
         ? Container(
             width: width * widget.scale,
             child: AspectRatio(
@@ -52,7 +52,7 @@ class _TextureImageWidgetState extends State<TextureImageWidget> {
 
   @override
   void dispose() {
-    _release();
+//    _release();
     print("TextureImageWidget dispose textureId $textureId");
     super.dispose();
   }

@@ -1,4 +1,5 @@
 import 'package:externaltextureplugin_example/demo/flutter_image_list_demo.dart';
+import 'package:externaltextureplugin_example/demo/image_list_demo.dart';
 import 'package:externaltextureplugin_example/demo/texture_grid_demo.dart';
 import 'package:externaltextureplugin_example/demo/texture_list_demo.dart';
 import 'package:externaltextureplugin_example/demo/texture_single_external_demo.dart';
@@ -25,7 +26,20 @@ class TextureMainDemo extends StatelessWidget {
               },
             ),
             RaisedButton(
-              child: Text("FlutterImage方案-列表"),
+              child: Text("Image方案-列表"),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ImageListDemo(),
+                  ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            RaisedButton(
+              child: Text("FlutterCacheImage方案-列表"),
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

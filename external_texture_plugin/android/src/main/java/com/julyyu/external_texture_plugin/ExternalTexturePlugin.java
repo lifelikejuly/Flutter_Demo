@@ -100,7 +100,7 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
             //textureId空则新建surfaceTextureEntry然后加载图片
             TextureRegistry textureRegistry = registrar.textures();
             Map<String, Object> reply = new HashMap<>();
-            if (textureSurfaces.size() == 30) {
+            if (textureSurfaces.size() >= 30) {
                 surfaceTextureEntry = textureSurfaces.removeFirst();
                 reply.put("textureId", surfaceTextureEntry.id());
                 textureSurfaces.add(surfaceTextureEntry);
@@ -137,7 +137,7 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
                     Rect rect = new Rect(0, 0, bitmapWidth, bitmapHeight);
                     SurfaceTexture surfaceTexture = surfaceTextureEntry.surfaceTexture();
                     surfaceTexture.setDefaultBufferSize(bitmapWidth, bitmapHeight);
-                    Surface surface = new Surface(surfaceTextureEntry.surfaceTexture());
+                    Surface surface = new Surface(surfaceTexture);
                     Canvas canvas = surface.lockCanvas(rect);
                     canvas.drawBitmap(resource, null, rect, null);
                     surface.unlockCanvasAndPost(canvas);

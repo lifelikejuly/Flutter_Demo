@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Surface;
 
 import androidx.annotation.Nullable;
@@ -34,8 +35,9 @@ import io.flutter.view.TextureRegistry;
 public class SurfaceTextureFactory {
 
 
-    private static HashMap<String, SurfaceTextureInfoEntity> textureLruCache = new HashMap<>();
-    private static LinkedList<TextureRegistry.SurfaceTextureEntry> surfaceTextureEntries = new LinkedList<>();
+    //    private static HashMap<String, SurfaceTextureInfoEntity> textureLruCache = new HashMap<>();
+    private static LinkedList<SurfaceTextureInfoEntity> surfaceTextureEntries = new LinkedList<>();
+    private static Map<String, SurfaceTextureInfoEntity> stringSurfaceTextureInfoEntityMap = new HashMap<>();
 //    private PluginRegistry.Registrar registrar;
 //    private Context mContext;
 //    private Activity mActivity;
@@ -46,6 +48,7 @@ public class SurfaceTextureFactory {
 //        this.mActivity = activity;
 //    }
 
+    static int sum = 0;
 
     public static void release(
             MethodCall call,
@@ -57,16 +60,16 @@ public class SurfaceTextureFactory {
             return;
         }
         try {
-            SurfaceTextureInfoEntity surfaceTextureInfoEntity = textureLruCache.remove(url);
-            if (surfaceTextureInfoEntity != null) {
-                //TODO 回收时怎么处理
-                SurfaceTexture surfaceTexture = surfaceTextureInfoEntity.getTextureEntry().surfaceTexture();
-                surfaceTexture.release();
-//                surfaceTextureEntries.add(surfaceTextureInfoEntity.getTextureEntry());
-                result.success("");
-            } else {
-                result.success("");
-            }
+//            SurfaceTextureInfoEntity surfaceTextureInfoEntity = textureLruCache.remove(url);
+//            if (surfaceTextureInfoEntity != null) {
+//                //TODO 回收时怎么处理
+//                SurfaceTexture surfaceTexture = surfaceTextureInfoEntity.getTextureEntry().surfaceTexture();
+//                surfaceTexture.release();
+////                surfaceTextureEntries.add(surfaceTextureInfoEntity.getTextureEntry());
+//                result.success("");
+//            } else {
+//                result.success("");
+//            }
         } catch (Exception e) {
             result.error("error", "relese fail", "");
         }
@@ -85,18 +88,21 @@ public class SurfaceTextureFactory {
             result.error("error", "url is null", maps);
             return;
         }
-        SurfaceTextureInfoEntity surfaceTextureInfoEntity = textureLruCache.get(url);
 
-        if (surfaceTextureInfoEntity != null) {
-            Map<String, Object> reply = new HashMap<>();
-            reply.put("textureId", surfaceTextureInfoEntity.getTextureEntry().id());
-            reply.put("width", surfaceTextureInfoEntity.getWidth());
-            reply.put("height", surfaceTextureInfoEntity.getHeight());
-            result.success(reply);
-        } else {
-            Map<String, Object> reply = new HashMap<>();
-            glideLoad(context, activity, reply, result, registrar, url);
-        }
+//        String id =  call.argument("id").toString();
+//        SurfaceTextureInfoEntity surfaceTextureInfoEntity = stringSurfaceTextureInfoEntityMap.get(id);
+//        SurfaceTextureInfoEntity surfaceTextureInfoEntity = textureLruCache.get(url);
+
+//        if (surfaceTextureInfoEntity != null) {
+//            Map<String, Object> reply = new HashMap<>();
+//            reply.put("textureId", surfaceTextureInfoEntity.getTextureEntry().id());
+//            reply.put("width", surfaceTextureInfoEntity.getWidth());
+//            reply.put("height", surfaceTextureInfoEntity.getHeight());
+//            result.success(reply);
+//        } else {
+        Map<String, Object> reply = new HashMap<>();
+        glideLoad(context, activity, reply, result, registrar, url);
+//        }
     }
 
 
@@ -108,14 +114,33 @@ public class SurfaceTextureFactory {
             final PluginRegistry.Registrar registrar,
             final String url) {
         final TextureRegistry.SurfaceTextureEntry surfaceTextureEntry;
-        if (surfaceTextureEntries.size() > 0) {
-            surfaceTextureEntry = surfaceTextureEntries.removeFirst();
+        final SurfaceTextureInfoEntity surfaceTextureInfoEntity;
+        if (sum >= 30) {
+            surfaceTextureInfoEntity = surfaceTextureEntries.removeFirst();
+            surfaceTextureEntry = surfaceTextureInfoEntity.getTextureEntry();
+//            surfaceTextureEntry.surfaceTexture().releaseTexImage();
+//            surfaceTextureEntry.surfaceTexture().release();
+//            surfaceTextureInfoEntity.getSurface().release();
+//            surfaceTextureEntries.addLast(surfaceTextureInfoEntity);
+            Log.i("SurfaceTextureFactory", "glideLoad get Old =------ surfaceTextureEntries: " + surfaceTextureEntries.size() + "\n" +
+                    "sum " + sum
+            );
         } else {
             surfaceTextureEntry = registrar.textures().createSurfaceTexture();
+            Log.i("SurfaceTextureFactory", "glideLoad create");
+            surfaceTextureInfoEntity = new SurfaceTextureInfoEntity(0, 0, surfaceTextureEntry, null);
+            sum++;
         }
+//        if(textureLruCache.size() >= 30){
+//            SurfaceTextureInfoEntity surfaceTextureInfoEntity = textureLruCache.entrySet().iterator().next();
+//            surfaceTextureEntry = surfaceTextureInfoEntity.getTextureEntry();
+//        }else{
+//            surfaceTextureEntry = registrar.textures().createSurfaceTexture();
+//        }
         Glide.with(context).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                Log.i("SurfaceTextureFactory", "glideLoad onLoadFailed");
                 surfaceTextureEntry.release();
                 if (activity != null) {
                     activity.runOnUiThread(new Runnable() {
@@ -130,20 +155,29 @@ public class SurfaceTextureFactory {
 
             @Override
             public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                Log.i("SurfaceTextureFactory", "glideLoad onResourceReady");
                 try {
                     int bitmapWidth = resource.getWidth();
                     int bitmapHeight = resource.getHeight();
                     Rect rect = new Rect(0, 0, bitmapWidth, bitmapHeight);
                     SurfaceTexture surfaceTexture = surfaceTextureEntry.surfaceTexture();
                     surfaceTexture.setDefaultBufferSize(bitmapWidth, bitmapHeight);
-                    Surface surface = new Surface(surfaceTextureEntry.surfaceTexture());
+                    Surface surface = surfaceTextureInfoEntity.getSurface();
+                    if (surface == null) {
+                        surface = new Surface(surfaceTexture);
+                    }
                     Canvas canvas = surface.lockCanvas(rect);
                     canvas.drawBitmap(resource, null, rect, null);
                     surface.unlockCanvasAndPost(canvas);
                     maps.put("textureId", surfaceTextureEntry.id());
                     maps.put("width", bitmapWidth);
                     maps.put("height", bitmapHeight);
-                    textureLruCache.put(url, new SurfaceTextureInfoEntity(bitmapWidth, bitmapHeight, surfaceTextureEntry));
+//                    textureLruCache.put(url, new SurfaceTextureInfoEntity(bitmapWidth, bitmapHeight, surfaceTextureEntry));
+                    surfaceTextureInfoEntity.setHeight(bitmapHeight);
+                    surfaceTextureInfoEntity.setWidth(bitmapWidth);
+                    surfaceTextureInfoEntity.setSurface(surface);
+                    surfaceTextureInfoEntity.setTextureEntry(surfaceTextureEntry);
+                    surfaceTextureEntries.addLast(surfaceTextureInfoEntity);
                     if (activity != null) {
                         activity.runOnUiThread(new Runnable() {
                             @Override

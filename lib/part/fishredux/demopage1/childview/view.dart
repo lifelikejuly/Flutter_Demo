@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 
 import '../action.dart';
+import 'action.dart';
 import 'state.dart';
 
 Widget buildView(
@@ -24,6 +25,14 @@ Widget buildView(
                 child: Text("reduce"),
                 onPressed: () {
                   dispatch(FishDemoPage1ActionCreator.onReduceAction());
+                },
+              ),
+              Text("self num: ${state.childNum}"),
+              RaisedButton(
+                child: Text("self num add"),
+                onPressed: () {
+                  dispatch(Demo1ChildViewActionCreator.onUpdateSelfAction(
+                      state.clone()..childNum += 1));
                 },
               ),
             ],

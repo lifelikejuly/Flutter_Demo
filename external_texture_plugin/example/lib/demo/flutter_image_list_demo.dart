@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:externaltextureplugin_example/demo/mock.dart';
 import 'package:flutter/material.dart';
 
@@ -53,10 +54,17 @@ class _ImageFulWidgetState extends State<ImageFulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      imgs[widget.num % imgs.length],
-      height: 100,
-      width: 100,
+    return CachedNetworkImage(
+      imageUrl: imgs[widget.num % imgs.length],
+      errorWidget: (context, url, error) => Icon(Icons.error),
+      placeholder: (
+        context,
+        url,
+      ) {
+        return SizedBox(
+          height: 100,
+        );
+      },
     );
   }
 }

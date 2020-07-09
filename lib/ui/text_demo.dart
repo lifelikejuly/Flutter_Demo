@@ -5,7 +5,16 @@ class TextDemo extends StatefulWidget {
   _TextDemoState createState() => _TextDemoState();
 }
 
+
+class NumClass{
+  int num;
+
+  NumClass({this.num});
+}
 class _TextDemoState extends State<TextDemo> {
+
+  NumClass numClass;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,6 +22,15 @@ class _TextDemoState extends State<TextDemo> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            Visibility(
+              visible: num == 1,
+              child: Text(
+                "SHOW ME",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+            ),
             Text(
               "嘻嘻哈哈SSSSssss你是谁啊？阿哟喂~！",
               style: TextStyle(
