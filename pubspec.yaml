@@ -27,6 +27,7 @@ dependencies:
     path: ./flutter_template/
   flutter_app_plugin:
     path: ./flutter_app_plugin/
+  # 自定义外接纹理Demo
   external_texture_plugin:
     path: ./external_texture_plugin/
   flutter_swiper: 1.1.6
@@ -45,6 +46,8 @@ dependencies:
   video_player: 0.10.10
   # 瀑布布局
   flutter_staggered_grid_view: 0.3.0
+  # 图片缓存库
+  cached_network_image: 2.2.0+1
 #  flutter_boost:
 #    git:
 #      url: 'https://github.com/alibaba/flutter_boost.git'

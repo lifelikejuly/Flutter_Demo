@@ -25,13 +25,17 @@ class _ImageDemoState extends State<ImageDemo> {
   @override
   void initState() {
     super.initState();
-//    loadData();
+    loadData();
 //    loadData2();
   }
 
   void loadData() async {
     ByteBuffer byteBuffer = (await rootBundle.load('res/img/jay.jpg')).buffer;
-    data = byteBuffer.asUint8List(0, byteBuffer.lengthInBytes ~/ 2);
+    data = byteBuffer.asUint8List(0, byteBuffer.lengthInBytes -1);
+    data[byteBuffer.lengthInBytes ~/ 2 ] = 0;
+    data[byteBuffer.lengthInBytes ~/ 2 -1] = 0;
+    data[byteBuffer.lengthInBytes ~/ 2 -2] = 0;
+    data[byteBuffer.lengthInBytes ~/ 2 -3] = 0;
     setState(() {});
   }
 
@@ -77,53 +81,53 @@ class _ImageDemoState extends State<ImageDemo> {
           children: <Widget>[
 //            Image.asset("res/img/jay.jpg"),
 //            Image.asset("res/img/ic_run.gif"),
-            Image.network(networkPic),
-            AspectRatio(
-              aspectRatio: size.width / size.height,
-              child: Image.network(networkPic),
-            ),
-            Image.network(
-              networkPic,
-              width: 100,
-              height: 100,
-            ),
-            Image.network(
-              networkPic,
-              width: 100,
-              height: 200,
-            ),
-            Image.network(
-              networkPic,
-              fit: BoxFit.fill,
-            ),
-            Image.network(
-              networkPic,
-              fit: BoxFit.fill,
-              width: 100,
-              height: 200,
-            ),
-            Image.network(
-              networkPic,
-              fit: BoxFit.cover,
-            ),
-            Image.network(
-              networkPic,
-              fit: BoxFit.cover,
-              width: 100,
-              height: 200,
-            ),
-
-            Container(
-              height: 50,
-              width: 100,
-              child: Image.network(
-                networkPic,
-                fit: BoxFit.cover,
-              ),
-            )
+//            Image.network(networkPic),
+//            AspectRatio(
+//              aspectRatio: size.width / size.height,
+//              child: Image.network(networkPic),
+//            ),
+//            Image.network(
+//              networkPic,
+//              width: 100,
+//              height: 100,
+//            ),
+//            Image.network(
+//              networkPic,
+//              width: 100,
+//              height: 200,
+//            ),
+//            Image.network(
+//              networkPic,
+//              fit: BoxFit.fill,
+//            ),
+//            Image.network(
+//              networkPic,
+//              fit: BoxFit.fill,
+//              width: 100,
+//              height: 200,
+//            ),
+//            Image.network(
+//              networkPic,
+//              fit: BoxFit.cover,
+//            ),
+//            Image.network(
+//              networkPic,
+//              fit: BoxFit.cover,
+//              width: 100,
+//              height: 200,
+//            ),
+//
+//            Container(
+//              height: 50,
+//              width: 100,
+//              child: Image.network(
+//                networkPic,
+//                fit: BoxFit.cover,
+//              ),
+//            ),
 
 //            Image.network(netPic),
-//            _ImageWrapper(),
+            _ImageWrapper(),
 //            _ImageWrapper2(),
 //            StreamBuilder(
 //                stream: stream.stream,
