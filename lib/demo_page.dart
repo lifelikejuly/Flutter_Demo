@@ -114,6 +114,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["flip"] = FlipDemo();
         demos["animation"] = AnimationDemo();
         demos["crash"] = CrashDemo();
+        demos["外接纹理"] = TextureMainDemo();
         break;
       case "dart":
         demos["async"] = AsyncDemo();

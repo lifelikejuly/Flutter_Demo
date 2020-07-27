@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 
@@ -39,8 +40,7 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
     private Activity activity;
     private Context context;
     private static MethodChannel channel;
-    private LinkedList<TextureRegistry.SurfaceTextureEntry> textureSurfaces = new LinkedList<>();
-//    private SurfaceTextureFactory surfaceTextureFactory;
+    private HashMap<String,TextureRegistry.SurfaceTextureEntry> textureSurfaces = new HashMap<>();
 
 
     private final PluginRegistry.Registrar registrar;
@@ -50,7 +50,6 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
         this.activity = activity;
         this.context = context;
         this.registrar = registrar;
-//        surfaceTextureFactory = new SurfaceTextureFactory(context, activity, registrar);
         Log.i("ExternalTexturePlugin", "ExternalTexturePlugin");
     }
 
@@ -62,17 +61,44 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
 
     @Override
     public void onMethodCall(@NonNull MethodCall methodCall, @NonNull MethodChannel.Result result) {
-        if (methodCall.method.equals("loadTextureUrl")) {
-            loadTextureImage(methodCall, result);
-        } else if (methodCall.method.equals("loadUrl")) {
-            SurfaceTextureFactory.loadImage(context, activity, methodCall, result, registrar);
+        if (methodCall.method.equals("loadUrl")) {
+            loadTextureImage(methodCall,result);
         } else if (methodCall.method.equals("release")) {
-            SurfaceTextureFactory.release(methodCall, result);
+            release(methodCall,result);
         } else {
             result.notImplemented();
         }
     }
 
+    /**
+     * 释放
+     * @param call
+     * @param result
+     */
+    private  void release(
+            MethodCall call,
+            MethodChannel.Result result) {
+        String url = call.argument("url");
+        if (TextUtils.isEmpty(url)) {
+            Map<String, Object> maps = new HashMap<>();
+            result.error("error", "url is null", maps);
+            return;
+        }
+        try {
+            TextureRegistry.SurfaceTextureEntry surfaceTextureEntry = textureSurfaces.remove(url);
+            if (surfaceTextureEntry != null) {
+                //TODO 回收时怎么处理
+                surfaceTextureEntry.release();
+                result.success("1");
+            } else {
+                result.success("0");
+            }
+        } catch (Exception e) {
+            result.error("error", "relese fail", "");
+        }
+
+
+    }
 
     /**
      * 加载图片
@@ -82,15 +108,9 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
      */
     private void loadTextureImage(MethodCall call, final MethodChannel.Result result) {
         // 默认textureId为空
-        int textureId = call.argument("textureId");
+//        int textureId = call.argument("textureId");
         final String url = call.argument("url");
-        TextureRegistry.SurfaceTextureEntry surfaceTextureEntry = null;
-        for (TextureRegistry.SurfaceTextureEntry entry : textureSurfaces) {
-            if (entry.id() == textureId) {
-                surfaceTextureEntry = entry;
-                break;
-            }
-        }
+        TextureRegistry.SurfaceTextureEntry surfaceTextureEntry  = textureSurfaces.get(url);
         //不为空获取到textureId加载图片
         if (surfaceTextureEntry != null) {
             Map<String, Object> reply = new HashMap<>();
@@ -98,17 +118,12 @@ public class ExternalTexturePlugin implements MethodChannel.MethodCallHandler {
             loadImage(reply, result, url, surfaceTextureEntry);
         } else {
             //textureId空则新建surfaceTextureEntry然后加载图片
+
             TextureRegistry textureRegistry = registrar.textures();
+            surfaceTextureEntry = textureRegistry.createSurfaceTexture();
             Map<String, Object> reply = new HashMap<>();
-            if (textureSurfaces.size() >= 30) {
-                surfaceTextureEntry = textureSurfaces.removeFirst();
-                reply.put("textureId", surfaceTextureEntry.id());
-                textureSurfaces.add(surfaceTextureEntry);
-            } else {
-                surfaceTextureEntry = textureRegistry.createSurfaceTexture();
-                reply.put("textureId", surfaceTextureEntry.id());
-                textureSurfaces.addLast(surfaceTextureEntry);
-            }
+            reply.put("textureId", surfaceTextureEntry.id());
+            textureSurfaces.put(url,surfaceTextureEntry);
             loadImage(reply, result, url, surfaceTextureEntry);
         }
     }
