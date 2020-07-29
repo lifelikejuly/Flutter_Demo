@@ -22,6 +22,16 @@ class FlutterAppPlugin {
     return result;
   }
 
+  static Future<Map> testChanelSuccess() async {
+    final Map result = await _channel.invokeMethod('testChannel', {"ok": 0});
+    return result;
+  }
+
+  static Future<Map> testChanelFail() async {
+    final Map result = await _channel.invokeMethod('testChannel', {"ok": 1});
+    return result;
+  }
+
   static void setHandler(handler) {
     _channel.setMethodCallHandler(handler);
   }

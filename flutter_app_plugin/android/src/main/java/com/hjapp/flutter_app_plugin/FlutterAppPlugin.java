@@ -7,6 +7,9 @@ import android.content.Intent;
 import com.hjapp.ui.activity.MessengerActivity;
 import com.hjapp.ui.activity.WebActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -65,12 +68,34 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
                     break;
                 case "crash":
                     throw new IllegalStateException("This is Java exception");
+                case "testChannel":
+                    int value = (int) call.argument("ok");
+                    Map<String,String> map = new HashMap<>();
+                    if(value == 0){
+                        map.put("yes","yes");
+                        result.success(map);
+                    }else{
+                        result.error("-1", "bitmap null", "sss");
+//                        result.error("-1", "bitmap null", new HashMap<>());
+                    }
+                    break;
                 default:
                     result.notImplemented();
                     break;
             }
 
-        } else {
+        } else if (call.method.equals("testChannel")) { //跳转原生Activity入口
+            int value = (int) call.argument("ok");
+            Map<String,String> map = new HashMap<>();
+            if(value == 0){
+                map.put("yes","yes");
+                result.success(map);
+            }else{
+//                result.error("-1", "bitmap null", "sss");
+                map.put("yes","no");
+                result.error("-1", "bitmap null", map);
+            }
+        }else {
             result.notImplemented();
         }
     }
