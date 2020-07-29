@@ -33,6 +33,7 @@ import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo/texture/texture_list_demo.dart';
 import 'package:flutter_demo/demo/texture/texture_main_demo.dart';
 import 'package:flutter_demo/demo/video/video_demo.dart';
+import 'package:flutter_demo/other/dependy_widget_demo.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/page/http/httpserver_demo.dart';
 import 'package:flutter_demo/part/charts_flutter_demo.dart';
@@ -115,6 +116,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["animation"] = AnimationDemo();
         demos["crash"] = CrashDemo();
         demos["外接纹理"] = TextureMainDemo();
+        demos["依赖变化"] = DependyWidgetDemo();
         break;
       case "dart":
         demos["async"] = AsyncDemo();
