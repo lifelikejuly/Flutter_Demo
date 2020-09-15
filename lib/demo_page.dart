@@ -25,15 +25,18 @@ import 'package:flutter_demo/demo/gesture/gesture_drag_demo.dart';
 import 'package:flutter_demo/demo/gesture/gesture_scale_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statefullifecycle_demo.dart';
 import 'package:flutter_demo/demo/lifecycle/statelessLifecycle_demo.dart';
+import 'package:flutter_demo/demo/pageview/pageview_demo.dart';
 import 'package:flutter_demo/demo/painter/canvas_douyin_demo.dart';
 import 'package:flutter_demo/demo/painter/painter_demo.dart';
 import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
+import 'package:flutter_demo/demo/sliver/sliver_tabbar_demo.dart';
 import 'package:flutter_demo/demo/texture/texture_list_demo.dart';
 import 'package:flutter_demo/demo/texture/texture_main_demo.dart';
 import 'package:flutter_demo/demo/video/video_demo.dart';
 import 'package:flutter_demo/other/debug_channle_demo.dart';
+import 'package:flutter_demo/other/debug_list_list_demo.dart';
 import 'package:flutter_demo/other/dependy_widget_demo.dart';
 import 'package:flutter_demo/page/http/http_demo.dart';
 import 'package:flutter_demo/page/http/httpserver_demo.dart';
@@ -102,6 +105,8 @@ class _UIDemoState extends State<DemoPage> {
         demos['Inherited'] = InheritedWidgetTestContainer();
         demos['点击缩放动画'] = ClickAnimationDemo();
         demos['设计稿尺寸适配'] = SizeDemo();
+        demos['滑动视图列表'] = PageSelectListDemo();
+        demos['TabBar头部隐藏'] = SliverTabBarDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
@@ -119,6 +124,7 @@ class _UIDemoState extends State<DemoPage> {
         demos["外接纹理"] = TextureMainDemo();
         demos["依赖变化"] = DependyWidgetDemo();
         demos["插件测试"] = DebugChannelDemo();
+        demos["列表嵌套测试"] = DebugListListDemo();
         break;
       case "dart":
         demos["async"] = AsyncDemo();

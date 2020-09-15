@@ -22,6 +22,7 @@ class _SwiperDemoState extends State<SwiperDemo> {
         pagination: new SwiperPagination(),
         viewportFraction: 0.8,
         scale: 0.9,
+        outer: false,
       ),
     );
   }
