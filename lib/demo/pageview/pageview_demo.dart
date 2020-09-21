@@ -82,7 +82,7 @@ class _PageSelectListDemoState extends State<PageSelectListDemo> {
             },
           ),
           FlatButton(
-            child: Text("PageView-Demo6"),
+            child: Text("PageView-Demo6(Deprecated)"),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
