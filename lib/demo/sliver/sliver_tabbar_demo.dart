@@ -56,10 +56,19 @@ class _SliverTabBarDemoState extends State<SliverTabBarDemo>
         headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              expandedHeight: 200.0,
               title: Text("WhatsApp using Flutter"),
               floating: true,
+              //滑动到最上面，再滑动是否隐藏导航栏的文字和标题等的具体内容，为true是隐藏，为false是不隐藏
               pinned: true,
+              //是否固定导航栏，为true是固定，为false是不固定，往上滑，导航栏可以隐藏
               snap: true,
+              stretchTriggerOffset: 10,
+              flexibleSpace: new FlexibleSpaceBar(
+                title: new Text("随内容一起滑动的头部"),
+                centerTitle: true,
+                collapseMode: CollapseMode.pin,
+              ),
               bottom: TabBar(
                 tabs: <Widget>[
                   Tab(

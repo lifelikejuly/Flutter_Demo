@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_demo/demo/pageview/pageview_demo5.dart';
+import 'package:flutter_demo/demo/pageview/pageview_demo6.dart';
 
 import 'costom_page_view.dart';
+import 'pageview_demo4.dart';
+import 'pageview_demo2.dart';
+import 'pageview_demo3.dart';
 import 'paging_scroll_physics.dart';
 
 class PageSelectListDemo extends StatefulWidget {
@@ -35,7 +40,57 @@ class _PageSelectListDemoState extends State<PageSelectListDemo> {
                 ),
               );
             },
-          )
+          ),
+          FlatButton(
+            child: Text("PageView-Demo2"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => IntroPageView(),
+                ),
+              );
+            },
+          ),
+          FlatButton(
+            child: Text("PageView-Demo3"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PageViewDemo3(),
+                ),
+              );
+            },
+          ),
+          FlatButton(
+            child: Text("PageView-Demo4"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ExampleCustom(),
+                ),
+              );
+            },
+          ),
+          FlatButton(
+            child: Text("PageView-Demo5"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PageViewDemo5(),
+                ),
+              );
+            },
+          ),
+          FlatButton(
+            child: Text("PageView-Demo6"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PageViewDemo6(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

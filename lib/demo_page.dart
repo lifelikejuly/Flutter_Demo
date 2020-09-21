@@ -65,6 +65,8 @@ import 'package:flutter_demo/ui/text_demo.dart';
 import 'package:flutter_demo/ui/text_list_demo.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
 
+import 'demo/sliver/sliver_demo.dart';
+
 class DemoPage extends StatefulWidget {
   String type;
 
@@ -106,7 +108,7 @@ class _UIDemoState extends State<DemoPage> {
         demos['点击缩放动画'] = ClickAnimationDemo();
         demos['设计稿尺寸适配'] = SizeDemo();
         demos['滑动视图列表'] = PageSelectListDemo();
-        demos['TabBar头部隐藏'] = SliverTabBarDemo();
+        demos['TabBar头部隐藏'] = SliverDemo();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
