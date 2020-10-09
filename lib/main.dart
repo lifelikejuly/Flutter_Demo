@@ -12,11 +12,10 @@ import 'package:flutter_demo/part/fishredux/demopage1/page.dart';
 import 'package:flutter_demo/part/fishredux/demopage2/page.dart';
 import 'package:flutter_demo/part/fishredux/demopage3/page.dart';
 import 'package:flutter_demo/part/redux_demo.dart';
-import 'package:flutter_demo/primeval/native_demo.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart' as FlutterRedux;
 import 'package:provider/provider.dart';
+import 'package:redux/redux.dart' as FlutterRedux;
 
 import 'home_page.dart';
 import 'part/fishredux/demopage4/page.dart';
@@ -180,7 +179,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     demos["网络"] = DemoPage("net");
-    demos["原生调用"] = NativeDemo();
     demos["UI"] = DemoPage("ui");
     demos["第三方组件库"] = DemoPage("part");
     demos["语法"] = DemoPage("dart");

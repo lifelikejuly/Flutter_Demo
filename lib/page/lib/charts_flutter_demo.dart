@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+
 // EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -11,13 +12,9 @@ class ChartsDemo extends StatefulWidget {
 class _ChartsDemoState extends State<ChartsDemo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SimpleBarChart.withSampleData(),
-    );
+    return SimpleBarChart.withSampleData();
   }
 }
-
 
 class SimpleBarChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -63,6 +60,7 @@ class SimpleBarChart extends StatelessWidget {
       )
     ];
   }
+
   // EXCLUDE_FROM_GALLERY_DOCS_END
 
   @override

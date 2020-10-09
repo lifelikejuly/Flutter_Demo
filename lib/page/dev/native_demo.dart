@@ -9,18 +9,15 @@ class NativeDemo extends StatefulWidget {
 class _NativeDemoState extends State<NativeDemo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView(
-        children: <Widget>[
-          RaisedButton(
-            child: Text("NativePage"),
-            onPressed: () async {
-              await FlutterAppPlugin.nativePage("web");
-            },
-          )
-        ],
-      ),
+    return ListView(
+      children: <Widget>[
+        RaisedButton(
+          child: Text("NativePage"),
+          onPressed: () async {
+            await FlutterAppPlugin.nativePage("web");
+          },
+        )
+      ],
     );
   }
 }

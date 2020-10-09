@@ -38,7 +38,7 @@ class ScrollableDemoState extends State<ScrollableDemo> {
                     loadingText = "加载中.....";
                     _count += 10;
                   });
-                  _RrefreshPull().then((value) {
+                  _refreshPull().then((value) {
                     print('加载成功.............');
                     setState(() {
                       _isLoding = false;
@@ -52,6 +52,7 @@ class ScrollableDemoState extends State<ScrollableDemo> {
                   });
                 }
               }
+              return false;
             },
             child: RefreshIndicator(
               child: CustomScrollView(
@@ -189,7 +190,7 @@ class ScrollableDemoState extends State<ScrollableDemo> {
               ),
               onRefresh: () {
                 if (_isLoding) return null;
-                return _RrefreshPull().then((value) {
+                return _refreshPull().then((value) {
                   print('success');
                   setState(() {
                     _count += 10;
@@ -205,7 +206,7 @@ class ScrollableDemoState extends State<ScrollableDemo> {
     );
   }
 
-  Future<String> _RrefreshPull() async {
+  Future<String> _refreshPull() async {
     await Future.delayed(new Duration(seconds: 3));
     return "_RrefreshPull";
   }

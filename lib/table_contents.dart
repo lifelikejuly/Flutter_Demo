@@ -1,21 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_demo/page/dev/bar_snap_demo.dart';
-import 'package:flutter_demo/page/dev/gif_player_demo.dart';
-import 'package:flutter_demo/page/dev/side_pull_demo.dart';
-import 'package:flutter_demo/page/dev/tabbar_switch_demo.dart';
-import 'package:flutter_demo/page/dev/text_chinese_english_demo.dart';
-import 'package:flutter_demo/page/lib/staggered_demo.dart';
-import 'package:flutter_demo/page/lib/waterfall_demo.dart';
-import 'package:flutter_demo/page/widget/common_widget_demo.dart';
-import 'package:flutter_demo/page/widget/sliver/sliver_grid_demo.dart';
-import 'package:flutter_demo/page/widget/sliver/sliver_list_demo.dart';
-import 'package:flutter_demo/page/widget/sliver/sliver_prototype_extentList_demo.dart';
-
+import 'simple_import.dart';
 
 class TableContents {
   // 自定义功能实现
   static Map<String, Widget> DIYDemos = {
-//    "ListView实现轮播": "",
+    "翻页效果Flip": FlipDemo(),
+    "抽屉效果Drawer": DrawerDemo(),
   };
 
   // 开发真实案例
@@ -25,25 +15,51 @@ class TableContents {
     "Text组件中英文组合显示": TextChineseEnglishDemo(),
     "TabBar切换动效": TabBarSwitchDemo(),
     "侧滑拉取获取更多": SidePullDemo(), // 借鉴refresh组件改造
+    "MethodChannel调用": NativeDemo(),
+    "悬浮框功能": CommonWidgetDemo({
+      "Stack组件模式": FloatStackDemo(),
+      "Draggable组件模式": FloatDraggableDemo(),
+      "OverlayEntry组件模式": FloatOverLayDemo(),
+    }),
   };
 
   // 组件学习
   static Map<String, Widget> WidgetDemos = {
-//    "画布Canvas": "",
-//    "图片Image": "",
     "Sliver组件": CommonWidgetDemo(SliverWidgetDemos),
+    "Canvas组件": CommonWidgetDemo(CanvasWidgetDemos),
+    "GestureDetector组件": CommonWidgetDemo(GestureDetectorDemos),
   };
 
+  // Sliver组件
   static Map<String, Widget> SliverWidgetDemos = {
     "SliverList": SliverListDemo(),
     "SliverGrid": SliverGridDemo(),
     "SliverPrototypeExtentList": SliverPrototypeExtentListDemo(),
   };
 
+  // Canvas组件
+  static Map<String, Widget> CanvasWidgetDemos = {
+    "抖音Logo绘制": CanvasDouyinDemo(),
+    "仪表盘绘制": CanvasDouyinDemo(),
+  };
+
+  // GestureDetector组件
+  static Map<String, Widget> GestureDetectorDemos = {
+    "手势拖拽": GestureDragDemo(),
+    "手势缩放": GestureScaleDemo(),
+    "手势点击": GestureClickDemo(),
+  };
+
   // 第三方库使用
   static Map<String, Widget> OpenLibDemos = {
     "瀑布流staggered": StaggeredDemo(),
     "瀑布流waterfall": WaterFallDemo(),
+    "图表Charts": ChartsDemo(),
+    "轮播Swiper": SwiperDemo(),
+    "图片cache_image": CacheImageDemo(),
+    "刷新SmartRefresher": RefreshDemo(),
+    "全局管理Redux": ReduxDemo(),
+    "视频播放VideoPlayer": VideoDemo(),
   };
 
   static Map<String, Map<String, Widget>> tables = {
