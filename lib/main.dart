@@ -18,6 +18,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart' as FlutterRedux;
 import 'package:provider/provider.dart';
 
+import 'home_page.dart';
 import 'part/fishredux/demopage4/page.dart';
 
 String CRASH_TAG = "---CRASH_TAG--- ";
@@ -148,7 +149,7 @@ class _MyAppState extends State<MyApp> {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        home: HomePage(),
       ),
     );
   }

@@ -44,13 +44,21 @@ dependencies:
   flutter_redux: 0.6.0
   # 官方的视频播放插件
   video_player: 0.10.10
-  # 瀑布布局
+  # 瀑布布局1
   flutter_staggered_grid_view: 0.3.0
+  # 瀑布布局2
+#  waterfall_flow:
+#    git:
+#      url: 'https://github.com/fluttercandies/waterfall_flow'
+#      ref: 'v1.12.13'
+  extended_list_library: ^2.0.0
   # 图片缓存库
   cached_network_image: 2.2.0+1
   # 测试依赖包 为了测试打包结果
   flutterreleasepackage:
     path: ./flutter_release_package/
+  # 字符操作库
+  characters: 1.0.0
 #  flutter_boost:
 #    git:
 #      url: 'https://github.com/alibaba/flutter_boost.git'

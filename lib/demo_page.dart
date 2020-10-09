@@ -32,6 +32,8 @@ import 'package:flutter_demo/demo/router/router_ani_demo.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo/sliver/sliver_tabbar_demo.dart';
+import 'package:flutter_demo/demo/tabbar/tabbar_demo_page.dart';
+import 'package:flutter_demo/demo/text/text_demo1.dart';
 import 'package:flutter_demo/demo/texture/texture_list_demo.dart';
 import 'package:flutter_demo/demo/texture/texture_main_demo.dart';
 import 'package:flutter_demo/demo/video/video_demo.dart';
@@ -66,6 +68,7 @@ import 'package:flutter_demo/ui/text_list_demo.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
 
 import 'demo/sliver/sliver_demo.dart';
+import 'demo/text/text_demo2.dart';
 
 class DemoPage extends StatefulWidget {
   String type;
@@ -109,6 +112,9 @@ class _UIDemoState extends State<DemoPage> {
         demos['设计稿尺寸适配'] = SizeDemo();
         demos['滑动视图列表'] = PageSelectListDemo();
         demos['TabBar头部隐藏'] = SliverDemo();
+        demos['TabBar切换问题'] = TabBarDemoPage();
+        demos['Text文本问题'] = TextDemo1();
+        demos['Text文本问题2'] = TextDemo2();
         break;
       case "part":
         demos["轮播组件"] = SwiperDemo();
