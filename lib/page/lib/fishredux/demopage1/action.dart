@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage1/state.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage1/state.dart';
 
 // 要做的操作在这里定义
 //TODO replace with your own action

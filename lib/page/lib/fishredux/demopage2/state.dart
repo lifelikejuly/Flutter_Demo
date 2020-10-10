@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage2/FishModel.dart';
+
+import 'FishModel.dart';
 
 class fishdemepage2State implements Cloneable<fishdemepage2State> {
   List<FishModel> models = List();

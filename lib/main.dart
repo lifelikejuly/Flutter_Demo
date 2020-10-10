@@ -8,17 +8,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
-import 'package:flutter_demo/part/fishredux/demopage1/page.dart';
-import 'package:flutter_demo/part/fishredux/demopage2/page.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/page.dart';
-import 'package:flutter_demo/part/redux_demo.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage1/page.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage2/page.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage3/page.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage4/page.dart';
 import 'package:flutter_demo/ui/theme_demo.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart' as FlutterRedux;
 
 import 'home_page.dart';
-import 'part/fishredux/demopage4/page.dart';
+import 'page/lib/redux_demo.dart';
 
 String CRASH_TAG = "---CRASH_TAG--- ";
 
@@ -36,7 +36,8 @@ void main() {
     FlutterError.resetErrorCount();
     FlutterError.dumpErrorToConsole(details);
   };
- /// widget构建异常捕获
+
+  /// widget构建异常捕获
   var _defaultErrorWidgetBuilder = ErrorWidget.builder;
   ErrorWidget.builder = (FlutterErrorDetails details) {
     println("$CRASH_TAG  --------run ErrorWidget.builder--------");
@@ -137,15 +138,6 @@ class _MyAppState extends State<MyApp> {
           });
         },
         theme: ThemeData(
-          // This is the theme of your application. 
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
           primarySwatch: Colors.blue,
         ),
         home: HomePage(),

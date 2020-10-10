@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'page/widget/gesture/gestrue_scale_demo1.dart';
+import 'page/widget/gesture/gestrue_scale_demo2.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -48,6 +50,8 @@ class TableContents {
     "手势拖拽": GestureDragDemo(),
     "手势缩放": GestureScaleDemo(),
     "手势点击": GestureClickDemo(),
+    "手势缩放1": GestureScaleDemo1(),
+    "手势缩放2": GestureScaleDemo2(),
   };
 
   // 第三方库使用
@@ -59,7 +63,10 @@ class TableContents {
     "图片cache_image": CacheImageDemo(),
     "刷新SmartRefresher": RefreshDemo(),
     "全局管理Redux": ReduxDemo(),
+    "FishRedux开发": FishReduxDemo(),
     "视频播放VideoPlayer": VideoDemo(),
+    "网络请求库Dio": HttpDemo(),
+    "套接字WebSocket": HttpServerDemo(),
   };
 
   static Map<String, Map<String, Widget>> tables = {

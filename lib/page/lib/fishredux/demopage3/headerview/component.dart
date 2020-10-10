@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/list/state.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage3/list/state.dart';
 
 import 'effect.dart';
 import 'reducer.dart';

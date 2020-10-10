@@ -1,7 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage1/childview/component.dart';
-import 'package:flutter_demo/part/fishredux/demopage1/childview/state.dart';
 
+import 'childview/component.dart';
+import 'childview/state.dart';
 import 'effect.dart';
 import 'reducer.dart';
 import 'state.dart';

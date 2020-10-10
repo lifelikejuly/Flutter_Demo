@@ -28,19 +28,16 @@ class _HttpDemoState extends State<HttpDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: <Widget>[
-          RaisedButton(
-            child: Text("GET"),
-            onPressed: () {
-              _getReponse();
-            },
-          ),
-          Text(content),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        RaisedButton(
+          child: Text("GET"),
+          onPressed: () {
+            _getReponse();
+          },
+        ),
+        Text(content),
+      ],
     );
   }
 }

@@ -10,16 +10,11 @@ class FloatStackDemo extends StatefulWidget {
 class _FloatStackDemoState extends State<FloatStackDemo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("StackGestureDetector"),
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          AppFloatBox(),
-        ],
-      ),
+    return Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        AppFloatBox(),
+      ],
     );
   }
 }

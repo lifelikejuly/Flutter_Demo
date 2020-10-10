@@ -38,9 +38,6 @@ import 'package:flutter_demo/demo/video/video_demo.dart';
 import 'package:flutter_demo/other/debug_channle_demo.dart';
 import 'package:flutter_demo/other/debug_list_list_demo.dart';
 import 'package:flutter_demo/other/dependy_widget_demo.dart';
-import 'package:flutter_demo/page/http/http_demo.dart';
-import 'package:flutter_demo/page/http/httpserver_demo.dart';
-import 'package:flutter_demo/part/fish_redux_demo.dart';
 import 'package:flutter_demo/ui/Inherited_view_demo.dart';
 import 'package:flutter_demo/ui/bottom_nav_demo.dart';
 import 'package:flutter_demo/ui/click_animation_demo.dart';
@@ -109,9 +106,6 @@ class _UIDemoState extends State<DemoPage> {
         demos['Text文本问题'] = TextDemo1();
         demos['Text文本问题2'] = TextDemo2();
         break;
-      case "part":
-        demos["FishRedux"] = FishReduxDemo();
-        break;
       case "other":
         demos["drawer"] = DrawerDemo();
         demos["flip"] = FlipDemo();
@@ -163,10 +157,6 @@ class _UIDemoState extends State<DemoPage> {
         demos["AnimationWidget"] = AnimatedWidgetDemo();
         demos["AnimationBuilder"] = AnimatedBuilderDemo();
         demos["AnimationLive"] = AnimationLiveDemo();
-        break;
-      case "net":
-        demos["dio"] = HttpDemo();
-        demos["IOWebSocket"] = HttpServerDemo();
         break;
     }
   }

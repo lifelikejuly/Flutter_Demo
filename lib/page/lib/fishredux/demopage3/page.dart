@@ -1,9 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/headerview/component.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/list/adapter.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/list/state.dart';
 
 import 'effect.dart';
+import 'headerview/component.dart';
+import 'list/adapter.dart';
+import 'list/state.dart';
 import 'reducer.dart';
 import 'view.dart';
 

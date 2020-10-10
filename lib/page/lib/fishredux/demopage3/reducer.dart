@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/itemcell/state.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/list/state.dart';
 
 import 'action.dart';
+import 'itemcell/state.dart';
+import 'list/state.dart';
 import 'state.dart';
 
 Reducer<fishListState> buildReducer() {

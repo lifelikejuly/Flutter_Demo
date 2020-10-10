@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter_demo/part/fishredux/demopage1/childview/state.dart';
+import 'package:flutter_demo/page/lib/fishredux/demopage1/childview/state.dart';
 
 enum Demo1ChildViewAction {
   action,

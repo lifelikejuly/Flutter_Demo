@@ -1,8 +1,8 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/part/fishredux/demopage3/list/state.dart';
 
 import 'action.dart';
+import 'list/state.dart';
 import 'state.dart';
 
 Widget buildView(

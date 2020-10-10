@@ -12,32 +12,27 @@ class _FloatOverLayDemoState extends State<FloatOverLayDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("OverlayEntryDemo"),
-      ),
-      body: Column(
-        children: <Widget>[
-          RaisedButton(
-            child: Text("add"),
-            onPressed: () {
-              entry?.remove();
-              entry = null;
-              entry = OverlayEntry(builder: (context) {
-                return AppFloatBox();
-              });
-              Overlay.of(context).insert(entry);
-            },
-          ),
-          RaisedButton(
-            child: Text("delete"),
-            onPressed: () {
-              entry?.remove();
-              entry = null;
-            },
-          ),
-        ],
-      ),
+    return Column(
+      children: <Widget>[
+        RaisedButton(
+          child: Text("add"),
+          onPressed: () {
+            entry?.remove();
+            entry = null;
+            entry = OverlayEntry(builder: (context) {
+              return AppFloatBox();
+            });
+            Overlay.of(context).insert(entry);
+          },
+        ),
+        RaisedButton(
+          child: Text("delete"),
+          onPressed: () {
+            entry?.remove();
+            entry = null;
+          },
+        ),
+      ],
     );
   }
 }
