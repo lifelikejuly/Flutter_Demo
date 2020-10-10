@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'page/widget/gesture/gestrue_scale_demo1.dart';
-import 'page/widget/gesture/gestrue_scale_demo2.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -37,6 +35,7 @@ class TableContents {
     "SliverList": SliverListDemo(),
     "SliverGrid": SliverGridDemo(),
     "SliverPrototypeExtentList": SliverPrototypeExtentListDemo(),
+    "SliverListWheel": SliverListWheelDemo(),
   };
 
   // Canvas组件

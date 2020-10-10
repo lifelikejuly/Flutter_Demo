@@ -24,6 +24,7 @@ class Common {
   static Widget getWidget(int index){
     Color color = getRandomColor();
     return Container(
+      margin: EdgeInsets.all(5),
       padding: EdgeInsets.symmetric(horizontal: 5),
       height: 300,
       width: 200,

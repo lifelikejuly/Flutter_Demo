@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'gestrue_scale_demo1.dart';
+
 class GestureScaleDemo2 extends StatefulWidget {
   @override
   _GestureScaleDemoState createState() => _GestureScaleDemoState();
@@ -177,55 +179,5 @@ class _GestureScaleDemoState extends State<GestureScaleDemo2> {
         ),
       ),
     );
-  }
-}
-
-class CircleCropPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    double width = size.width;
-    double height = size.height;
-    double maxSize;
-    if (width > height) {
-      maxSize = height;
-    } else {
-      maxSize = width;
-    }
-
-    Paint paint = Paint();
-    paint.color = Color(0x71000000);
-    paint.isAntiAlias = true;
-    canvas.drawDRRect(
-        RRect.fromLTRBR(0.0, 0.0, width, height, Radius.zero),
-        RRect.fromRectAndRadius(
-          Rect.fromCenter(
-            center: Offset(width / 2, height / 2),
-            width: maxSize - 50,
-            height: maxSize - 50,
-          ),
-          Radius.circular(maxSize / 2),
-        ),
-        paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
-class ReactPainter extends CustomPainter {
-  Rect rect;
-
-  ReactPainter(this.rect);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawRect(rect, Paint()..color = Colors.black12);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
   }
 }
