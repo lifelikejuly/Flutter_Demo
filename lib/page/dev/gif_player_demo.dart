@@ -12,6 +12,7 @@ class _GifPlayerDemoState extends State<GifPlayerDemo> {
 
   int repetitionCount = 1;
   Duration duration = Duration(seconds: 3);
+  bool reverse = true;
 
   GifNetworkImage gifNetworkImage;
   GifAssetImage gifAssetImage;
@@ -23,8 +24,8 @@ class _GifPlayerDemoState extends State<GifPlayerDemo> {
       picRes1,
       repetitionCount: repetitionCount,
       replayDuration: duration,
+      reverse: false,
     );
-
     gifAssetImage = GifAssetImage(
       "images/gif_player_demo.gif",
       replayDuration: Duration(seconds: 2),
@@ -62,12 +63,26 @@ class _GifPlayerDemoState extends State<GifPlayerDemo> {
                 );
                 setState(() {});
               },
+            ),
+            RaisedButton(
+              child: Text("播放倒序"),
+              onPressed: () {
+                repetitionCount = -1;
+                duration = null;
+                reverse = !reverse;
+                gifNetworkImage?.updatePlayConfig(
+                  reverse: reverse,
+                  repetitionCount: repetitionCount,
+                  replayDuration: duration,
+                );
+                setState(() {});
+              },
             )
           ],
         ),
-        GifImage.gif(
-          image: gifAssetImage,
-        ),
+//        GifImage.gif(
+//          image: gifAssetImage,
+//        ),
         Row(
           children: <Widget>[
             RaisedButton(

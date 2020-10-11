@@ -53,52 +53,83 @@ class _BarSnapDemoState extends State<BarSnapDemo>
       children: <Widget>[
         Expanded(
           child: NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  leading: Container(),
-                  expandedHeight: 200.0,
-                  title: Text(""),
-                  floating: true,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    collapseMode: CollapseMode.pin,
-                  ),
-                  bottom: PreferredSize(
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.orange,
-                      child: Text("常驻在顶部的吸顶区域"),
-                    ),
-                    preferredSize: Size.fromHeight(50),
-                  ),
+              headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+            return <Widget>[
+//              SliverOverlapAbsorber(
+//                handle:
+//                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+//                sliver: SliverAppBar(
+//                  leading: Container(),
+//                  expandedHeight: 200.0,
+//                  title: Text(""),
+//                  floating: true,
+//                  pinned: true,
+//                  flexibleSpace: FlexibleSpaceBar(
+//                    collapseMode: CollapseMode.pin,
+//                  ),
+//                  bottom: PreferredSize(
+//                    child: Container(
+//                      alignment: Alignment.center,
+//                      height: 50,
+//                      width: MediaQuery.of(context).size.width,
+//                      color: Colors.orange,
+//                      child: Text("常驻在顶部的吸顶区域"),
+//                    ),
+//                    preferredSize: Size.fromHeight(50),
+//                  ),
+//                ),
+//              ),
+              SliverAppBar(
+                leading: Container(),
+                expandedHeight: 200.0,
+                title: Text(""),
+                floating: true,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
                 ),
-              ];
-            },
-            body: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      Color color = getRandomColor();
-                      return Container(
-                        height: 150.0,
-                        color: color,
-                        child: Text(
-                          "Row $index",
-                          style: TextStyle(
-                            color: Colors.white,
+                bottom: PreferredSize(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.orange,
+                    child: Text("常驻在顶部的吸顶区域"),
+                  ),
+                  preferredSize: Size.fromHeight(50),
+                ),
+              ),
+            ];
+          }, body: SafeArea(
+            child: Builder(builder: (context) {
+              return CustomScrollView(
+                slivers: [
+//                  SliverOverlapInjector(
+//                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+//                        context),
+//                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        Color color = getRandomColor();
+                        return Container(
+                          height: 150.0,
+                          color: color,
+                          child: Text(
+                            "Row $index",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                      childCount: 100,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              );
+            }),
+          )),
         ),
         Expanded(
           child: CustomScrollView(

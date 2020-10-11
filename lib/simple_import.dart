@@ -28,6 +28,5 @@ export 'page/widget/gesture/gesture_scale_demo.dart';
 export 'page/widget/sliver/sliver_grid_demo.dart';
 export 'page/widget/sliver/sliver_list_demo.dart';
 export 'page/widget/sliver/sliver_prototype_extentList_demo.dart';
-export 'page/widget/sliver/sliver_list_wheel_demo.dart';
 export 'page/widget/gesture/gestrue_scale_demo1.dart';
 export 'page/widget/gesture/gestrue_scale_demo2.dart';

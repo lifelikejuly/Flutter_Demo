@@ -64,6 +64,7 @@ class GifNetworkImage extends ImageProvider<NetworkImage>
     this.url, {
     this.repetitionCount = -1,
     this.replayDuration,
+    this.reverse = false,
     this.scale = 1.0,
     this.headers,
   }) {
@@ -81,6 +82,7 @@ class GifNetworkImage extends ImageProvider<NetworkImage>
   int repetitionCount;
 
   Duration replayDuration;
+  bool reverse;
 
   @override
   final String url;
@@ -93,7 +95,7 @@ class GifNetworkImage extends ImageProvider<NetworkImage>
 
   GifMultiFrameImageStreamCompleter streamCompleter;
 
-  updatePlayConfig({int repetitionCount, Duration replayDuration}) {
+  updatePlayConfig({int repetitionCount, Duration replayDuration,bool reverse}) {
     if (repetitionCount != null) {
       this.repetitionCount = repetitionCount;
       this.streamCompleter?.repetitionCount = repetitionCount;
@@ -101,6 +103,10 @@ class GifNetworkImage extends ImageProvider<NetworkImage>
     if (replayDuration != null) {
       this.replayDuration = replayDuration;
       this.streamCompleter?.replayDuration = replayDuration;
+    }
+    if(reverse != null){
+      this.reverse = reverse;
+      this.streamCompleter?.reverse = reverse;
     }
   }
 
@@ -121,6 +127,7 @@ class GifNetworkImage extends ImageProvider<NetworkImage>
       codec: _loadAsync(key, chunkEvents, decode),
       chunkEvents: chunkEvents.stream,
       scale: key.scale,
+      reverse: reverse,
       informationCollector: () {
         return <DiagnosticsNode>[
           DiagnosticsProperty<ImageProvider>('Image provider', this),
@@ -203,9 +210,10 @@ class GifAssetImage extends GifAssetBundleImageProvider {
     this.assetName, {
     int repetitionCount = -1,
     Duration replayDuration,
+    bool reverse = false,
     this.bundle,
     this.package,
-  }) : super(repetitionCount, replayDuration) {
+  }) : super(repetitionCount, replayDuration, reverse) {
     assert(assetName != null);
   }
 
@@ -375,8 +383,11 @@ abstract class GifAssetBundleImageProvider extends AssetBundleImageProvider {
   int repetitionCount;
   @protected
   Duration replayDuration;
+  @protected
+  bool reverse;
 
-  GifAssetBundleImageProvider(this.repetitionCount, this.replayDuration);
+  GifAssetBundleImageProvider(
+      this.repetitionCount, this.replayDuration, this.reverse);
 
   @override
   ImageStreamCompleter load(AssetBundleImageKey key, DecoderCallback decode) {
@@ -394,6 +405,7 @@ abstract class GifAssetBundleImageProvider extends AssetBundleImageProvider {
       informationCollector: collector,
       repetitionCount: repetitionCount,
       replayDuration: replayDuration,
+      reverse: reverse,
     );
     return streamCompleter;
   }
@@ -424,6 +436,7 @@ class GifMultiFrameImageStreamCompleter extends GifImageStreamCompleter {
     InformationCollector informationCollector,
     this.repetitionCount = -1,
     this.replayDuration,
+    this.reverse = false,
   })  : assert(codec != null),
         _informationCollector = informationCollector,
         _scale = scale {
@@ -487,6 +500,7 @@ class GifMultiFrameImageStreamCompleter extends GifImageStreamCompleter {
 
   int repetitionCount;
   Duration replayDuration;
+  bool reverse;
 
   void _handleCodecReady(ui.Codec codec) async {
     _codec = codec;
@@ -555,7 +569,12 @@ class GifMultiFrameImageStreamCompleter extends GifImageStreamCompleter {
     try {
       if ((_frames?.length ?? 0) > 0) {
         int frameNum = _framesEmitted % _codec.frameCount;
-        _nextFrame = _frames[frameNum];
+        if (reverse) {
+          _nextFrame = _frames[_codec.frameCount - frameNum - 1];
+          print("<gifImage> frameCount ${_codec.frameCount - frameNum - 1}");
+        } else {
+          _nextFrame = _frames[frameNum];
+        }
         print("<gifImage> _decodeNextFrameAndSchedule $frameNum");
       } else {
         _nextFrame = await _codec.getNextFrame();

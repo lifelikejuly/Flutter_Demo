@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/page/common/common.dart';
 
-class SliverListWheelDemo extends StatefulWidget {
+class ListWheelDemo extends StatefulWidget {
   @override
-  _SliverListWheelDemoState createState() => _SliverListWheelDemoState();
+  _ListWheelDemoState createState() => _ListWheelDemoState();
 }
 
-class _SliverListWheelDemoState extends State<SliverListWheelDemo> {
+class _ListWheelDemoState extends State<ListWheelDemo> {
   @override
   Widget build(BuildContext context) {
     return ListWheelScrollView.useDelegate(
@@ -15,12 +15,13 @@ class _SliverListWheelDemoState extends State<SliverListWheelDemo> {
       offAxisFraction: -0.5,
 //      useMagnifier: true, // 使用放大镜
 //      magnification: 2, // 放大倍数
-      overAndUnderCenterOpacity: 1.0, //透明度
+      overAndUnderCenterOpacity: 1.0,
+      //透明度
       squeeze: 1,
       clipToSize: false,
       renderChildrenOutsideViewport: true,
       itemExtent: 100,
-      onSelectedItemChanged: (index){
+      onSelectedItemChanged: (index) {
         print("ListWheelScrollView onSelectedItemChanged $index");
       },
       childDelegate: ListWheelChildBuilderDelegate(

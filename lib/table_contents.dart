@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_demo/page/widget/list/list_pull_refresh_demo.dart';
+import 'package:flutter_demo/page/widget/list/list_wheel_demo.dart';
+import 'package:flutter_demo/ui/image_list_demo.dart';
+import 'page/dev/nestedscroll_tabbar_list_demo.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -10,6 +14,7 @@ class TableContents {
 
   // 开发真实案例
   static Map<String, Widget> DevDemos = {
+    "AppBar吸顶效果+TabBar列表":NestedScrollTabBarListDemo(),
     "顶部Bar吸顶效果": BarSnapDemo(),
     "Gif控制播放": GifPlayerDemo(),
     "Text组件中英文组合显示": TextChineseEnglishDemo(),
@@ -26,6 +31,7 @@ class TableContents {
   // 组件学习
   static Map<String, Widget> WidgetDemos = {
     "Sliver组件": CommonWidgetDemo(SliverWidgetDemos),
+    "List组件": CommonWidgetDemo(ListDemos),
     "Canvas组件": CommonWidgetDemo(CanvasWidgetDemos),
     "GestureDetector组件": CommonWidgetDemo(GestureDetectorDemos),
   };
@@ -35,7 +41,6 @@ class TableContents {
     "SliverList": SliverListDemo(),
     "SliverGrid": SliverGridDemo(),
     "SliverPrototypeExtentList": SliverPrototypeExtentListDemo(),
-    "SliverListWheel": SliverListWheelDemo(),
   };
 
   // Canvas组件
@@ -51,6 +56,12 @@ class TableContents {
     "手势点击": GestureClickDemo(),
     "手势缩放1": GestureScaleDemo1(),
     "手势缩放2": GestureScaleDemo2(),
+  };
+
+  // List组件
+  static Map<String, Widget> ListDemos = {
+    "ListWheelScrollView": ListWheelDemo(),
+    "RefreshIndicator VS CupertinoSliverRefreshControl": ListPullRefreshDemo(),
   };
 
   // 第三方库使用
