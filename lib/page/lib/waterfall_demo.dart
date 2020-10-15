@@ -16,19 +16,40 @@ class WaterFallDemo extends StatefulWidget {
 class _WaterFallDemoState extends State<WaterFallDemo> {
   List<Color> colors = <Color>[];
 
+  List<String> mockImags = List();
+
+  @override
+  void initState() {
+    super.initState();
+    mockImags = List.of(mockImgs,growable: true);
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-
         SliverWaterfallFlow(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              return CachedNetworkImage(
-                imageUrl: mockImgs[index],
+              Widget child = CachedNetworkImage(
+                imageUrl: mockImags[index],
               );
+              child = GestureDetector(
+                child: child,
+                onTap: () async {
+//                  var result = await Navigator.of(context).push(
+//                    MaterialPageRoute(
+//                      builder: (BuildContext context) => Scaffold(appBar: AppBar(title: Text("第二个页面"),),body: WaterFallDemo(),),
+//                    ),
+//                  );
+                  mockImags.insert(index, mockImags[index]);
+                  setState(() {});
+                },
+              );
+              return child;
             },
-            childCount: mockImgs.length,
+            childCount: mockImags.length,
           ),
           gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,

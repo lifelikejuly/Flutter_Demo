@@ -48,29 +48,17 @@ class _NestedScrollTabBarListDemoState
 
   @override
   Widget build(BuildContext context) {
+    return _sample2();
+  }
+
+
+  Widget _sample1(){
     return DefaultTabController(
       length: _tabs.length, // This is the number of tabs.
       child: NestedScrollView(
         key: globalKey,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-//            SliverOverlapAbsorber(
-//              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-//              sliver: SliverAppBar(
-//                leading: Container(),
-//                title: const Text('Books'),
-//                pinned: true,
-//                floating: true,
-//                snap: false,
-//                primary: true,
-//                expandedHeight: 150.0,
-//                forceElevated: innerBoxIsScrolled,
-//                bottom: TabBar(
-//                  isScrollable: true,
-//                  tabs: _tabs.map((String name) => Tab(text: name)).toList(),
-//                ),
-//              ),
-//            ),
             SliverAppBar(
               leading: Container(),
               title: const Text('Books'),
@@ -91,21 +79,16 @@ class _NestedScrollTabBarListDemoState
               child: Builder(
                 builder: (BuildContext context) {
                   return CustomScrollView(
-//                      primary: true,
                     physics: BouncingScrollPhysics(),
                     key: PageStorageKey<String>(name),
                     slivers: <Widget>[
-//                      SliverOverlapInjector(
-//                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-//                            context),
-//                      ),
                       CupertinoSliverRefreshControl(
                         onRefresh: () async {},
                       ),
                       SliverFixedExtentList(
                         itemExtent: 100,
                         delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
+                              (BuildContext context, int index) {
                             return Common.getWidget(index);
                           },
                           childCount: 100,
@@ -121,4 +104,58 @@ class _NestedScrollTabBarListDemoState
       ),
     );
   }
+
+  Widget _sample2(){
+    return DefaultTabController(
+      length: _tabs.length, // This is the number of tabs.
+      child: CustomScrollView(
+//        key: globalKey,
+        physics: BouncingScrollPhysics(),
+        slivers: <Widget>[
+          SliverAppBar(
+            leading: Container(),
+            title: const Text('Books'),
+            pinned: true,
+            floating: true,
+            expandedHeight: 150.0,
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: _tabs.map((String name) => Tab(text: name)).toList(),
+            ),
+          ),
+          CupertinoSliverRefreshControl(
+            onRefresh: () async {},
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return Common.getWidget(index);
+              },
+              childCount: 100,
+            ),
+          )
+//          SliverFillRemaining(
+//            child: CustomScrollView(
+////              shrinkWrap: true,
+////              physics: NeverScrollableScrollPhysics(),
+//              slivers: <Widget>[
+//                CupertinoSliverRefreshControl(
+//                  onRefresh: () async {},
+//                ),
+//                SliverList(
+//                  delegate: SliverChildBuilderDelegate(
+//                        (BuildContext context, int index) {
+//                      return Common.getWidget(index);
+//                    },
+//                    childCount: 100,
+//                  ),
+//                )
+//              ],
+//            ),
+//          )
+        ],
+      ),
+    );
+  }
+
 }

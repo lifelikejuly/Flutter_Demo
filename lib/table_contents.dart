@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_demo/page/dev/diy_scroll_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_pull_refresh_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_wheel_demo.dart';
 import 'package:flutter_demo/ui/image_list_demo.dart';
@@ -16,6 +17,7 @@ class TableContents {
   static Map<String, Widget> DevDemos = {
     "AppBar吸顶效果+TabBar列表":NestedScrollTabBarListDemo(),
     "顶部Bar吸顶效果": BarSnapDemo(),
+    "列表滑动的阻尼效果自定义": DIYScrollDemo(),
     "Gif控制播放": GifPlayerDemo(),
     "Text组件中英文组合显示": TextChineseEnglishDemo(),
     "TabBar切换动效": TabBarSwitchDemo(),
