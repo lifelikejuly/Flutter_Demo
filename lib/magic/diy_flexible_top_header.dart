@@ -18,9 +18,9 @@ const double _kTextAndIconTabHeight = 72.0;
 ///
 /// See also:
 ///
-///  * [DIYTabBar], which displays a row of tabs.
+///  * [DIYFlexibleTopHeader], which displays a row of tabs.
 ///  * [DIYBarView], which displays a widget for the currently selected tab.
-///  * [DIYTabBar.indicator], which defines the appearance of the selected tab
+///  * [DIYFlexibleTopHeader.indicator], which defines the appearance of the selected tab
 ///    indicator relative to the tab's bounds.
 enum DIYTabBarIndicatorSize {
   /// The tab indicator's bounds are as wide as the space occupied by the tab
@@ -115,7 +115,6 @@ class _TabStyle extends AnimatedWidget {
           color: color,
         ),
 //        child: child,
-      //使用缩放代替动画绘制
         child: Transform.scale(
           scale: _scale,
           child: child,
@@ -423,9 +422,9 @@ class _DragAnimation extends Animation<double> with AnimationWithParentMixin<dou
 }
 
 // This class, and DIYTabBarScrollController, only exist to handle the case
-// where a scrollable DIYTabBar has a non-zero initialIndex. In that case we can
+// where a scrollable DIYFlexibleTopHeader has a non-zero initialIndex. In that case we can
 // only compute the scroll position's initial scroll offset (the "correct"
-// pixels value) after the DIYTabBar viewport width and scroll limits are known.
+// pixels value) after the DIYFlexibleTopHeader viewport width and scroll limits are known.
 class _DIYTabBarScrollPosition extends ScrollPositionWithSingleContext {
   _DIYTabBarScrollPosition({
     ScrollPhysics physics,
@@ -439,7 +438,7 @@ class _DIYTabBarScrollPosition extends ScrollPositionWithSingleContext {
     oldPosition: oldPosition,
   );
 
-  final _DIYTabBarState tabBar;
+  final _DIYFlexibleTopHeaderState tabBar;
 
   bool _initialViewportDimensionWasZero;
 
@@ -464,11 +463,11 @@ class _DIYTabBarScrollPosition extends ScrollPositionWithSingleContext {
 }
 
 // This class, and DIYTabBarScrollPosition, only exist to handle the case
-// where a scrollable DIYTabBar has a non-zero initialIndex.
+// where a scrollable DIYFlexibleTopHeader has a non-zero initialIndex.
 class _DIYTabBarScrollController extends ScrollController {
   _DIYTabBarScrollController(this.tabBar);
 
-  final _DIYTabBarState tabBar;
+  final _DIYFlexibleTopHeaderState tabBar;
 
   @override
   ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
@@ -500,7 +499,7 @@ class _DIYTabBarScrollController extends ScrollController {
 /// See also:
 ///
 ///  * [DIYBarView], which displays page views that correspond to each tab.
-class DIYTabBar extends StatefulWidget implements PreferredSizeWidget {
+class DIYFlexibleTopHeader extends StatefulWidget implements PreferredSizeWidget {
   /// Creates a material design tab bar.
   ///
   /// The [tabs] argument must not be null and its length must match the [controller]'s
@@ -515,28 +514,28 @@ class DIYTabBar extends StatefulWidget implements PreferredSizeWidget {
   ///
   /// If [indicator] is not null, then [indicatorWeight], [indicatorPadding], and
   /// [indicatorColor] are ignored.
-  const DIYTabBar({
+  const DIYFlexibleTopHeader({
     Key key,
     @required this.tabs,
     this.controller,
     this.isScrollable = false,
-    this.indicatorColor,
-    this.indicatorWeight = 2.0,
-    this.indicatorPadding = EdgeInsets.zero,
-    this.indicator,
-    this.indicatorSize,
-    this.labelColor,
-    this.labelStyle,
-    this.labelPadding,
-    this.unselectedLabelColor,
-    this.unselectedLabelStyle,
+//    this.indicatorColor,
+//    this.indicatorWeight = 2.0,
+//    this.indicatorPadding = EdgeInsets.zero,
+//    this.indicator,
+//    this.indicatorSize,
+//    this.labelColor,
+//    this.labelStyle,
+//    this.labelPadding,
+//    this.unselectedLabelColor,
+//    this.unselectedLabelStyle,
     this.dragStartBehavior = DragStartBehavior.start,
-    this.onTap,
+//    this.onTap,
   }) : assert(tabs != null),
-        assert(isScrollable != null),
+//        assert(isScrollable != null),
         assert(dragStartBehavior != null),
-        assert(indicator != null || (indicatorWeight != null && indicatorWeight > 0.0)),
-        assert(indicator != null || (indicatorPadding != null)),
+//        assert(indicator != null || (indicatorWeight != null && indicatorWeight > 0.0)),
+//        assert(indicator != null || (indicatorPadding != null)),
         super(key: key);
 
   /// Typically a list of two or more [Tab] widgets.
@@ -545,146 +544,53 @@ class DIYTabBar extends StatefulWidget implements PreferredSizeWidget {
   /// and the length of the [DIYBarView.children] list.
   final List<Widget> tabs;
 
-  /// This widget's selection and animation state.
-  ///
-  /// If [TabController] is not provided, then the value of [DefaultTabController.of]
-  /// will be used.
   final TabController controller;
 
-  /// Whether this tab bar can be scrolled horizontally.
-  ///
-  /// If [isScrollable] is true, then each tab is as wide as needed for its label
-  /// and the entire [DIYTabBar] is scrollable. Otherwise each tab gets an equal
-  /// share of the available space.
   final bool isScrollable;
+//
+//  final Color indicatorColor;
+//
+//  final double indicatorWeight;
+//
+//  final EdgeInsetsGeometry indicatorPadding;
+//
+//  final Decoration indicator;
+//
+//  final DIYTabBarIndicatorSize indicatorSize;
+//
+//  final Color labelColor;
+//
+//  final Color unselectedLabelColor;
+//
+//  final TextStyle labelStyle;
+//
+//  final EdgeInsetsGeometry labelPadding;
+//
+//  final TextStyle unselectedLabelStyle;
 
-  /// The color of the line that appears below the selected tab.
-  ///
-  /// If this parameter is null, then the value of the Theme's indicatorColor
-  /// property is used.
-  ///
-  /// If [indicator] is specified, this property is ignored.
-  final Color indicatorColor;
-
-  /// The thickness of the line that appears below the selected tab.
-  ///
-  /// The value of this parameter must be greater than zero and its default
-  /// value is 2.0.
-  ///
-  /// If [indicator] is specified, this property is ignored.
-  final double indicatorWeight;
-
-  /// The horizontal padding for the line that appears below the selected tab.
-  ///
-  /// For [isScrollable] tab bars, specifying [kTabLabelPadding] will align
-  /// the indicator with the tab's text for [Tab] widgets and all but the
-  /// shortest [Tab.text] values.
-  ///
-  /// The [EdgeInsets.top] and [EdgeInsets.bottom] values of the
-  /// [indicatorPadding] are ignored.
-  ///
-  /// The default value of [indicatorPadding] is [EdgeInsets.zero].
-  ///
-  /// If [indicator] is specified, this property is ignored.
-  final EdgeInsetsGeometry indicatorPadding;
-
-  /// Defines the appearance of the selected tab indicator.
-  ///
-  /// If [indicator] is specified, the [indicatorColor], [indicatorWeight],
-  /// and [indicatorPadding] properties are ignored.
-  ///
-  /// The default, underline-style, selected tab indicator can be defined with
-  /// [UnderlineTabIndicator].
-  ///
-  /// The indicator's size is based on the tab's bounds. If [indicatorSize]
-  /// is [DIYTabBarIndicatorSize.tab] the tab's bounds are as wide as the space
-  /// occupied by the tab in the tab bar. If [indicatorSize] is
-  /// [DIYTabBarIndicatorSize.label], then the tab's bounds are only as wide as
-  /// the tab widget itself.
-  final Decoration indicator;
-
-  /// Defines how the selected tab indicator's size is computed.
-  ///
-  /// The size of the selected tab indicator is defined relative to the
-  /// tab's overall bounds if [indicatorSize] is [DIYTabBarIndicatorSize.tab]
-  /// (the default) or relative to the bounds of the tab's widget if
-  /// [indicatorSize] is [DIYTabBarIndicatorSize.label].
-  ///
-  /// The selected tab's location appearance can be refined further with
-  /// the [indicatorColor], [indicatorWeight], [indicatorPadding], and
-  /// [indicator] properties.
-  final DIYTabBarIndicatorSize indicatorSize;
-
-  /// The color of selected tab labels.
-  ///
-  /// Unselected tab labels are rendered with the same color rendered at 70%
-  /// opacity unless [unselectedLabelColor] is non-null.
-  ///
-  /// If this parameter is null, then the color of the [ThemeData.primaryTextTheme]'s
-  /// bodyText1 text color is used.
-  final Color labelColor;
-
-  /// The color of unselected tab labels.
-  ///
-  /// If this property is null, unselected tab labels are rendered with the
-  /// [labelColor] with 70% opacity.
-  final Color unselectedLabelColor;
-
-  /// The text style of the selected tab labels.
-  ///
-  /// If [unselectedLabelStyle] is null, then this text style will be used for
-  /// both selected and unselected label styles.
-  ///
-  /// If this property is null, then the text style of the
-  /// [ThemeData.primaryTextTheme]'s bodyText1 definition is used.
-  final TextStyle labelStyle;
-
-  /// The padding added to each of the tab labels.
-  ///
-  /// If this property is null, then kTabLabelPadding is used.
-  final EdgeInsetsGeometry labelPadding;
-
-  /// The text style of the unselected tab labels
-  ///
-  /// If this property is null, then the [labelStyle] value is used. If [labelStyle]
-  /// is null, then the text style of the [ThemeData.primaryTextTheme]'s
-  /// bodyText1 definition is used.
-  final TextStyle unselectedLabelStyle;
-
-  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
   final DragStartBehavior dragStartBehavior;
 
-  /// An optional callback that's called when the [DIYTabBar] is tapped.
-  ///
-  /// The callback is applied to the index of the tab where the tap occurred.
-  ///
-  /// This callback has no effect on the default handling of taps. It's for
-  /// applications that want to do a little extra work when a tab is tapped,
-  /// even if the tap doesn't change the TabController's index. DIYTabBar [onTap]
-  /// callbacks should not make changes to the TabController since that would
-  /// interfere with the default tap handler.
-  final ValueChanged<int> onTap;
+//  final ValueChanged<int> onTap;
 
-  /// A size whose height depends on if the tabs have both icons and text.
-  ///
-  /// [AppBar] uses this size to compute its own preferred size.
   @override
   Size get preferredSize {
     for (final Widget item in tabs) {
       if (item is Tab) {
         final Tab tab = item;
         if ((tab.text != null || tab.child != null) && tab.icon != null)
-          return Size.fromHeight(_kTextAndIconTabHeight + indicatorWeight);
+//          return Size.fromHeight(_kTextAndIconTabHeight + indicatorWeight);
+        return Size.fromHeight(_kTextAndIconTabHeight );
       }
     }
-    return Size.fromHeight(_kTabHeight + indicatorWeight);
+//    return Size.fromHeight(_kTabHeight + indicatorWeight);
+    return Size.fromHeight(_kTabHeight);
   }
 
   @override
-  _DIYTabBarState createState() => _DIYTabBarState();
+  _DIYFlexibleTopHeaderState createState() => _DIYFlexibleTopHeaderState();
 }
 
-class _DIYTabBarState extends State<DIYTabBar> {
+class _DIYFlexibleTopHeaderState extends State<DIYFlexibleTopHeader> {
   ScrollController _scrollController;
   TabController _controller;
   _IndicatorPainter _indicatorPainter;
@@ -700,37 +606,37 @@ class _DIYTabBarState extends State<DIYTabBar> {
     _tabKeys = widget.tabs.map((Widget tab) => GlobalKey()).toList();
   }
 
-  Decoration get _indicator {
-    if (widget.indicator != null)
-      return widget.indicator;
-    final TabBarTheme tabBarTheme = TabBarTheme.of(context);
-    if (tabBarTheme.indicator != null)
-      return tabBarTheme.indicator;
+//  Decoration get _indicator {
+//    if (widget.indicator != null)
+//      return widget.indicator;
+//    final TabBarTheme tabBarTheme = TabBarTheme.of(context);
+//    if (tabBarTheme.indicator != null)
+//      return tabBarTheme.indicator;
+//
+//    Color color = widget.indicatorColor ?? Theme.of(context).indicatorColor;
+//    // ThemeData tries to avoid this by having indicatorColor avoid being the
+//    // primaryColor. However, it's possible that the tab bar is on a
+//    // Material that isn't the primaryColor. In that case, if the indicator
+//    // color ends up matching the material's color, then this overrides it.
+//    // When that happens, automatic transitions of the theme will likely look
+//    // ugly as the indicator color suddenly snaps to white at one end, but it's
+//    // not clear how to avoid that any further.
+//    //
+//    // The material's color might be null (if it's a transparency). In that case
+//    // there's no good way for us to find out what the color is so we don't.
+//    if (color.value == Material.of(context).color?.value)
+//      color = Colors.white;
+//
+//    return UnderlineTabIndicator(
+//      insets: widget.indicatorPadding,
+//      borderSide: BorderSide(
+//        width: widget.indicatorWeight,
+//        color: color,
+//      ),
+//    );
+//  }
 
-    Color color = widget.indicatorColor ?? Theme.of(context).indicatorColor;
-    // ThemeData tries to avoid this by having indicatorColor avoid being the
-    // primaryColor. However, it's possible that the tab bar is on a
-    // Material that isn't the primaryColor. In that case, if the indicator
-    // color ends up matching the material's color, then this overrides it.
-    // When that happens, automatic transitions of the theme will likely look
-    // ugly as the indicator color suddenly snaps to white at one end, but it's
-    // not clear how to avoid that any further.
-    //
-    // The material's color might be null (if it's a transparency). In that case
-    // there's no good way for us to find out what the color is so we don't.
-    if (color.value == Material.of(context).color?.value)
-      color = Colors.white;
-
-    return UnderlineTabIndicator(
-      insets: widget.indicatorPadding,
-      borderSide: BorderSide(
-        width: widget.indicatorWeight,
-        color: color,
-      ),
-    );
-  }
-
-  // If the DIYTabBar is rebuilt with a new tab controller, the caller should
+  // If the DIYFlexibleTopHeader is rebuilt with a new tab controller, the caller should
   // dispose the old one. In that case the old controller's animation will be
   // null and should not be accessed.
   bool get _controllerIsValid => _controller?.animation != null;
@@ -765,36 +671,37 @@ class _DIYTabBarState extends State<DIYTabBar> {
     }
   }
 
-  void _initIndicatorPainter() {
-    _indicatorPainter = !_controllerIsValid ? null : _IndicatorPainter(
-      controller: _controller,
-      indicator: _indicator,
-      indicatorSize: widget.indicatorSize ?? TabBarTheme.of(context).indicatorSize,
-      tabKeys: _tabKeys,
-      old: _indicatorPainter,
-    );
-  }
+//  void _initIndicatorPainter() {
+//    _indicatorPainter = !_controllerIsValid ? null : _IndicatorPainter(
+//      controller: _controller,
+////      indicator: _indicator,
+//      indicatorSize: widget.indicatorSize ?? TabBarTheme.of(context).indicatorSize,
+//      tabKeys: _tabKeys,
+//      old: _indicatorPainter,
+//    );
+//  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     assert(debugCheckHasMaterial(context));
     _updateTabController();
-    _initIndicatorPainter();
+//    _initIndicatorPainter();
   }
 
   @override
-  void didUpdateWidget(DIYTabBar oldWidget) {
+  void didUpdateWidget(DIYFlexibleTopHeader oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       _updateTabController();
-      _initIndicatorPainter();
-    } else if (widget.indicatorColor != oldWidget.indicatorColor ||
-        widget.indicatorWeight != oldWidget.indicatorWeight ||
-        widget.indicatorSize != oldWidget.indicatorSize ||
-        widget.indicator != oldWidget.indicator) {
-      _initIndicatorPainter();
+//      _initIndicatorPainter();
     }
+//    else if (widget.indicatorColor != oldWidget.indicatorColor ||
+//        widget.indicatorWeight != oldWidget.indicatorWeight ||
+//        widget.indicatorSize != oldWidget.indicatorSize ||
+//        widget.indicator != oldWidget.indicator) {
+//      _initIndicatorPainter();
+//    }
 
     if (widget.tabs.length > oldWidget.tabs.length) {
       final int delta = widget.tabs.length - oldWidget.tabs.length;
@@ -870,7 +777,7 @@ class _DIYTabBarState extends State<DIYTabBar> {
   void _handleTabControllerAnimationTick() {
     assert(mounted);
     if (!_controller.indexIsChanging && widget.isScrollable) {
-      // Sync the DIYTabBar's scroll position with the DIYBarView's PageView.
+      // Sync the DIYFlexibleTopHeader's scroll position with the DIYBarView's PageView.
       _currentIndex = _controller.index;
       _scrollToControllerValue();
     }
@@ -894,22 +801,22 @@ class _DIYTabBarState extends State<DIYTabBar> {
     _indicatorPainter?.saveTabOffsets(tabOffsets, textDirection);
   }
 
-  void _handleTap(int index) {
-    assert(index >= 0 && index < widget.tabs.length);
-    _controller.animateTo(index);
-    if (widget.onTap != null) {
-      widget.onTap(index);
-    }
-  }
+//  void _handleTap(int index) {
+//    assert(index >= 0 && index < widget.tabs.length);
+//    _controller.animateTo(index);
+//    if (widget.onTap != null) {
+//      widget.onTap(index);
+//    }
+//  }
 
   Widget _buildStyledTab(Widget child, bool selected, Animation<double> animation) {
     return _TabStyle(
       animation: animation,
       selected: selected,
-      labelColor: widget.labelColor,
-      unselectedLabelColor: widget.unselectedLabelColor,
-      labelStyle: widget.labelStyle,
-      unselectedLabelStyle: widget.unselectedLabelStyle,
+//      labelColor: widget.labelColor,
+//      unselectedLabelColor: widget.unselectedLabelColor,
+//      labelStyle: widget.labelStyle,
+//      unselectedLabelStyle: widget.unselectedLabelStyle,
       child: child,
     );
   }
@@ -921,7 +828,7 @@ class _DIYTabBarState extends State<DIYTabBar> {
       if (_controller.length != widget.tabs.length) {
         throw FlutterError(
             "Controller's length property (${_controller.length}) does not match the "
-                "number of tabs (${widget.tabs.length}) present in DIYTabBar's tabs property."
+                "number of tabs (${widget.tabs.length}) present in DIYFlexibleTopHeader's tabs property."
         );
       }
       return true;
@@ -929,7 +836,7 @@ class _DIYTabBarState extends State<DIYTabBar> {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     if (_controller.length == 0) {
       return Container(
-        height: _kTabHeight + widget.indicatorWeight,
+        height: _kTabHeight,
       );
     }
 
@@ -940,7 +847,7 @@ class _DIYTabBarState extends State<DIYTabBar> {
       wrappedTabs[i] = Center(
         heightFactor: 1.0,
         child: Padding(
-          padding: widget.labelPadding ?? tabBarTheme.labelPadding ?? kTabLabelPadding,
+          padding:  kTabLabelPadding,
           child: KeyedSubtree(
             key: _tabKeys[i],
             child: widget.tabs[i],
@@ -986,9 +893,9 @@ class _DIYTabBarState extends State<DIYTabBar> {
     final int tabCount = widget.tabs.length;
     for (int index = 0; index < tabCount; index += 1) {
       wrappedTabs[index] = InkWell(
-        onTap: () { _handleTap(index); },
+//        onTap: () { _handleTap(index); },
         child: Padding(
-          padding: EdgeInsets.only(bottom: widget.indicatorWeight),
+//          padding: EdgeInsets.only(bottom: widget.indicatorWeight),
           child: Stack(
             children: <Widget>[
               wrappedTabs[index],
@@ -1009,10 +916,10 @@ class _DIYTabBarState extends State<DIYTabBar> {
       child: _TabStyle(
         animation: kAlwaysDismissedAnimation,
         selected: false,
-        labelColor: widget.labelColor,
-        unselectedLabelColor: widget.unselectedLabelColor,
-        labelStyle: widget.labelStyle,
-        unselectedLabelStyle: widget.unselectedLabelStyle,
+//        labelColor: widget.labelColor,
+//        unselectedLabelColor: widget.unselectedLabelColor,
+//        labelStyle: widget.labelStyle,
+//        unselectedLabelStyle: widget.unselectedLabelStyle,
         child: _TabLabelBar(
           onPerformLayout: _saveTabOffsets,
           children: wrappedTabs,
@@ -1034,237 +941,8 @@ class _DIYTabBarState extends State<DIYTabBar> {
   }
 }
 
-/// A page view that displays the widget which corresponds to the currently
-/// selected tab.
-///
-/// This widget is typically used in conjunction with a [DIYTabBar].
-///
-/// If a [TabController] is not provided, then there must be a [DefaultTabController]
-/// ancestor.
-///
-/// The tab controller's [TabController.length] must equal the length of the
-/// [children] list and the length of the [DIYTabBar.tabs] list.
-///
-/// To see a sample implementation, visit the [TabController] documentation.
-class DIYBarView extends StatefulWidget {
-  /// Creates a page view with one child per tab.
-  ///
-  /// The length of [children] must be the same as the [controller]'s length.
-  const DIYBarView({
-    Key key,
-    @required this.children,
-    @required this.pageController,
-    this.controller,
-    this.physics,
-    this.dragStartBehavior = DragStartBehavior.start,
-  }) : assert(children != null),
-        assert(dragStartBehavior != null),
-        super(key: key);
 
-  /// This widget's selection and animation state.
-  ///
-  /// If [TabController] is not provided, then the value of [DefaultTabController.of]
-  /// will be used.
-  final TabController controller;
 
-  /// One widget per tab.
-  ///
-  /// Its length must match the length of the [DIYTabBar.tabs]
-  /// list, as well as the [controller]'s [TabController.length].
-  final List<Widget> children;
-
-  /// How the page view should respond to user input.
-  ///
-  /// For example, determines how the page view continues to animate after the
-  /// user stops dragging the page view.
-  ///
-  /// The physics are modified to snap to page boundaries using
-  /// [PageScrollPhysics] prior to being used.
-  ///
-  /// Defaults to matching platform conventions.
-  final ScrollPhysics physics;
-
-  /// {@macro flutter.widgets.scrollable.dragStartBehavior}
-  final DragStartBehavior dragStartBehavior;
-  final PageController pageController;
-
-  @override
-  _DIYBarViewState createState() => _DIYBarViewState();
-}
-
-final PageScrollPhysics _kDIYBarViewPhysics = const PageScrollPhysics().applyTo(const ClampingScrollPhysics());
-
-class _DIYBarViewState extends State<DIYBarView> {
-  TabController _controller;
-  PageController _pageController;
-  List<Widget> _children;
-  List<Widget> _childrenWithKey;
-  int _currentIndex;
-  int _warpUnderwayCount = 0;
-
-  // If the DIYBarView is rebuilt with a new tab controller, the caller should
-  // dispose the old one. In that case the old controller's animation will be
-  // null and should not be accessed.
-  bool get _controllerIsValid => _controller?.animation != null;
-
-  void _updateTabController() {
-    final TabController newController = widget.controller ?? DefaultTabController.of(context);
-    assert(() {
-      if (newController == null) {
-        throw FlutterError(
-            'No TabController for ${widget.runtimeType}.\n'
-                'When creating a ${widget.runtimeType}, you must either provide an explicit '
-                'TabController using the "controller" property, or you must ensure that there '
-                'is a DefaultTabController above the ${widget.runtimeType}.\n'
-                'In this case, there was neither an explicit controller nor a default controller.'
-        );
-      }
-      return true;
-    }());
-
-    if (newController == _controller)
-      return;
-
-    if (_controllerIsValid)
-      _controller.animation.removeListener(_handleTabControllerAnimationTick);
-    _controller = newController;
-    if (_controller != null)
-      _controller.animation.addListener(_handleTabControllerAnimationTick);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _updateChildren();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _updateTabController();
-    _currentIndex = _controller?.index;
-//    _pageController = PageController(initialPage: _currentIndex ?? 0);
-    _pageController = widget.pageController;
-  }
-
-  @override
-  void didUpdateWidget(DIYBarView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller)
-      _updateTabController();
-    if (widget.children != oldWidget.children && _warpUnderwayCount == 0)
-      _updateChildren();
-  }
-
-  @override
-  void dispose() {
-    if (_controllerIsValid)
-      _controller.animation.removeListener(_handleTabControllerAnimationTick);
-    _controller = null;
-    // We don't own the _controller Animation, so it's not disposed here.
-    super.dispose();
-  }
-
-  void _updateChildren() {
-    _children = widget.children;
-    _childrenWithKey = KeyedSubtree.ensureUniqueKeysForList(widget.children);
-  }
-
-  void _handleTabControllerAnimationTick() {
-    if (_warpUnderwayCount > 0 || !_controller.indexIsChanging)
-      return; // This widget is driving the controller's animation.
-
-    if (_controller.index != _currentIndex) {
-      _currentIndex = _controller.index;
-      _warpToCurrentIndex();
-    }
-  }
-
-  Future<void> _warpToCurrentIndex() async {
-    if (!mounted)
-      return Future<void>.value();
-
-    if (_pageController.page == _currentIndex.toDouble())
-      return Future<void>.value();
-
-    final int previousIndex = _controller.previousIndex;
-    if ((_currentIndex - previousIndex).abs() == 1)
-      return _pageController.animateToPage(_currentIndex, duration: kTabScrollDuration, curve: Curves.ease);
-
-    assert((_currentIndex - previousIndex).abs() > 1);
-    final int initialPage = _currentIndex > previousIndex
-        ? _currentIndex - 1
-        : _currentIndex + 1;
-    final List<Widget> originalChildren = _childrenWithKey;
-    setState(() {
-      _warpUnderwayCount += 1;
-
-      _childrenWithKey = List<Widget>.from(_childrenWithKey, growable: false);
-      final Widget temp = _childrenWithKey[initialPage];
-      _childrenWithKey[initialPage] = _childrenWithKey[previousIndex];
-      _childrenWithKey[previousIndex] = temp;
-    });
-    _pageController.jumpToPage(initialPage);
-
-    await _pageController.animateToPage(_currentIndex, duration: kTabScrollDuration, curve: Curves.ease);
-    if (!mounted)
-      return Future<void>.value();
-    setState(() {
-      _warpUnderwayCount -= 1;
-      if (widget.children != _children) {
-        _updateChildren();
-      } else {
-        _childrenWithKey = originalChildren;
-      }
-    });
-  }
-
-  // Called when the PageView scrolls
-  bool _handleScrollNotification(ScrollNotification notification) {
-    if (_warpUnderwayCount > 0)
-      return false;
-
-    if (notification.depth != 0)
-      return false;
-
-    _warpUnderwayCount += 1;
-    if (notification is ScrollUpdateNotification && !_controller.indexIsChanging) {
-      if ((_pageController.page - _controller.index).abs() > 1.0) {
-        _controller.index = _pageController.page.floor();
-        _currentIndex =_controller.index;
-      }
-      _controller.offset = (_pageController.page - _controller.index).clamp(-1.0, 1.0) as double;
-    } else if (notification is ScrollEndNotification) {
-      _controller.index = _pageController.page.round();
-      _currentIndex = _controller.index;
-    }
-    _warpUnderwayCount -= 1;
-
-    return false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    assert(() {
-      if (_controller.length != widget.children.length) {
-        throw FlutterError(
-            "Controller's length property (${_controller.length}) does not match the "
-                "number of tabs (${widget.children.length}) present in DIYTabBar's tabs property."
-        );
-      }
-      return true;
-    }());
-    return NotificationListener<ScrollNotification>(
-      onNotification: _handleScrollNotification,
-      child: PageView(
-        dragStartBehavior: widget.dragStartBehavior,
-        controller: _pageController,
-        physics: widget.physics == null ? _kDIYBarViewPhysics : _kDIYBarViewPhysics.applyTo(widget.physics),
-        children: _childrenWithKey,
-      ),
-    );
-  }
-}
 
 /// Displays a single circle with the specified border and background colors.
 ///

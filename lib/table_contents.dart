@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/page/dev/diy_scroll_demo.dart';
+import 'package:flutter_demo/page/dev/nestedscroll_page_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_pull_refresh_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_wheel_demo.dart';
-import 'package:flutter_demo/ui/image_list_demo.dart';
+
 import 'page/dev/nestedscroll_tabbar_list_demo.dart';
+import 'page/lib/transformer_demo.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -15,6 +17,7 @@ class TableContents {
 
   // 开发真实案例
   static Map<String, Widget> DevDemos = {
+    "NestedScroll定制化页面":NestedScrollPageDemo(),
     "AppBar吸顶效果+TabBar列表":NestedScrollTabBarListDemo(),
     "顶部Bar吸顶效果": BarSnapDemo(),
     "列表滑动的阻尼效果自定义": DIYScrollDemo(),
@@ -79,6 +82,7 @@ class TableContents {
     "视频播放VideoPlayer": VideoDemo(),
     "网络请求库Dio": HttpDemo(),
     "套接字WebSocket": HttpServerDemo(),
+    "效果轮播transformer": TransformerPageDemo(),
   };
 
   static Map<String, Map<String, Widget>> tables = {

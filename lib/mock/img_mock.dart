@@ -65,4 +65,5 @@ const List<String> mockImgs = [
   'https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00143-3440.jpg',
   'https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00664-3879.jpg',
   'https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00709-1604.jpg',
+  'http://wx2.sinaimg.cn/bmiddle/ceeb653ely1g4xhw7xasrg207d054njs.gif',
 ];
