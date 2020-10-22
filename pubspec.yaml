@@ -59,6 +59,8 @@ dependencies:
     path: ./flutter_release_package/
   # 字符操作库
   characters: 1.0.0
+  # lottie动画库
+  lottie: 0.6.0
 #  flutter_boost:
 #    git:
 #      url: 'https://github.com/alibaba/flutter_boost.git'
@@ -84,6 +86,7 @@ flutter:
   uses-material-design: true
   assets:
     - res/img/
+    - res/lottie/
     - images/
   # To add assets to your application, add an assets section, like this:
   # assets:

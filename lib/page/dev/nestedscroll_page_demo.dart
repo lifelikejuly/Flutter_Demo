@@ -71,13 +71,14 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
 ////          });
 //      });
 //    });
-    tabController = TabController(initialIndex:3,length: _tabs.length, vsync: this);
+    tabController =
+        TabController(initialIndex: 0, length: _tabs.length, vsync: this);
     tabController.addListener(() {
       print("NestedScrollTabBarListDemo offset ${tabController.offset}");
 //      showPic = tabController.index == 0;
 //      setState(() {});
     });
-    pageController = PageController(initialPage: 3);
+    pageController = PageController(initialPage: 0);
 //    pageController.addListener(() {
 //      pageController2.jumpTo(pageController.offset);
 //    });
@@ -120,6 +121,12 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
               ),
             ),
             bottom: DIYTabBar(
+              indicator: DIYUnderLineIndicator(
+                pageController: pageController,
+                borderSide: BorderSide(color: Common.labelColors[tabController.index], width: 3),
+                insets: EdgeInsets.only(left: 12, right: 12, bottom: 2),
+                width: 25,
+              ),
               controller: tabController,
               isScrollable: true,
               labelPadding: EdgeInsets.all(0),
@@ -160,11 +167,26 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
                 onRefresh: () async {},
               ),
               SliverToBoxAdapter(
-                child: Common.getWidget(0),
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  height: 300,
+                  width: 200,
+                  color: Common.colors[_tabs.indexOf(name)].withOpacity(0.5),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "$name",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
               SliverWaterfallFlow(
                 delegate: SliverChildBuilderDelegate(
-                      (context, index) {
+                  (context, index) {
                     Widget child = CachedNetworkImage(
                       imageUrl: mockImgs[index],
                     );
@@ -179,7 +201,7 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
                   childCount: mockImgs.length,
                 ),
                 gridDelegate:
-                SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                    SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 9,
                   crossAxisSpacing: 9,
@@ -201,7 +223,7 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
   Widget _sample1BackGround() {
     return DIYTransformerWidget(
       pageController: pageController,
-      picHeight: 150,
+      picHeight: 100,
       picUrls: mockImgs,
       colors: Common.colors,
       backgroundHeight: 200,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/page/dev/diy_scroll_demo.dart';
 import 'package:flutter_demo/page/dev/nestedscroll_page_demo.dart';
+import 'package:flutter_demo/page/lib/lottie_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_pull_refresh_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_wheel_demo.dart';
 
@@ -83,6 +84,7 @@ class TableContents {
     "网络请求库Dio": HttpDemo(),
     "套接字WebSocket": HttpServerDemo(),
     "效果轮播transformer": TransformerPageDemo(),
+    "动效lottie": LottieDemo(),
   };
 
   static Map<String, Map<String, Widget>> tables = {

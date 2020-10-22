@@ -24,32 +24,20 @@ class DIYTransformerWidget extends StatelessWidget {
         double page = 0;
         int realPage = 0;
         if (pageController.hasClients) {
-          print("AnimatedBuilder hasClients true");
           page = pageController?.page ?? 0;
           realPage = pageController?.page?.floor() ?? 0;
         } else {
-          print("AnimatedBuilder hasClients false");
           page = pageController?.initialPage?.toDouble() ?? 0;
           realPage = pageController?.initialPage ?? 0;
         }
         double opacity = 1 - (page - realPage).abs();
         Widget child = Stack(
           children: <Widget>[
-            Opacity(
-              opacity: opacity,
-              child: Container(
-                width: width,
-                height: backgroundHeight,
-                color: colors[realPage],
-              ),
-            ),
-            Opacity(
-              opacity: 1 - opacity,
-              child: Container(
-                width: width,
-                height: backgroundHeight,
-                color: colors[realPage + 1],
-              ),
+            Container(
+              width: width,
+              height: backgroundHeight,
+              color:
+                  Color.lerp(colors[realPage + 1], colors[realPage], opacity),
             ),
             Opacity(
               opacity: opacity,

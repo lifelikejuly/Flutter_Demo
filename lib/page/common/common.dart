@@ -14,6 +14,22 @@ class Common {
     Colors.cyan,
     Colors.pink
   ];
+
+
+  static List<Color> labelColors = [
+    Colors.white,
+    Colors.black,
+    Colors.red,
+    Colors.green,
+    Colors.yellow,
+    Colors.purple,
+    Colors.blue,
+    Colors.amber,
+    Colors.cyan,
+    Colors.pink
+  ];
+
+
   static Random random = new Random();
 
   static Color getRandomColor() {
