@@ -1,14 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_demo/magic/diy_color_box.dart';
-import 'package:flutter_demo/magic/diy_flexible_space_widget.dart';
-import 'package:flutter_demo/magic/diy_tabs.dart';
 import 'package:flutter_demo/mock/img_mock.dart';
 import 'package:flutter_demo/page/common/common.dart';
 import 'package:flutter_demo/page/lib/waterfall/src/rendering/sliver_waterfall_flow.dart';
 import 'package:flutter_demo/page/lib/waterfall/src/widgets/sliver.dart';
+import 'dart:math' as math;
 
 class NestedScrollTabBarListDemo extends StatefulWidget {
   @override
@@ -40,62 +37,45 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
 
   TabController tabController;
 
-  bool showPic = true;
+  ScrollController childScrollController;
+  ScrollController fatherScrollController;
+  double offset = 0;
 
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      innerController?.addListener(() {
+//    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+//      innerController?.addListener(() {
 //        print(
 //            "NestedScrollTabBarListDemo innerController ${innerController.offset} - ${outerController.offset}");
-      });
-      outerController?.addListener(() {
+//      });
+//      outerController?.addListener(() {
 //        print(
 //            "NestedScrollTabBarListDemo outerController ${outerController.offset} - ${innerController.offset}");
-
+//
 //          setState(() {
 //
 //          });
-      });
-    });
+//      });
+//    });
     tabController = TabController(length: _tabs.length, vsync: this);
     tabController.addListener(() {
       print("NestedScrollTabBarListDemo offset ${tabController.offset}");
-      showPic = tabController.index == 0;
       setState(() {});
     });
+    childScrollController = ScrollController();
+    fatherScrollController = ScrollController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _sample2();
-  }
-
-  Widget _sample1BackGround() {
-    return Container(
-      height: 200,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.brown,
-      child: Visibility(
-        visible: showPic,
-        child: Image.network(
-          mockImgs[0],
-          width: MediaQuery.of(context).size.width,
-          height: 200,
-          fit: BoxFit.fitWidth,
-        ),
-        replacement: SizedBox(
-          height: 200,
-          width: MediaQuery.of(context).size.width,
-        ),
-      ),
-    );
+    return _sample1();
   }
 
   Widget _sample1() {
     Widget child = NestedScrollView(
       key: globalKey,
+      controller: fatherScrollController,
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
@@ -106,7 +86,7 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
             floating: true,
             expandedHeight: 150.0,
             forceElevated: innerBoxIsScrolled,
-            flexibleSpace: DIYFlexibleSpaceBar(
+            flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
               background: PreferredSize(
                 child: AppBar(
@@ -123,7 +103,7 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
                 preferredSize: Size.fromHeight(44),
               ),
             ),
-            bottom: DIYTabBar(
+            bottom: TabBar(
               controller: tabController,
               indicatorColor: Colors.orange,
               isScrollable: true,
@@ -155,129 +135,87 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
       body: TabBarView(
         controller: tabController,
         children: _tabs.map((String name) {
-          return SafeArea(
-            child: Builder(
-              builder: (BuildContext context) {
-                return CustomScrollView(
-                  physics: BouncingScrollPhysics(),
-                  key: PageStorageKey<String>(name),
-                  slivers: <Widget>[
-                    CupertinoSliverRefreshControl(
-                      onRefresh: () async {
-
+          Widget child = CustomScrollView(
+            controller: childScrollController,
+            physics: BouncingScrollPhysics(),
+            key: PageStorageKey<String>(name),
+            slivers: <Widget>[
+              CupertinoSliverRefreshControl(
+                onRefresh: () async {},
+              ),
+              SliverToBoxAdapter(
+                child: Common.getWidget(0),
+              ),
+              SliverWaterfallFlow(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    Widget child = CachedNetworkImage(
+                      imageUrl: mockImgs[index],
+                    );
+                    child = GestureDetector(
+                      child: child,
+                      onTap: () async {
+                        setState(() {});
                       },
-                    ),
-                    SliverToBoxAdapter(
-                      child: Common.getWidget(0),
-                    ),
-                    SliverWaterfallFlow(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          Widget child = CachedNetworkImage(
-                            imageUrl: mockImgs[index],
-                          );
-                          child = GestureDetector(
-                            child: child,
-                            onTap: () async {
-                              setState(() {});
-                            },
-                          );
-                          return child;
-                        },
-                        childCount: mockImgs.length,
-                      ),
-                      gridDelegate:
-                          SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 9,
-                        crossAxisSpacing: 9,
-                      ),
-                    ),
-//                      SliverFixedExtentList(
-//                        itemExtent: 100,
-//                        delegate: SliverChildBuilderDelegate(
-//                          (BuildContext context, int index) {
-//                            return Common.getWidget(index);
-//                          },
-//                          childCount: 100,
-//                        ),
-//                      )
-                  ],
-                );
-              },
-            ),
+                    );
+                    return child;
+                  },
+                  childCount: mockImgs.length,
+                ),
+                gridDelegate:
+                    SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 9,
+                  crossAxisSpacing: 9,
+                ),
+              ),
+            ],
           );
+          child = NotificationListener(
+            child: child,
+            onNotification: (position) {
+              offset = _listenerScrollOffset(
+                  position, offset, fatherScrollController);
+              return false;
+            },
+          );
+          return child;
         }).toList(),
       ),
-    );
-//    child = Stack(
-//      children: <Widget>[
-//        // 渐变组件
-//        _sample1BackGround(),
-//        child,
-//      ],
-//    );
-
-    child = DIYTopHeaderAdapter(
-      child: child,
     );
 
     return child;
   }
 
-  Widget _sample2() {
-    return DefaultTabController(
-      length: _tabs.length, // This is the number of tabs.
-      child: CustomScrollView(
-//        key: globalKey,
-
-        physics: BouncingScrollPhysics(),
-        slivers: <Widget>[
-          SliverAppBar(
-            leading: Container(),
-            title: const Text('Books'),
-            pinned: true,
-            floating: true,
-            expandedHeight: 150.0,
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: _tabs.map((String name) => Tab(text: name)).toList(),
-            ),
-          ),
-          CupertinoSliverRefreshControl(
-            onRefresh: () async {},
-          ),
-//          SliverList(
-//            delegate: SliverChildBuilderDelegate(
-//              (BuildContext context, int index) {
-//                return Common.getWidget(index);
-//              },
-//              childCount: 100,
-//            ),
-//          )
-          SliverFillRemaining(
-            child: TabBarView(
-              children: _tabs
-                  .map((e) => CustomScrollView(
-                        slivers: <Widget>[
-//                          CupertinoSliverRefreshControl(
-//                            onRefresh: () async {},
-//                          ),
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Common.getWidget(index);
-                              },
-                              childCount: 100,
-                            ),
-                          )
-                        ],
-                      ))
-                  .toList(),
-            ),
-          )
-        ],
-      ),
-    );
+  _listenerScrollOffset(ScrollNotification position, double offset,
+      ScrollController fatherController) {
+    if (position is ScrollUpdateNotification &&
+        position.depth == 0 &&
+        position.metrics.axis == Axis.vertical) {
+      double nowOffset = position.metrics.pixels;
+      double fatherOffset = fatherController.offset;
+      if (!position.metrics.atEdge && nowOffset > 50) {
+        if (nowOffset >= offset) {
+          if (fatherOffset < 44) {
+            fatherOffset += (nowOffset - offset);
+            fatherOffset = math.min(44, fatherOffset);
+            fatherController?.jumpTo(fatherOffset);
+          }
+        } else {
+          if (fatherOffset > 0) {
+            fatherOffset -= (offset - nowOffset);
+            fatherOffset = math.max(fatherOffset, 0);
+            fatherController?.jumpTo(fatherOffset);
+          }
+        }
+      } else {
+        if (fatherOffset > 0 && nowOffset < offset) {
+          fatherController?.jumpTo(0);
+        }
+      }
+      return nowOffset;
+    }
+    return offset;
   }
+
 }
