@@ -61,6 +61,8 @@ dependencies:
   characters: 1.0.0
   # lottie动画库
   lottie: 0.6.0
+  # gif播放
+  flutter_gifimage: ^1.0.0
 #  flutter_boost:
 #    git:
 #      url: 'https://github.com/alibaba/flutter_boost.git'

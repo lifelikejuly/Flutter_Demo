@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_demo/magic/diy_flexible_space_widget.dart';
+import 'package:flutter_demo/magic/diy_refresh.dart';
 import 'package:flutter_demo/magic/diy_tabs.dart';
 import 'package:flutter_demo/magic/diy_transformer_background_widget.dart';
 import 'package:flutter_demo/mock/img_mock.dart';
@@ -41,6 +43,8 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
     with TickerProviderStateMixin {
   final GlobalKey<NestedScrollViewState> globalKey = GlobalKey();
 
+  final GlobalKey<DIYCupertinoSliverRefreshControlState> globalKey2 = GlobalKey();
+
   ScrollController get innerController {
     return globalKey?.currentState?.innerController;
   }
@@ -54,9 +58,12 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
   PageController pageController2;
   bool showPic = true;
 
+  ScrollController scrollController;
+
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController();
 //    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
 //      innerController?.addListener(() {
 ////        print(
@@ -83,6 +90,7 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
 //      pageController2.jumpTo(pageController.offset);
 //    });
 //    pageController2 = PageController(initialPage: 0);
+
   }
 
   @override
@@ -123,7 +131,8 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
             bottom: DIYTabBar(
               indicator: DIYUnderLineIndicator(
                 pageController: pageController,
-                borderSide: BorderSide(color: Common.labelColors[tabController.index], width: 3),
+                borderSide: BorderSide(
+                    color: Common.labelColors[tabController.index], width: 3),
                 insets: EdgeInsets.only(left: 12, right: 12, bottom: 2),
                 width: 25,
               ),
@@ -160,11 +169,15 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
         pageController: pageController,
         children: _tabs.map((String name) {
           return CustomScrollView(
+            controller: scrollController,
             physics: BouncingScrollPhysics(),
 //            key: PageStorageKey<String>(name),
             slivers: <Widget>[
-              CupertinoSliverRefreshControl(
-                onRefresh: () async {},
+              DIYCupertinoSliverRefreshControl(
+                key: globalKey2,
+                onRefresh: () async {
+                  await Future.delayed(Duration(seconds: 2));
+                },
               ),
               SliverToBoxAdapter(
                 child: Container(
@@ -216,7 +229,40 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
       child: child,
       header: _sample1BackGround(),
     );
-
+    child = Container(
+      child: Stack(
+        children: <Widget>[
+          AnimatedBuilder(
+            animation: scrollController,
+            builder: (context, widget) {
+              double pageOffset = 0;
+              if (scrollController?.hasClients ?? false) {
+                pageOffset = scrollController.offset;
+              }
+              DIYCupertinoSliverRefreshControlState refresh = globalKey2?.currentState;
+              pageOffset += ((refresh?.hasSliverLayoutExtent ?? false) ? -60 : 0);
+              print("<AnimatedBuilder> pageOffset $pageOffset  hasSliverLayoutExtent ${refresh?.hasSliverLayoutExtent ?? false}");
+              return Positioned(
+                top: 150.0 - (pageOffset < 100 ? pageOffset : 100),
+                child: widget,
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.yellowAccent,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
+          ),
+          child,
+        ],
+      ),
+    );
     return child;
   }
 

@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/page/dev/diy_scroll_demo.dart';
 import 'package:flutter_demo/page/dev/nestedscroll_page_demo.dart';
+import 'package:flutter_demo/page/dev/webp_bug_demo.dart';
 import 'package:flutter_demo/page/lib/lottie_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_pull_refresh_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_wheel_demo.dart';
 
 import 'page/dev/nestedscroll_tabbar_list_demo.dart';
+import 'page/lib/gif_controller_demo.dart';
 import 'page/lib/transformer_demo.dart';
 import 'simple_import.dart';
 
@@ -27,6 +29,7 @@ class TableContents {
     "TabBar切换动效": TabBarSwitchDemo(),
     "侧滑拉取获取更多": SidePullDemo(), // 借鉴refresh组件改造
     "MethodChannel调用": NativeDemo(),
+    "Webp加载bug": WebpBugDemo(),
     "悬浮框功能": CommonWidgetDemo({
       "Stack组件模式": FloatStackDemo(),
       "Draggable组件模式": FloatDraggableDemo(),
@@ -85,6 +88,7 @@ class TableContents {
     "套接字WebSocket": HttpServerDemo(),
     "效果轮播transformer": TransformerPageDemo(),
     "动效lottie": LottieDemo(),
+    "Gif播放控制flutter_gifimage": GifControllerDemo(),
   };
 
   static Map<String, Map<String, Widget>> tables = {

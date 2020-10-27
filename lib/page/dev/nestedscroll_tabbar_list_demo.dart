@@ -163,7 +163,9 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
                   key: PageStorageKey<String>(name),
                   slivers: <Widget>[
                     CupertinoSliverRefreshControl(
-                      onRefresh: () async {},
+                      onRefresh: () async {
+
+                      },
                     ),
                     SliverToBoxAdapter(
                       child: Common.getWidget(0),
@@ -228,6 +230,7 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
       length: _tabs.length, // This is the number of tabs.
       child: CustomScrollView(
 //        key: globalKey,
+
         physics: BouncingScrollPhysics(),
         slivers: <Widget>[
           SliverAppBar(

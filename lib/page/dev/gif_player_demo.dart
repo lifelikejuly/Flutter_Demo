@@ -80,9 +80,9 @@ class _GifPlayerDemoState extends State<GifPlayerDemo> {
             )
           ],
         ),
-//        GifImage.gif(
-//          image: gifAssetImage,
-//        ),
+        GifImage.gif(
+          image: gifAssetImage,
+        ),
         Row(
           children: <Widget>[
             RaisedButton(

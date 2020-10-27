@@ -8,6 +8,8 @@ class ListPullRefreshDemo extends StatefulWidget {
 }
 
 class _ListPullRefreshDemoState extends State<ListPullRefreshDemo> {
+
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -40,7 +42,9 @@ class _ListPullRefreshDemoState extends State<ListPullRefreshDemo> {
         physics: BouncingScrollPhysics(),
         slivers: <Widget>[
           CupertinoSliverRefreshControl(
-            onRefresh: () async {},
+            onRefresh: () async {
+
+            },
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
