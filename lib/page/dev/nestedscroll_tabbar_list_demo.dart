@@ -189,26 +189,27 @@ class _NestedScrollTabBarListDemoState extends State<NestedScrollTabBarListDemo>
 
   _listenerScrollOffset(ScrollNotification position, double offset,
       ScrollController fatherController) {
+    // 监听滑动 当滑动为水平方向
     if (position is ScrollUpdateNotification &&
         position.depth == 0 &&
         position.metrics.axis == Axis.vertical) {
       double nowOffset = position.metrics.pixels;
       double fatherOffset = fatherController.offset;
       if (!position.metrics.atEdge && nowOffset > 50) {
-        if (nowOffset >= offset) {
+        if (nowOffset >= offset) {// 下滑操作
           if (fatherOffset < 44) {
             fatherOffset += (nowOffset - offset);
             fatherOffset = math.min(44, fatherOffset);
             fatherController?.jumpTo(fatherOffset);
           }
         } else {
-          if (fatherOffset > 0) {
+          if (fatherOffset > 0) { // 上滑操作
             fatherOffset -= (offset - nowOffset);
             fatherOffset = math.max(fatherOffset, 0);
             fatherController?.jumpTo(fatherOffset);
           }
         }
-      } else {
+      } else { //切换Tab后的情况 主要是切换Tab后做下拉刷新的操作
         if (fatherOffset > 0 && nowOffset < offset) {
           fatherController?.jumpTo(0);
         }
