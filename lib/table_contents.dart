@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_demo/page/dev/diy_scroll_demo.dart';
-import 'package:flutter_demo/page/dev/nestedscroll_page_demo.dart';
-import 'package:flutter_demo/page/dev/webp_bug_demo.dart';
-import 'package:flutter_demo/page/lib/lottie_demo.dart';
-import 'package:flutter_demo/page/widget/list/list_pull_refresh_demo.dart';
-import 'package:flutter_demo/page/widget/list/list_wheel_demo.dart';
+import 'package:flutter_demo/page/dev/page_cache_demo.dart';
+import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
+import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
 
-import 'page/dev/nestedscroll_tabbar_list_demo.dart';
-import 'page/lib/gif_controller_demo.dart';
-import 'page/lib/transformer_demo.dart';
+
+
+import 'page/dev/list_jump_init_demo.dart';
+import 'page/dev/sliver_refresh_demo.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -30,11 +28,16 @@ class TableContents {
     "侧滑拉取获取更多": SidePullDemo(), // 借鉴refresh组件改造
     "MethodChannel调用": NativeDemo(),
     "Webp加载bug": WebpBugDemo(),
+    "Text和Icon一行问题": RowTextWithIconDemo(),
     "悬浮框功能": CommonWidgetDemo({
       "Stack组件模式": FloatStackDemo(),
       "Draggable组件模式": FloatDraggableDemo(),
       "OverlayEntry组件模式": FloatOverLayDemo(),
     }),
+    "PageView排查缓存问题": PageCacheDemo(),
+    "自定义SliverRefreshControl效果": SliverRefreshDemo(),
+    "List初始化创建过程问题": ListJumpInitDemo(),
+    "Tabbar动态变化以及定位问题": TabBarAddJumpDemo(),
   };
 
   // 组件学习
@@ -56,6 +59,7 @@ class TableContents {
   static Map<String, Widget> CanvasWidgetDemos = {
     "抖音Logo绘制": CanvasDouyinDemo(),
     "仪表盘绘制": CanvasDouyinDemo(),
+    "贝塞尔曲线画圆绘制": CanvasCircleDemo(),
   };
 
   // GestureDetector组件

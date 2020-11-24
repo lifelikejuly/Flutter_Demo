@@ -1218,6 +1218,8 @@ class _DIYBarViewState extends State<DIYBarView> {
     if (widget.controller != oldWidget.controller) _updateTabController();
     if (widget.children != oldWidget.children && _warpUnderwayCount == 0)
       _updateChildren();
+    if (widget.pageController != oldWidget.pageController)
+      _updatePageController();
   }
 
   @override
@@ -1233,6 +1235,23 @@ class _DIYBarViewState extends State<DIYBarView> {
     _children = widget.children;
     _childrenWithKey = KeyedSubtree.ensureUniqueKeysForList(widget.children);
   }
+
+  void _updatePageController() {
+    final PageController newPageController = widget.pageController;
+    assert(() {
+      if (newPageController == null) {
+        throw FlutterError('No PageController for ${widget.runtimeType}.\n'
+            'When creating a ${widget.runtimeType}, you must either provide an explicit '
+            'TabController using the "controller" property, or you must ensure that there '
+            'is a DefaultPageController above the ${widget.runtimeType}.\n'
+            'In this case, there was neither an explicit controller nor a default controller.');
+      }
+      return true;
+    }());
+    if (newPageController == _pageController) return;
+    _pageController = newPageController;
+  }
+
 
   void _handleTabControllerAnimationTick() {
     if (_warpUnderwayCount > 0 || !_controller.indexIsChanging)

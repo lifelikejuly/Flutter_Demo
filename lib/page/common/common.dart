@@ -17,7 +17,7 @@ class Common {
 
 
   static List<Color> labelColors = [
-    Colors.white,
+    Colors.pinkAccent,
     Colors.black,
     Colors.red,
     Colors.green,

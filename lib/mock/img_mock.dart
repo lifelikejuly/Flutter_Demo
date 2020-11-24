@@ -1,7 +1,5 @@
 const List<String> mockImgs = [
   'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2313705569,9891646&fm=26&gp=0.jpg',
-  'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1731009718,2200225379&fm=26&gp=0.jpg',
-  'https://gank.io/images/f4f6d68bf30147e1bdd4ddbc6ad7c2a2',
   'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1436889382,823414461&fm=26&gp=0.jpg',
   'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=263400435,1630698605&fm=26&gp=0.jpg',
   'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4293121369,3757124453&fm=26&gp=0.jpg',

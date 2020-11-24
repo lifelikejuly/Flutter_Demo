@@ -171,14 +171,14 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
           return CustomScrollView(
             controller: scrollController,
             physics: BouncingScrollPhysics(),
-//            key: PageStorageKey<String>(name),
+            key: PageStorageKey<String>(name),
             slivers: <Widget>[
-              DIYCupertinoSliverRefreshControl(
-                key: globalKey2,
-                onRefresh: () async {
-                  await Future.delayed(Duration(seconds: 2));
-                },
-              ),
+//              DIYCupertinoSliverRefreshControl(
+////                key: globalKey2,
+//                onRefresh: () async {
+//                  await Future.delayed(Duration(seconds: 2));
+//                },
+//              ),
               SliverToBoxAdapter(
                 child: Container(
                   margin: EdgeInsets.all(5),
@@ -224,6 +224,7 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
           );
         }).toList(),
       ),
+//        body:Container(),
     );
     child = DIYTopHeaderAdapter(
       child: child,
@@ -239,9 +240,9 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
               if (scrollController?.hasClients ?? false) {
                 pageOffset = scrollController.offset;
               }
-              DIYCupertinoSliverRefreshControlState refresh = globalKey2?.currentState;
-              pageOffset += ((refresh?.hasSliverLayoutExtent ?? false) ? -60 : 0);
-              print("<AnimatedBuilder> pageOffset $pageOffset  hasSliverLayoutExtent ${refresh?.hasSliverLayoutExtent ?? false}");
+//              DIYCupertinoSliverRefreshControlState refresh = globalKey2?.currentState;
+//              pageOffset += ((refresh?.hasSliverLayoutExtent ?? false) ? -60 : 0);
+//              print("<AnimatedBuilder> pageOffset $pageOffset  hasSliverLayoutExtent ${refresh?.hasSliverLayoutExtent ?? false}");
               return Positioned(
                 top: 150.0 - (pageOffset < 100 ? pageOffset : 100),
                 child: widget,
@@ -269,7 +270,7 @@ class _NestedScrollPageDemoState extends State<NestedScrollPageDemo>
   Widget _sample1BackGround() {
     return DIYTransformerWidget(
       pageController: pageController,
-      picHeight: 100,
+      picHeight: 200,
       picUrls: mockImgs,
       colors: Common.colors,
       backgroundHeight: 200,

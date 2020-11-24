@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -373,27 +374,44 @@ class DIYCupertinoSliverRefreshControl extends StatefulWidget {
       double refreshIndicatorExtent,
       ) {
     const Curve opacityCurve = Interval(0.4, 0.8, curve: Curves.easeInOut);
+//    return Align(
+//      alignment: Alignment.bottomCenter,
+//      child: Padding(
+//        padding: const EdgeInsets.only(bottom: 16.0),
+//        child: refreshState == RefreshIndicatorMode.drag
+//            ? Opacity(
+//          opacity: opacityCurve.transform(
+//              min(pulledExtent / refreshTriggerPullDistance, 1.0)
+//          ),
+//          child: Icon(
+//            CupertinoIcons.down_arrow,
+//            color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context),
+//            size: 36.0,
+//          ),
+//        )
+//            : Opacity(
+//          opacity: opacityCurve.transform(
+//              min(pulledExtent / refreshIndicatorExtent, 1.0)
+//          ),
+//          child: const CupertinoActivityIndicator(radius: 14.0),
+//        ),
+//      ),
+//    );
+
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
+      child: Container(
+        color: Colors.blue,
         padding: const EdgeInsets.only(bottom: 16.0),
-        child: refreshState == RefreshIndicatorMode.drag
-            ? Opacity(
-          opacity: opacityCurve.transform(
-              min(pulledExtent / refreshTriggerPullDistance, 1.0)
-          ),
-          child: Icon(
-            CupertinoIcons.down_arrow,
-            color: CupertinoDynamicColor.resolve(CupertinoColors.inactiveGray, context),
-            size: 36.0,
-          ),
+        child:
+//        refreshState == RefreshIndicatorMode.drag ?
+        Container(
+         width: 100,
+          height: 100,
+          color: Colors.red,
+          child: Text("texxsssdsdd",style: TextStyle(color: Colors.white,fontSize: 30),),
         )
-            : Opacity(
-          opacity: opacityCurve.transform(
-              min(pulledExtent / refreshIndicatorExtent, 1.0)
-          ),
-          child: const CupertinoActivityIndicator(radius: 14.0),
-        ),
+//            : CupertinoActivityIndicator(radius: 14.0),
       ),
     );
   }
@@ -533,14 +551,27 @@ class DIYCupertinoSliverRefreshControlState extends State<DIYCupertinoSliverRefr
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           latestIndicatorBoxExtent = constraints.maxHeight;
+          print("<> latestIndicatorBoxExtent $latestIndicatorBoxExtent");
           refreshState = transitionNextState();
           if (widget.builder != null && latestIndicatorBoxExtent > 0) {
-            return widget.builder(
-              context,
-              refreshState,
-              latestIndicatorBoxExtent,
-              widget.refreshTriggerPullDistance,
-              widget.refreshIndicatorExtent,
+            return Container(
+              height: latestIndicatorBoxExtent,
+              color: Colors.black,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    top: latestIndicatorBoxExtent - 50,
+                    child: Text("texxsssdsdd",style: TextStyle(color: Colors.white,fontSize: 30),),
+                  ),
+                  widget.builder(
+                    context,
+                    refreshState,
+                    latestIndicatorBoxExtent,
+                    widget.refreshTriggerPullDistance,
+                    widget.refreshIndicatorExtent,
+                  )
+                ],
+              ),
             );
           }
           return Container();
