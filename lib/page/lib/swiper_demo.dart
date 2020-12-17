@@ -11,6 +11,7 @@ class _SwiperDemoState extends State<SwiperDemo> {
   Widget build(BuildContext context) {
     return Swiper(
       itemBuilder: (BuildContext context, int index) {
+        print("<> $index");
         return new Image.network(
           "http://via.placeholder.com/350x150",
           fit: BoxFit.fill,
@@ -21,6 +22,8 @@ class _SwiperDemoState extends State<SwiperDemo> {
       viewportFraction: 0.8,
       scale: 0.9,
       outer: false,
+      autoplay: true,
+      controller: SwiperController(),
     );
   }
 }

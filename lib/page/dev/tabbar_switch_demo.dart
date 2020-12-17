@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/magic/diy_tabs.dart';
+import 'package:flutter_demo/page/common/common.dart';
 
 class TabBarSwitchDemo extends StatefulWidget {
   @override
@@ -62,17 +63,7 @@ class _TabBarSwitchDemoState extends State<TabBarSwitchDemo>
       ));
       Color color = getRandomColor();
       tabPageViews.add(
-        Container(
-          color: color,
-          child: Center(
-            child: Text(
-              element,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+          TabViewPage(color,element)
       );
     });
     tabController1 = TabController(
@@ -89,7 +80,7 @@ class _TabBarSwitchDemoState extends State<TabBarSwitchDemo>
 
   Widget _pageView(TabController tabController) {
     return Expanded(
-      child: TabBarView(
+      child: DIYTabBarView( // 测试page切换临近Tab不做初始化
         controller: tabController,
         children: tabPageViews,
       ),
@@ -166,3 +157,53 @@ class _TabBarSwitchDemoState extends State<TabBarSwitchDemo>
     );
   }
 }
+
+class TabViewPage extends StatefulWidget {
+
+  final Color color;
+  final String element;
+
+
+  TabViewPage(this.color, this.element);
+
+  @override
+  _TabViewPageState createState() => _TabViewPageState();
+}
+
+class _TabViewPageState extends State<TabViewPage> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    print("<> _TabViewPageState initState ${widget.element}");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("<> _TabViewPageState dispose ${widget.element}");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("<> _TabViewPageState build ${widget.element}");
+    return Stack(
+      children: <Widget>[
+        Common.getWidget(widget.element.hashCode),
+        Container(
+          color: widget.color,
+          child: Center(
+            child: Text(
+              widget.element,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
