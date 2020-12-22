@@ -1,0 +1,12 @@
+targets:
+  $default:
+    builders:
+      flutterannotation|mark_builder:
+        enabled: true
+builders:
+  mark_builder:
+    import: 'package:flutterannotation/builder.dart'
+    builder_factories: ['markBuilder']
+    build_extensions: { '.dart': ['.mark.dart'] }
+    auto_apply: root_package
+    build_to: source

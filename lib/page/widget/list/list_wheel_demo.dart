@@ -18,7 +18,6 @@ class _ListWheelDemoState extends State<ListWheelDemo> {
       overAndUnderCenterOpacity: 1.0,
       //透明度
       squeeze: 1,
-      clipToSize: false,
       renderChildrenOutsideViewport: true,
       itemExtent: 100,
       onSelectedItemChanged: (index) {

@@ -105,7 +105,19 @@ class _MapDemoState extends State<MapDemo> {
 //              });
 //              _showResult(result);
 //            },
-//          )
+//          ),
+          RaisedButton(
+            child: Text("Map<String, dynamic> to Map<String, String> Func"),
+            onPressed: () {
+              _mapString(baseMap4);
+            },
+          ),
+          RaisedButton(
+            child: Text("Map<String, String> to Map<String, dynamic> Func"),
+            onPressed: () {
+              _mapDynamic(baseMap5);
+            },
+          ),
         ],
       ),
     );
@@ -113,6 +125,13 @@ class _MapDemoState extends State<MapDemo> {
 
   _showResult(var result){
     Scaffold.of(context).showSnackBar(SnackBar(content: Text("${jsonEncode(result)}")));
+  }
+
+  _mapString(Map<String, String> into){
+    _showResult(into);
+  }
+  _mapDynamic(Map<String, dynamic> into){
+    _showResult(into);
   }
 }
 /// 这个Demo主要验证 map添加数据时发生的问题，原先怀疑是Map<,>类型转换问题
