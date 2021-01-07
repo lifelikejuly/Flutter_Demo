@@ -4,6 +4,6 @@
 // MarkGenerator
 // **************************************************************************
 
-//MarkDemo
-//lib/mark_demo.dart
-//hello
+class MarkDemoMark {
+  String hello;
+}

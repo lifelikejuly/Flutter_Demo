@@ -6,7 +6,7 @@ targets:
 builders:
   mark_builder:
     import: 'package:flutterannotation/builder.dart'
-    builder_factories: ['markBuilder']
-    build_extensions: { '.dart': ['.mark.dart'] }
+    builder_factories: ['markBuilder','markWidgetBuilder']
+    build_extensions: { '.dart': ['.mark.dart','.widget.dart'] }
     auto_apply: root_package
     build_to: source

@@ -6,3 +6,9 @@ import 'generator.dart';
 
 Builder markBuilder(BuilderOptions options) => LibraryBuilder(MarkGenerator(),
     generatedExtension: '.mark.dart');
+
+
+
+
+Builder markWidgetBuilder(BuilderOptions options) => LibraryBuilder(WidgetMarkGenerator(),
+    generatedExtension: '.widget.dart');
