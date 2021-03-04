@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:redux/redux.dart' as FlutterRedux;
 
 import 'home_page.dart';
+import 'page/lib/fishredux/list/page.dart';
 import 'page/lib/redux_demo.dart';
 
 String CRASH_TAG = "---CRASH_TAG--- ";
@@ -90,6 +91,7 @@ class _MyAppState extends State<MyApp> {
       'fishPage2': FishDemoPage2Page(),
       'fishPage3': FishDemoListPagePage(),
       'fishPage4': masterPagePage(),
+      'fishReduxDemo-adapter-list': DemoListAdapterPage(),
     },
   );
 

@@ -15,6 +15,11 @@ class FishDemoPage1Page extends Page<FishDemoPage1State, Map<String, dynamic>> {
           effect: buildEffect(),
           reducer: buildReducer(),
           view: buildView,
+          shouldUpdate: (oldState, newState) {
+            //控制是否刷新组件
+            print("<>  ---  fishPage1 shouldUpdate");
+            return false;
+          },
           dependencies: Dependencies<FishDemoPage1State>(
               adapter: null,
               slots: <String, Dependent<FishDemoPage1State>>{
@@ -29,7 +34,7 @@ class ChildConnOp extends ConnOp<FishDemoPage1State, Demo1ChildViewState> {
 
   @override
   Demo1ChildViewState get(FishDemoPage1State state) {
-    print("FishDemoPage1Page ConnOp get");
+    print("<> FishDemoPage1Page ChildConnOp get ${state.childNum}");
     if (_state == null) {
       _state = Demo1ChildViewState(childNum: state.childNum);
     }
@@ -39,7 +44,7 @@ class ChildConnOp extends ConnOp<FishDemoPage1State, Demo1ChildViewState> {
   @override
   void set(FishDemoPage1State state, Demo1ChildViewState subState) {
 //    super.set(state, subState);
-    print("FishDemoPage1Page ConnOp set");
+    print("<> FishDemoPage1Page ChildConnOp set ${subState.childNum}");
     state.childNum = subState.childNum;
   }
 }

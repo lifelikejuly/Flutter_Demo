@@ -35,6 +35,12 @@ class _FishReduxDemoState extends State<FishReduxDemo> {
             onPressed: () {
               Navigator.of(context).pushNamed('fishPage4');
             },
+          ),
+          RaisedButton(
+            child: Text("List Adapter"),
+            onPressed: () {
+              Navigator.of(context).pushNamed('fishReduxDemo-adapter-list');
+            },
           )
         ],
       ),

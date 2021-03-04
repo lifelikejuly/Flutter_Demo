@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
 import 'package:flutter_demo/page/dev/one_line_warp_demo.dart';
 import 'package:flutter_demo/page/dev/page_cache_demo.dart';
+import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_border_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_customer_demo.dart';
 import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
+import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
 import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
 
-
-
 import 'page/dart/map_demo.dart';
+import 'page/dev/flex_tabbar_page_demo1/complex_page_demo1.dart';
 import 'page/dev/list_jump_init_demo.dart';
 import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
@@ -28,8 +30,8 @@ class TableContents {
 
   // 开发真实案例
   static Map<String, Widget> DevDemos = {
-    "NestedScroll定制化页面":NestedScrollPageDemo(),
-    "AppBar吸顶效果+TabBar列表":NestedScrollTabBarListDemo(),
+    "NestedScroll定制化页面": NestedScrollPageDemo(),
+    "AppBar吸顶效果+TabBar列表": NestedScrollTabBarListDemo(),
     "顶部Bar吸顶效果": BarSnapDemo(),
     "列表滑动的阻尼效果自定义": DIYScrollDemo(),
     "Gif控制播放": GifPlayerDemo(),
@@ -51,6 +53,9 @@ class TableContents {
     "Sliver支持添加边框的问题": SliverBorderDemo(),
     "Sliver自定义UI组件": SliverCustomerDemo(),
     "Warp组件只保留一行数据": OneLineWrapDemo(),
+    "复杂页面交互布局实战Demo1": ComplexPageDemo1(),
+    "页面结构实战Demo2": StickyTabsPage(),
+    "Key复用导致的问题": ReuseKeyListDemo(),
   };
 
   // 组件学习
@@ -76,7 +81,6 @@ class TableContents {
     "SliverGrid": SliverGridDemo(),
     "SliverPrototypeExtentList": SliverPrototypeExtentListDemo(),
   };
-
 
   // Layout组件
   static Map<String, Widget> LayoutDemos = {
@@ -126,12 +130,11 @@ class TableContents {
     "效果轮播transformer": TransformerPageDemo(),
     "动效lottie": LottieDemo(),
     "Gif播放控制flutter_gifimage": GifControllerDemo(),
+    "extended_nested_scroll_view": OldExtendedNestedScrollViewDemo(),
   };
-
 
   static Map<String, Widget> DartDemos = {
     "Map集合类型添加的异常": MapDemo(),
-
   };
 
   static Map<String, Map<String, Widget>> tables = {
@@ -139,6 +142,6 @@ class TableContents {
     "开发实战案例": DevDemos,
     "组件学习": WidgetDemos,
     "第三方库": OpenLibDemos,
-    "Dart语法相关":DartDemos,
+    "Dart语法相关": DartDemos,
   };
 }

@@ -7,7 +7,7 @@ import 'state.dart';
 
 Widget buildView(
     Demo1ChildViewState state, Dispatch dispatch, ViewService viewService) {
-  print("childView buildView");
+  print("<>  ---  fishPage1 childView buildView");
   return Container(
       color: Colors.yellow,
       child: Column(
@@ -27,16 +27,19 @@ Widget buildView(
                   dispatch(FishDemoPage1ActionCreator.onReduceAction());
                 },
               ),
-              Text("self num: ${state.childNum}"),
               RaisedButton(
                 child: Text("self num add"),
                 onPressed: () {
-                  dispatch(Demo1ChildViewActionCreator.onUpdateSelfAction(
-                      state.clone()..childNum += 1));
+
+//                  dispatch(Demo1ChildViewActionCreator.onUpdateSelfAction(
+//                      state.clone()..childNum += 1));
+                  dispatch(Demo1ChildViewActionCreator.onAddSelfAction());
                 },
               ),
             ],
           ),
+          Text("self num: ${state.childNum}"),
         ],
       ));
 }
+

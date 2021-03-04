@@ -37,14 +37,14 @@ class Common {
   }
 
 
-  static Widget getWidget(int index){
+  static Widget getWidget(int index,{Color iColor}){
     Color color = getRandomColor();
     return Container(
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.symmetric(horizontal: 5),
       height: 300,
       width: 200,
-      color: color,
+      color: iColor ?? color,
       alignment: Alignment.center,
       child: Text(
         "$index",
