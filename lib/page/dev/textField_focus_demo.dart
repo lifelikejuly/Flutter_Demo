@@ -10,22 +10,34 @@ class TextFieldFocusDemo extends StatefulWidget {
 class _TextFieldFocusDemoState extends State<TextFieldFocusDemo> {
   FocusNode focusNode1 = new FocusNode();
   FocusNode focusNode2 = new FocusNode();
-  TextEditingController textEditingController = new TextEditingController();
+  TextEditingController textEditingController1 = new TextEditingController();
+  TextEditingController textEditingController2 = new TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    textEditingController1.addListener(() {
+        String text = textEditingController1.text;
+        TextSelection textSelection = textEditingController1.selection;
+        int start = textSelection.start;
+        int end = textSelection.end;
+        print("<> textSelection text $text start $start end $end");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
+      child: ListView(
         children: <Widget>[
           TextField(
               autofocus: true,
               focusNode: focusNode1,
-              controller: textEditingController,
+              controller: textEditingController1,
               decoration: InputDecoration(hintText: "focusNode1")),
           TextField(
               autofocus: true,
               focusNode: focusNode2,
-              controller: textEditingController,
+              controller: textEditingController2,
               decoration: InputDecoration(hintText: "focusNode2")),
           MaterialButton(
             child: Text("失去焦点"),
@@ -37,6 +49,27 @@ class _TextFieldFocusDemoState extends State<TextFieldFocusDemo> {
             child: Text("获取焦点1"),
             onPressed: () {
               FocusScope.of(context).requestFocus(focusNode1);
+            },
+          ),
+          MaterialButton(
+            child: Text("光标向前"),
+            onPressed: () {
+              int start = textEditingController1.selection.start;
+              int end = textEditingController1.selection.end;
+              int length = textEditingController1.text.length;
+              start = start < length ? start + 1 : length;
+              end = end < length ? end + 1 : length;
+              textEditingController1.selection = TextSelection(baseOffset: start,extentOffset: end);
+            },
+          ),
+          MaterialButton(
+            child: Text("光标向后"),
+            onPressed: () {
+              int start = textEditingController1.selection.start;
+              int end = textEditingController1.selection.end;
+              start = start > 0 ? start - 1 : 0;
+              end = end > 0 ? end - 1 : 0;
+              textEditingController1.selection = TextSelection(baseOffset: start,extentOffset: end);
             },
           ),
           MaterialButton(
@@ -69,42 +102,6 @@ class _TextFieldFocusDemoState extends State<TextFieldFocusDemo> {
                   builder: (BuildContext context) => FocusNodeDemoPage(),
                 ),
               );
-
-              // showGeneralDialog(
-              //     context: context,
-              //     pageBuilder: (BuildContext buildContext,
-              //         Animation<double> animation,
-              //         Animation<double> secondaryAnimation) {
-              //       final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
-              //       final Widget pageChild = Builder(builder: (context) {
-              //         return StatefulBuilder(builder: (context, StateSetter state) {
-              //           return FocusNodeDemoPage();
-              //         });
-              //       });
-              //       return Builder(builder: (BuildContext context) {
-              //         return theme != null
-              //             ? Theme(data: theme, child: pageChild)
-              //             : pageChild;
-              //       });
-              //     },
-              //   barrierDismissible: true,
-              //   barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-              //   barrierColor: Colors.black54,
-              //   transitionDuration: const Duration(milliseconds: 300),
-              //   transitionBuilder: (
-              //       BuildContext context,
-              //       Animation<double> animation,
-              //       Animation<double> secondaryAnimation,
-              //       Widget child,
-              //       ) =>
-              //       SlideTransition(
-              //         position: Tween<Offset>(
-              //           begin: const Offset(0, 1),
-              //           end: Offset.zero,
-              //         ).animate(animation),
-              //         child: child,
-              //       ),
-              // );
             },
           ),
         ],
