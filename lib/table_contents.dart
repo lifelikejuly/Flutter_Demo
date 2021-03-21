@@ -6,6 +6,7 @@ import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_border_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_customer_demo.dart';
 import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
+import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
@@ -56,6 +57,7 @@ class TableContents {
     "复杂页面交互布局实战Demo1": ComplexPageDemo1(),
     "页面结构实战Demo2": StickyTabsPage(),
     "Key复用导致的问题": ReuseKeyListDemo(),
+    "TextField输入框焦点问题": TextFieldFocusDemo(),
   };
 
   // 组件学习

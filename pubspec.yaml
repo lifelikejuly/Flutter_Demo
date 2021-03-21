@@ -56,6 +56,7 @@ dependencies:
   lottie: 0.6.0
   # gif播放
   flutter_gifimage: ^1.0.0
+  # 拓展的输入框
 #  flutter_boost:
 #    git:
 #      url: 'https://github.com/alibaba/flutter_boost.git'
