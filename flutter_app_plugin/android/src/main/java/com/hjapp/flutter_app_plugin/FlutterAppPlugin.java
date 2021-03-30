@@ -75,8 +75,8 @@ public class FlutterAppPlugin implements MethodCallHandler, PluginRegistry.Activ
                         map.put("yes","yes");
                         result.success(map);
                     }else{
-                        result.error("-1", "bitmap null", "sss");
-//                        result.error("-1", "bitmap null", new HashMap<>());
+                        map.put("yes","no");
+                        result.error("-1", "bitmap null", map);
                     }
                     break;
                 default:
