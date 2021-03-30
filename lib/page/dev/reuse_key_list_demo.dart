@@ -49,11 +49,21 @@ class _ReuseKeyListDemoState extends State<ReuseKeyListDemo> {
           onLongPress: () {
             items.removeAt(0);
             itemValue.removeAt(0);
+            Scaffold.of(context).showSnackBar(
+                SnackBar(content: Text("删除"))
+            );
+            setState(() {});
+          },
+          onTap: (){
+            Scaffold.of(context).showSnackBar(
+                 SnackBar(content: Text("点赞"))
+            );
+            items[index] = !items[index];
             setState(() {});
           },
         );
       },
-      itemCount: items.length,
+      itemCount: itemValue.length,
     );
   }
 }
@@ -84,7 +94,7 @@ class _ItemCellState extends State<ItemCell> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.amber,
+        color: Colors.grey,
         height: 100,
         child: Column(
           children: <Widget>[
@@ -97,7 +107,7 @@ class _ItemCellState extends State<ItemCell> with TickerProviderStateMixin {
                     return Container(
                       width: 30 + _controller.value * 10,
                       height: 30 + _controller.value * 10,
-                      color: Colors.red,
+                      color: Colors.orange,
                     );
                   },
                 )

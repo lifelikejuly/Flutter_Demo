@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
+import 'package:flutter_demo/page/dev/gif_play_one_bug_demo.dart';
 import 'package:flutter_demo/page/dev/one_line_warp_demo.dart';
 import 'package:flutter_demo/page/dev/page_cache_demo.dart';
 import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
@@ -58,6 +59,7 @@ class TableContents {
     "页面结构实战Demo2": StickyTabsPage(),
     "Key复用导致的问题": ReuseKeyListDemo(),
     "TextField输入框焦点问题": TextFieldFocusDemo(),
+    "Gif图片有Loop只播放一次不显示问题": GifPlayOnceBugDemo(),
   };
 
   // 组件学习
