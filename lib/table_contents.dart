@@ -8,6 +8,7 @@ import 'package:flutter_demo/page/dev/sliver_border_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_customer_demo.dart';
 import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
 import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
+import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
@@ -28,6 +29,7 @@ class TableContents {
     "翻页效果Flip": FlipDemo(),
     "抽屉效果Drawer": DrawerDemo(),
     "轮播效果BubbleCarousel": CarouselDemo(),
+    "拖拽移动九宫格DragGridView": DragGridViewDemo(),
   };
 
   // 开发真实案例

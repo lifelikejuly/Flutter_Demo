@@ -44,6 +44,40 @@ class _RowTextWithIconDemoState extends State<RowTextWithIconDemo> {
             Icon(Icons.add),
           ],
         ),
+        Text.rich(
+          TextSpan(
+            style: TextStyle(
+              color: Color(0xFF999999),
+              fontSize: 10,
+              fontWeight: FontWeight.w300,
+            ),
+            children: [
+              TextSpan(
+                text: "口感软糯",
+                // style: TextStyle(
+                //   color: Color(0xFF999999),
+                //   fontSize: 12,
+                // ),
+              ),
+              WidgetSpan(
+                child: SizedBox(width: 10)
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child:  Image.asset(
+                  "images/icon_left_sliver.png",
+                  width: 10,
+                  height: 10,
+                ),
+              )
+            ],
+          ),
+          style: TextStyle(
+            color: Color(0xFF999999),
+            fontSize: 10,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
       ],
     );
   }
