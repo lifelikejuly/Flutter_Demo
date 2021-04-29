@@ -11,6 +11,7 @@ import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
+import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
 import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
@@ -73,6 +74,7 @@ class TableContents {
     "Canvas组件": CommonWidgetDemo(CanvasWidgetDemos),
     "GestureDetector组件": CommonWidgetDemo(GestureDetectorDemos),
     "Text组件": CommonWidgetDemo(TextDemos),
+    "Image组件": CommonWidgetDemo(ImageDemos),
   };
 
   // Tab组件
@@ -96,6 +98,11 @@ class TableContents {
   // Text组件
   static Map<String, Widget> TextDemos = {
     "Text文本水平居中": TextAlignDemo(),
+  };
+
+  // 图片组件
+  static Map<String, Widget> ImageDemos = {
+    "图片加载": ImageViewDemo(),
   };
 
   // Canvas组件
