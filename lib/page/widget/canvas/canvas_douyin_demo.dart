@@ -11,30 +11,35 @@ class CanvasDouyinDemo extends StatefulWidget {
 class _CanvasDouyinDemoState extends State<CanvasDouyinDemo> {
   double dx = 200;
   double dy = 200;
+  Timer timer;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Container(
+    return Container(
         width: double.infinity,
         height: double.infinity,
         child: CustomPaint(
           painter: DouyinPainter(dx, dy),
         ),
-      ),
     );
   }
 
   @override
   void initState() {
     super.initState();
-//    Timer.periodic(Duration(milliseconds: 500), (timer) {
-//      int next = Random().nextInt(5);
-//      setState(() {
-//        dy = dx = 100.0 + next;
-//      });
-//    });
+   //  timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+   //   int next = Random().nextInt(5);
+   //
+   //   setState(() {
+   //     dy = dx = 200.0 + next;
+   //   });
+   // });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }
 
@@ -57,6 +62,7 @@ class DouyinPainter extends CustomPainter {
     paint.color = red;
     paint.blendMode = BlendMode.colorDodge;
     _drawJ(Offset(dx + 3, dy + 5), canvas, paint);
+    canvas.save();
   }
 
   @override

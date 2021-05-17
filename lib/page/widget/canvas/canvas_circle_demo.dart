@@ -50,6 +50,7 @@ class CirclePainter extends CustomPainter {
     _path.offset(Offset(200, 200));
     _path.close();
     canvas.drawPath(_path, Paint()..color = green);
+    canvas.save();
   }
 
   @override

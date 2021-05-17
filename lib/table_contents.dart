@@ -10,6 +10,9 @@ import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
 import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
+import 'package:flutter_demo/page/widget/animation/clip_animation_demo.dart';
+import 'package:flutter_demo/page/widget/animation/hero_animation_demo.dart';
+import 'package:flutter_demo/page/widget/animation/image_combined_animation_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
 import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
@@ -21,6 +24,7 @@ import 'page/dev/flex_tabbar_page_demo1/complex_page_demo1.dart';
 import 'page/dev/list_jump_init_demo.dart';
 import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
+import 'page/widget/canvas/canvas_dash_board_demo.dart';
 import 'page/widget/tab/page_view_demo.dart';
 import 'simple_import.dart';
 
@@ -63,6 +67,7 @@ class TableContents {
     "Key复用导致的问题": ReuseKeyListDemo(),
     "TextField输入框焦点问题": TextFieldFocusDemo(),
     "Gif图片有Loop只播放一次不显示问题": GifPlayOnceBugDemo(),
+    "图片放大预览交互效果动画": ImageCombinedAnimationDemo(),
   };
 
   // 组件学习
@@ -75,6 +80,7 @@ class TableContents {
     "GestureDetector组件": CommonWidgetDemo(GestureDetectorDemos),
     "Text组件": CommonWidgetDemo(TextDemos),
     "Image组件": CommonWidgetDemo(ImageDemos),
+    "Animation组件": CommonWidgetDemo(AnimationDemos)
   };
 
   // Tab组件
@@ -108,7 +114,7 @@ class TableContents {
   // Canvas组件
   static Map<String, Widget> CanvasWidgetDemos = {
     "抖音Logo绘制": CanvasDouyinDemo(),
-    "仪表盘绘制": CanvasDouyinDemo(),
+    "仪表盘绘制": CanvasDashBoardDemo(),
     "贝塞尔曲线画圆绘制": CanvasCircleDemo(),
   };
 
@@ -125,6 +131,12 @@ class TableContents {
   static Map<String, Widget> ListDemos = {
     "ListWheelScrollView": ListWheelDemo(),
     "RefreshIndicator VS CupertinoSliverRefreshControl": ListPullRefreshDemo(),
+  };
+
+  // Animation组件
+  static Map<String, Widget> AnimationDemos = {
+    "Hero动画": HeroAnimationDemo(),
+    "Clip动画": ClipAnimationDemo(),
   };
 
   // 第三方库使用

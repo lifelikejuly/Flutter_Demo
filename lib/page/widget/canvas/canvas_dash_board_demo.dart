@@ -4,17 +4,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 
-class PainterDemo extends StatefulWidget {
+class CanvasDashBoardDemo extends StatefulWidget {
   @override
-  _PainterDemoState createState() => _PainterDemoState();
+  _CanvasDashBoardDemoState createState() => _CanvasDashBoardDemoState();
 }
 
-class _PainterDemoState extends State<PainterDemo> {
+class _CanvasDashBoardDemoState extends State<CanvasDashBoardDemo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Container(
+    return Container(
         height: double.infinity,
         width: double.infinity,
         child:
@@ -43,8 +41,7 @@ class _PainterDemoState extends State<PainterDemo> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
