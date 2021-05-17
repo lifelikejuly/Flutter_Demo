@@ -20,6 +20,7 @@ import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
 
 import 'page/dart/map_demo.dart';
+import 'page/dart/stream_demo.dart';
 import 'page/dev/flex_tabbar_page_demo1/complex_page_demo1.dart';
 import 'page/dev/list_jump_init_demo.dart';
 import 'page/dev/sliver_refresh_demo.dart';
@@ -160,6 +161,7 @@ class TableContents {
 
   static Map<String, Widget> DartDemos = {
     "Map集合类型添加的异常": MapDemo(),
+    "Stream使用": StreamDemo(),
   };
 
   static Map<String, Map<String, Widget>> tables = {
