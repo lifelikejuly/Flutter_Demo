@@ -8,10 +8,8 @@ class ImageCombinedAnimationDemo extends StatefulWidget {
       _ImageCombinedAnimationDemoState();
 }
 
-class _ImageCombinedAnimationDemoState
-    extends State<ImageCombinedAnimationDemo>  with SingleTickerProviderStateMixin {
-
-
+class _ImageCombinedAnimationDemoState extends State<ImageCombinedAnimationDemo>
+    with SingleTickerProviderStateMixin {
   final String IMAGE_SRC =
       "http://pic37.nipic.com/20140113/8800276_184927469000_2.png";
 
@@ -24,14 +22,14 @@ class _ImageCombinedAnimationDemoState
   @override
   void initState() {
     _controller =
-    AnimationController(duration: Duration(milliseconds: 200), vsync: this)
-      ..addStatusListener((status) {
-        // if (status == AnimationStatus.completed) {
-        //   _controller.reverse();
-        // } else if (status == AnimationStatus.dismissed) {
-        //   _controller.forward();
-        // }
-      });
+        AnimationController(duration: Duration(milliseconds: 200), vsync: this)
+          ..addStatusListener((status) {
+            // if (status == AnimationStatus.completed) {
+            //   _controller.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   _controller.forward();
+            // }
+          });
     _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
     // _controller.forward();
 
@@ -55,51 +53,55 @@ class _ImageCombinedAnimationDemoState
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GestureDetector(
-          child: AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return Transform(
-                  transform: Matrix4.identity()
-                    ..scale(getScaleValue())
-                    ..translate(0.0, _animation.value * (_screenHeight - 178.6) / 2.0)
-                  ,
-                  child: ClipPath(
-                    clipper: TrianglePath(_animation.value, _screenWidth),
+        Image.network(
+          IMAGE_SRC,
+          fit: BoxFit.cover,
+        ),
+        AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return Transform(
+                transform: Matrix4.identity()
+                  ..scale(getScaleValue())
+                  ..translate(
+                      0.0, _animation.value * (_screenHeight - 178.6) / 2.0),
+                child: ClipPath(
+                  clipper: TrianglePath(_animation.value, _screenWidth),
+                  child: GestureDetector(
                     child: Image.network(
                       IMAGE_SRC,
                       fit: BoxFit.cover,
                     ),
+                    onTap: () {
+                      print("<> _controller.value ${_controller.value}");
+                      if (_controller.value == 0) {
+                        _controller.forward();
+                      } else {
+                        _controller.reverse();
+                      }
+                    },
                   ),
-                );
-              }),
-          onTap: (){
-            print("<> _controller.value ${_controller.value}");
-            if(_controller.value == 0){
-              _controller.forward();
-            }else{
-              _controller.reverse();
-            }
-          },
-        ),
+                ),
+              );
+            }),
         FlatButton(
           child: Text("+"),
-          onPressed: (){
+          onPressed: () {
             _controller.forward();
           },
         ),
         FlatButton(
           child: Text("-"),
-          onPressed: (){
+          onPressed: () {
             _controller.reverse();
           },
-        )
+        ),
       ],
     );
   }
 
   double getScaleValue() {
-    return 100 / 178.6 + _animation.value * (78.6/ 178.6);
+    return 100 / 178.6 + _animation.value * (78.6 / 178.6);
   }
 }
 
