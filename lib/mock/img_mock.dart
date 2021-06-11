@@ -65,3 +65,15 @@ const List<String> mockImgs = [
   'https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00709-1604.jpg',
   'http://wx2.sinaimg.cn/bmiddle/ceeb653ely1g4xhw7xasrg207d054njs.gif',
 ];
+
+const List<String> mockSpecialSizeImages = [
+  "https://wx3.sinaimg.cn/mw690/006f8wK2gy1gq1ied3kc3j60ku2siu0x02.jpg", // 超长图
+];
+
+
+const List<String> pageViewImages = [
+  "https://wx3.sinaimg.cn/mw690/006f8wK2gy1gq1ied3kc3j60ku2siu0x02.jpg", // 超长图
+  'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2313705569,9891646&fm=26&gp=0.jpg',
+  'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1436889382,823414461&fm=26&gp=0.jpg',
+  'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=263400435,1630698605&fm=26&gp=0.jpg',
+];

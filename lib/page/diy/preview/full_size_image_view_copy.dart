@@ -7,14 +7,17 @@ import 'package:flutter/material.dart';
 typedef BigImagesPopCallback = void Function();
 
 typedef BigImagesBuilder<T> = Widget Function(
-  BuildContext context, {
-  // 是否正在执行动画
-  bool widgetMove,
-  // 更新需要返回的值
-  Function(T) valueUpdate,
-  // 关闭时候的rect
-  Function(Rect) rectUpdate,
-});
+  BuildContext context
+//     , {
+//   // 是否正在执行动画
+//   bool widgetMove,
+//   // 更新需要返回的值
+//   Function(T) valueUpdate,
+//   // 关闭时候的rect
+//   Function(Rect) rectUpdate,
+// }
+
+);
 
 typedef BigImagesExtraBuilder = Widget Function(
   BuildContext context, {
@@ -132,9 +135,9 @@ class BigImagesContainerState<T> extends State<BigImagesContainerCopy<T>>
     double opacity = 1;
     Widget child = widget?.builder(
           context,
-          widgetMove: inAnimateOrDrag,
-          valueUpdate: updateValue,
-          rectUpdate: updateRect,
+          // widgetMove: inAnimateOrDrag,
+          // valueUpdate: updateValue,
+          // rectUpdate: updateRect,
         ) ??
         Container();
 

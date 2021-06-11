@@ -10,9 +10,11 @@ import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
 import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
+import 'package:flutter_demo/page/lib/photo_view_demo.dart';
 import 'package:flutter_demo/page/widget/animation/clip_animation_demo.dart';
 import 'package:flutter_demo/page/widget/animation/hero_animation_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
+import 'package:flutter_demo/page/widget/image/image_page_view_demo.dart';
 import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
 import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
@@ -27,6 +29,7 @@ import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
 import 'page/widget/canvas/canvas_dash_board_demo.dart';
+import 'page/widget/image/big_height_image_demo.dart';
 import 'page/widget/tab/page_view_demo.dart';
 import 'simple_import.dart';
 
@@ -112,6 +115,8 @@ class TableContents {
   // 图片组件
   static Map<String, Widget> ImageDemos = {
     "图片加载": ImageViewDemo(),
+    "长图加载": BigHeightImageDemo(),
+    "PageView图片加载": ImagePageViewDemo(),
   };
 
   // Canvas组件
@@ -158,6 +163,7 @@ class TableContents {
     "效果轮播transformer": TransformerPageDemo(),
     "动效lottie": LottieDemo(),
     "Gif播放控制flutter_gifimage": GifControllerDemo(),
+    "图片阅读器photo_view": PhotoViewDemo(),
     "extended_nested_scroll_view": OldExtendedNestedScrollViewDemo(),
   };
 
