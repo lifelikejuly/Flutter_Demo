@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
+import 'package:flutter_demo/page/dev/crash_demo.dart';
 import 'package:flutter_demo/page/dev/gif_play_one_bug_demo.dart';
+import 'package:flutter_demo/page/dev/navigator_router_demo.dart';
 import 'package:flutter_demo/page/dev/one_line_warp_demo.dart';
 import 'package:flutter_demo/page/dev/page_cache_demo.dart';
 import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
@@ -167,6 +169,12 @@ class TableContents {
     "extended_nested_scroll_view": OldExtendedNestedScrollViewDemo(),
   };
 
+  // 基础技术方案
+  static Map<String, Widget> BaseSkillDemos = {
+    // "路由检查页面": NavigatorRouterDemo(),
+    "Crash错误捕捉":CrashDemo(),
+  };
+
   static Map<String, Widget> DartDemos = {
     "Map集合类型添加的异常": MapDemo(),
     "Stream使用": StreamDemo(),
@@ -178,5 +186,6 @@ class TableContents {
     "组件学习": WidgetDemos,
     "第三方库": OpenLibDemos,
     "Dart语法相关": DartDemos,
+    "基础技术相关":BaseSkillDemos,
   };
 }

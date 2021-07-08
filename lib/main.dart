@@ -8,6 +8,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_demo/demo/router/router_data_demo.dart';
 import 'package:flutter_demo/demo/router/router_demo.dart';
 import 'package:flutter_demo/demo_page.dart';
+import 'package:flutter_demo/page/dev/navigator_router_demo.dart';
 import 'package:flutter_demo/page/lib/fishredux/demopage1/page.dart';
 import 'package:flutter_demo/page/lib/fishredux/demopage2/page.dart';
 import 'package:flutter_demo/page/lib/fishredux/demopage3/page.dart';
@@ -31,9 +32,18 @@ Future<Null> _reportError(dynamic error, dynamic stackTrace) {
 
 void main() {
   /// 捕获Flutter层异常捕获
-  FlutterError.onError = (FlutterErrorDetails details) async {
-    println("$CRASH_TAG  --------run FlutterError.onError--------");
-    println("${details.exception} ${details.stack}");
+  final defaultOnError = FlutterError.onError;
+  FlutterError.onError = (FlutterErrorDetails details){
+    try{
+      defaultOnError(details);
+    }catch(e,s){
+      FlutterError.dumpErrorToConsole(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+    }
+    print("$CRASH_TAG  --------run FlutterError.onError--------");
+    print("${details.exception} ${details.stack}");
     FlutterError.resetErrorCount();
     FlutterError.dumpErrorToConsole(details);
   };
@@ -41,30 +51,26 @@ void main() {
   /// widget构建异常捕获
   var _defaultErrorWidgetBuilder = ErrorWidget.builder;
   ErrorWidget.builder = (FlutterErrorDetails details) {
-    println("$CRASH_TAG  --------run ErrorWidget.builder--------");
-    println("${details.exception} ${details.stack}");
+    print("$CRASH_TAG  --------run ErrorWidget.builder--------");
+    print("${details.exception} ${details.stack}");
     return _defaultErrorWidgetBuilder(details);
   };
-
-  runZoned<Future<Null>>(() async {
+  runZonedGuarded<Future<void>>(() async {
     runApp(ChangeNotifierProvider<ThemeNotifier>.value(
       //ChangeNotifierProvider调用value()方法，里面传出value和child
       value: ThemeNotifier(), //value设置了默认的Counter()
       child: MyApp(),
     ));
-
-//    runApp(MyApp());
-
     /// 记录帧率信息
 //    SchedulerBinding.instance.addTimingsCallback((timings) {
 //      for (FrameTiming frameTiming in timings) {
 //        println("addTimingsCallback ${frameTiming.toString()}");
 //      }
 //    });
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      println("addPostFrameCallback $timeStamp");
-    });
-  }, onError: (error, stackTrace) {
+//     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+//       println("addPostFrameCallback $timeStamp");
+//     });
+  }, (error, stackTrace) {
     /// Dart和Native层异常捕获
     _reportError(error, stackTrace);
     print('$CRASH_TAG -------- onError dumpErrorToConsole-----');
@@ -73,11 +79,43 @@ void main() {
 //    FlutterError.resetErrorCount();
 //    FlutterError.dumpErrorToConsole(
 //        FlutterErrorDetails(exception: error, stack: stackTrace));
-  });
+  },
+    /// 不知道是不是日志捕获用的
+    // zoneSpecification: ZoneSpecification(print:(
+    //     Zone self, ZoneDelegate parent, Zone zone, String line){
+    //   print("<> line  lllkjjjj $line");
+    // }),
+
+  );
 }
+
+
+class MainEntry extends StatefulWidget {
+
+  final Widget widget;
+  static GlobalKey appKey = GlobalKey();
+
+  MainEntry(this.widget):super(key: appKey);
+
+  @override
+  _MainEntryState createState() => _MainEntryState();
+}
+
+class _MainEntryState extends State<MainEntry> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.widget;
+  }
+}
+
 
 class MyApp extends StatefulWidget {
   static bool isInDebugMode = true;
+  static GlobalKey appKey = GlobalKey();
+  static BuildContext mainContext;
+
+
+  MyApp():super(key:appKey);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -113,6 +151,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    MyApp.mainContext = context;
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
@@ -133,6 +172,7 @@ class _MyAppState extends State<MyApp> {
           "/router/next4": (context) => NextPage4(),
           "/router/next5": (context) => NextPage5(),
           "/router/data2": (context) => RouterChildDateDemo2(),
+         '/router/NavigatorRouterDemo': (context) =>  NavigatorPage(),
         },
         onGenerateRoute: (RouteSettings settings) {
           return MaterialPageRoute<Object>(builder: (BuildContext context) {
@@ -149,7 +189,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+
+  static GlobalKey appKey = GlobalKey();
+  MyHomePage({Key key, this.title}) : super(key: appKey);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -245,9 +287,9 @@ class UserNavigatorObserver extends NavigatorObserver {
   void didPop(Route route, Route previousRoute) {
     super.didPop(route, previousRoute);
     history.remove(route);
-    print("UserNavigatorObserver didPop route ${route?.settings.toString()} "
-        "previousRoute ${previousRoute?.settings?.toString()}");
-    print("UserNavigatorObserver didPop _history: ${history.length}");
+    print("[UserNavigatorObserver] [didPop] route ${route?.toString()} \n"
+        "previousRoute ${previousRoute?.toString()}");
+    print("[UserNavigatorObserver] [didPop] _history: ${history.length}");
 
     ///调用Navigator.of(context).pop() 出栈时回调
   }
@@ -256,9 +298,10 @@ class UserNavigatorObserver extends NavigatorObserver {
   void didPush(Route route, Route previousRoute) {
     super.didPush(route, previousRoute);
     history.add(route);
-    print("UserNavigatorObserver didPush route ${route.settings.toString()} "
-        "previousRoute ${previousRoute?.settings?.toString()}");
-    print("UserNavigatorObserver didPush _history: ${history.length}");
+
+    print("[UserNavigatorObserver] [didPush] route ${route.toString()} } \n"
+        "previousRoute ${previousRoute?.toString()}");
+    print("[UserNavigatorObserver] [didPush] _history: ${history.length}");
 
     ///调用Navigator.of(context).push(Route()) 进栈时回调
   }
@@ -267,9 +310,9 @@ class UserNavigatorObserver extends NavigatorObserver {
   void didRemove(Route route, Route previousRoute) {
     super.didRemove(route, previousRoute);
     history.remove(route);
-    print("UserNavigatorObserver didRemove route ${route.settings.toString()} "
-        "previousRoute ${previousRoute?.settings?.toString()}");
-    print("UserNavigatorObserver didRemove _history: ${history.length}");
+    print("[UserNavigatorObserver] [didRemove] route ${route?.toString()} \n"
+        "previousRoute ${previousRoute?.toString()}");
+    print("[UserNavigatorObserver] [didRemove] _history: ${history.length}");
 
     ///调用Navigator.of(context).removeRoute(Route()) 移除某个路由回调
   }
@@ -280,8 +323,8 @@ class UserNavigatorObserver extends NavigatorObserver {
     history.remove(oldRoute);
     history.add(newRoute);
     print(
-        "UserNavigatorObserver didReplace route ${newRoute.settings.toString()} "
-        "previousRoute ${oldRoute?.settings?.toString()}");
+        "[UserNavigatorObserver] [didReplace] route ${newRoute?.toString()} \n"
+        "previousRoute ${oldRoute?.toString()}");
 
     ///调用Navigator.of(context).replace( oldRoute:Route("old"),newRoute:Route("new)) 替换路由时回调
   }
@@ -290,7 +333,7 @@ class UserNavigatorObserver extends NavigatorObserver {
   void didStartUserGesture(Route route, Route previousRoute) {
     super.didStartUserGesture(route, previousRoute);
     print(
-        "UserNavigatorObserver didStartUserGesture route ${route.settings.toString()} "
+        "[UserNavigatorObserver] [didStartUserGesture] route ${route.settings.toString()} \n"
         "previousRoute ${previousRoute?.settings?.toString()}");
 
     ///iOS侧边手势滑动触发回调 手势开始时回调
