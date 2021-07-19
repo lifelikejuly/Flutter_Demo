@@ -16,6 +16,7 @@ import 'package:flutter_demo/page/lib/photo_view_demo.dart';
 import 'package:flutter_demo/page/widget/animation/clip_animation_demo.dart';
 import 'package:flutter_demo/page/widget/animation/hero_animation_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
+import 'package:flutter_demo/page/widget/gesture/gesture_behavior_demo.dart';
 import 'package:flutter_demo/page/widget/image/image_page_view_demo.dart';
 import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
@@ -29,6 +30,7 @@ import 'page/dev/image_combined_animation_demo.dart';
 import 'page/dev/list_jump_init_demo.dart';
 import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
+import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
 import 'page/widget/canvas/canvas_dash_board_demo.dart';
 import 'page/widget/image/big_height_image_demo.dart';
@@ -42,6 +44,7 @@ class TableContents {
     "抽屉效果Drawer": DrawerDemo(),
     "轮播效果BubbleCarousel": CarouselDemo(),
     "拖拽移动九宫格DragGridView": DragGridViewDemo(),
+    "拖拽移动列表DragListView": SliverReorderListViewDemo(),
     "大图预览交互效果FullSizePreviewImage":ImagePreviewAnimationDemo(),
   };
 
@@ -135,6 +138,7 @@ class TableContents {
     "手势点击": GestureClickDemo(),
     "手势缩放1": GestureScaleDemo1(),
     "手势缩放2": GestureScaleDemo2(),
+    "手势点击传递策略": GestureBehaviorDemo(),
   };
 
   // List组件

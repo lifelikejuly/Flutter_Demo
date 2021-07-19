@@ -24,7 +24,7 @@ class _ListPullRefreshDemoState extends State<ListPullRefreshDemo> {
     return Expanded(
       child: RefreshIndicator(
         onRefresh: () async {
-
+          print("<> RefreshIndicator onRefresh");
         },
         child: ListView.builder(
           itemBuilder: (context, index) {
@@ -43,7 +43,7 @@ class _ListPullRefreshDemoState extends State<ListPullRefreshDemo> {
         slivers: <Widget>[
           CupertinoSliverRefreshControl(
             onRefresh: () async {
-
+                print("<> CupertinoSliverRefreshControl onRefresh");
             },
           ),
           SliverList(
