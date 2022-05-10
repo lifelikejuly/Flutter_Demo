@@ -158,7 +158,7 @@ class ShareWidget extends InheritedWidget {
      * 这个context会重新构建以便从该widget获得新的值。
      * 这就是child向InheritedWidget注册的方法。
      */
-    return context.inheritFromWidgetOfExactType(ShareWidget);
+    return context.findAncestorRenderObjectOfType();
   }
 
   /**

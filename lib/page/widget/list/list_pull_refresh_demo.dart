@@ -25,6 +25,7 @@ class _ListPullRefreshDemoState extends State<ListPullRefreshDemo> {
       child: RefreshIndicator(
         onRefresh: () async {
           print("<> RefreshIndicator onRefresh");
+          await Future.delayed(Duration(seconds: 2));
         },
         child: ListView.builder(
           itemBuilder: (context, index) {

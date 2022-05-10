@@ -2,27 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
 import 'package:flutter_demo/page/dev/crash_demo.dart';
 import 'package:flutter_demo/page/dev/gif_play_one_bug_demo.dart';
-import 'package:flutter_demo/page/dev/navigator_router_demo.dart';
 import 'package:flutter_demo/page/dev/one_line_warp_demo.dart';
 import 'package:flutter_demo/page/dev/page_cache_demo.dart';
 import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
+import 'package:flutter_demo/page/dev/secondfloor/refresh_keep_second_floor_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_border_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_customer_demo.dart';
 import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
 import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
+import 'package:flutter_demo/page/diy/emoji/emoji_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/lib/photo_view_demo.dart';
-import 'package:flutter_demo/page/widget/animation/clip_animation_demo.dart';
-import 'package:flutter_demo/page/widget/animation/hero_animation_demo.dart';
-import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
-import 'package:flutter_demo/page/widget/gesture/gesture_behavior_demo.dart';
-import 'package:flutter_demo/page/widget/image/image_page_view_demo.dart';
-import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
-import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
-import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
-import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
 
+import 'contents/widget.dart';
+import 'demo/texture/texture_main_demo.dart';
 import 'page/dart/map_demo.dart';
 import 'page/dart/stream_demo.dart';
 import 'page/dev/flex_tabbar_page_demo1/complex_page_demo1.dart';
@@ -32,9 +26,6 @@ import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
-import 'page/widget/canvas/canvas_dash_board_demo.dart';
-import 'page/widget/image/big_height_image_demo.dart';
-import 'page/widget/tab/page_view_demo.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -46,6 +37,8 @@ class TableContents {
     "拖拽移动九宫格DragGridView": DragGridViewDemo(),
     "拖拽移动列表DragListView": SliverReorderListViewDemo(),
     "大图预览交互效果FullSizePreviewImage":ImagePreviewAnimationDemo(),
+    "自定义Emoji": EmojiDemo(),
+    "图片外接纹理": TextureMainDemo(),
   };
 
   // 开发真实案例
@@ -79,79 +72,10 @@ class TableContents {
     "TextField输入框焦点问题": TextFieldFocusDemo(),
     "Gif图片有Loop只播放一次不显示问题": GifPlayOnceBugDemo(),
     "图片放大预览交互效果动画": ImageCombinedAnimationDemo(),
+    "下拉刷新上二楼效果": RefreshKeepDemo(),
   };
 
-  // 组件学习
-  static Map<String, Widget> WidgetDemos = {
-    "TabBar组件": CommonWidgetDemo(TabWidgetDemos),
-    "Sliver组件": CommonWidgetDemo(SliverWidgetDemos),
-    "Layout组件": CommonWidgetDemo(LayoutDemos),
-    "List组件": CommonWidgetDemo(ListDemos),
-    "Canvas组件": CommonWidgetDemo(CanvasWidgetDemos),
-    "GestureDetector组件": CommonWidgetDemo(GestureDetectorDemos),
-    "Text组件": CommonWidgetDemo(TextDemos),
-    "Image组件": CommonWidgetDemo(ImageDemos),
-    "Animation组件": CommonWidgetDemo(AnimationDemos)
-  };
 
-  // Tab组件
-  static Map<String, Widget> TabWidgetDemos = {
-    "TabBarView": TabBarViewDemo(),
-    "PageView": PageViewDemo(),
-  };
-
-  // Sliver组件
-  static Map<String, Widget> SliverWidgetDemos = {
-    "SliverList": SliverListDemo(),
-    "SliverGrid": SliverGridDemo(),
-    "SliverPrototypeExtentList": SliverPrototypeExtentListDemo(),
-  };
-
-  // Layout组件
-  static Map<String, Widget> LayoutDemos = {
-    "Flow": LayoutFlowDemo(),
-  };
-
-  // Text组件
-  static Map<String, Widget> TextDemos = {
-    "Text文本水平居中": TextAlignDemo(),
-  };
-
-  // 图片组件
-  static Map<String, Widget> ImageDemos = {
-    "图片加载": ImageViewDemo(),
-    "长图加载": BigHeightImageDemo(),
-    "PageView图片加载": ImagePageViewDemo(),
-  };
-
-  // Canvas组件
-  static Map<String, Widget> CanvasWidgetDemos = {
-    "抖音Logo绘制": CanvasDouyinDemo(),
-    "仪表盘绘制": CanvasDashBoardDemo(),
-    "贝塞尔曲线画圆绘制": CanvasCircleDemo(),
-  };
-
-  // GestureDetector组件
-  static Map<String, Widget> GestureDetectorDemos = {
-    "手势拖拽": GestureDragDemo(),
-    "手势缩放": GestureScaleDemo(),
-    "手势点击": GestureClickDemo(),
-    "手势缩放1": GestureScaleDemo1(),
-    "手势缩放2": GestureScaleDemo2(),
-    "手势点击传递策略": GestureBehaviorDemo(),
-  };
-
-  // List组件
-  static Map<String, Widget> ListDemos = {
-    "ListWheelScrollView": ListWheelDemo(),
-    "RefreshIndicator VS CupertinoSliverRefreshControl": ListPullRefreshDemo(),
-  };
-
-  // Animation组件
-  static Map<String, Widget> AnimationDemos = {
-    "Hero动画": HeroAnimationDemo(),
-    "Clip动画": ClipAnimationDemo(),
-  };
 
   // 第三方库使用
   static Map<String, Widget> OpenLibDemos = {
@@ -187,7 +111,7 @@ class TableContents {
   static Map<String, Map<String, Widget>> tables = {
     "自定义功能": DIYDemos,
     "开发实战案例": DevDemos,
-    "组件学习": WidgetDemos,
+    "组件学习": LearnWidget.WidgetDemos,
     "第三方库": OpenLibDemos,
     "Dart语法相关": DartDemos,
     "基础技术相关":BaseSkillDemos,

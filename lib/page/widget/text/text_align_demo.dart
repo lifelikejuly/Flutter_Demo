@@ -18,13 +18,13 @@ class _TextAlignDemoState extends State<TextAlignDemo> {
               margin: EdgeInsets.symmetric(horizontal: 5),
               color: Color(0xFF999999),
               width: 0.5,
-              height: 10,
+              height: 20,
             ),
             Text(
-              "口感软糯",
+              "|口感软糯",
               style: TextStyle(
                 color: Color(0xFF999999),
-                fontSize: 12,
+                fontSize: 20,
               ),
             ),
           ],
@@ -34,7 +34,7 @@ class _TextAlignDemoState extends State<TextAlignDemo> {
             text: "|",
             style: TextStyle(
               color: Color(0xFF999999),
-              fontSize: 10,
+              fontSize: 20,
               fontWeight: FontWeight.w300,
             ),
             children: [
@@ -42,12 +42,32 @@ class _TextAlignDemoState extends State<TextAlignDemo> {
                 text: "口感软糯",
                 style: TextStyle(
                   color: Color(0xFF999999),
-                  fontSize: 12,
+                  fontSize: 20,
                 ),
               ),
             ],
           ),
         ),
+        Container(
+          child: Text(
+            "KKKGJgj普通Text：",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+          color: Colors.teal,
+        ),
+        Container(
+          child: Text(
+            "abcdefjhijklmn小写字母Text：",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+          color: Colors.teal,
+        )
       ],
     );
   }

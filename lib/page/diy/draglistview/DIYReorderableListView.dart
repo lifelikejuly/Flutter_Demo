@@ -578,6 +578,7 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
             key: endWidgetKey,
             width: _defaultDropAreaExtent,
             height: constraints.maxHeight,
+            child: widget.footer,
           );
           break;
         case Axis.vertical:
@@ -586,6 +587,7 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
             key: endWidgetKey,
             height: _defaultDropAreaExtent,
             width: constraints.maxWidth,
+            child: widget.footer,
           );
           break;
       }
@@ -599,7 +601,7 @@ class _ReorderableListContentState extends State<_ReorderableListContent> with T
             if (widget.reverse) _wrap(finalDropArea, widget.children.length, constraints),
             if (widget.header != null) widget.header,
             for (int i = 0; i < widget.children.length; i += 1) _wrap(widget.children[i], i, constraints),
-            if (widget.footer != null && _dragging == null) widget.footer,
+            // if (widget.footer != null && _dragging == null) widget.footer,
             if (!widget.reverse) _wrap(finalDropArea, widget.children.length, constraints),
 
           ],

@@ -34,10 +34,7 @@ class _SliverReorderListViewDemoState extends State<SliverReorderListViewDemo> {
                 width: 100,
                 color: Colors.amber,
               ),
-              footer: Container(
-                width: 100,
-                color: Colors.red,
-              ),
+              footer: SizedBox(),
               extraWrapper: <Widget>[
                 Text(
                   "封面",
