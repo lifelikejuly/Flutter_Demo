@@ -94,7 +94,7 @@ class NestedScrollViewSamplePage extends StatelessWidget {
                     SliverOverlapAbsorber(
                         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                             context),
-                        child: SliverAppBar(
+                        sliver: SliverAppBar(
                             title: const Text(_appBarTitle),
                             pinned: true,
                             expandedHeight: 150.0,

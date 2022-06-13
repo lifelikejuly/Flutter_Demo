@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:external_texture_plugin/external_texture_plugin.dart';
 import 'package:flutter_demo/demo/texture/texture_image_widget.dart';
 
 import 'mock.dart';

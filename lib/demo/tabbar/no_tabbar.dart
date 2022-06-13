@@ -75,7 +75,7 @@ class _TabStyle extends AnimatedWidget {
 //
     final Color selectedColor = labelColor ??
         tabBarTheme.labelColor ??
-        themeData.primaryTextTheme.body2.color;
+        themeData.primaryTextTheme.bodyText2.color;
     final Color unselectedColor = unselectedLabelColor ??
         tabBarTheme.unselectedLabelColor ??
         selectedColor.withAlpha(0xB2); // 70% alpha

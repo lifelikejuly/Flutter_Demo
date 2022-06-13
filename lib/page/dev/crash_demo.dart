@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_plugin/flutter_app_plugin.dart';
 
 class CrashDemo extends StatefulWidget {
   @override
@@ -53,7 +52,7 @@ class _CrashDemoState extends State<CrashDemo> {
           child: new Text('Java exception'),
           elevation: 1.0,
           onPressed: () async {
-            await FlutterAppPlugin.makeJavaCrash();
+            // await FlutterAppPlugin.makeJavaCrash();
           },
         ),
       ],

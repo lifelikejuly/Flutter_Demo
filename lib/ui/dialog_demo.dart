@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/flutter_temple.dart';
+// import 'package:flutter_template/flutter_temple.dart';
 
 class DialogDemo extends StatefulWidget {
   @override
@@ -17,26 +17,26 @@ class _DialogDemoState extends State<DialogDemo> {
             RaisedButton(
               child: Text("showDialog"),
               onPressed: () {
-                HDialogUtil.showAlertDialog(
-                  context,
-                  [
-                    FlatButton(
-                      child: Text("ok"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                  barrierDismissible: false,
-                );
+                // HDialogUtil.showAlertDialog(
+                //   context,
+                //   [
+                //     FlatButton(
+                //       child: Text("ok"),
+                //       onPressed: () {
+                //         Navigator.of(context).pop();
+                //       },
+                //     )
+                //   ],
+                //   barrierDismissible: false,
+                // );
               },
             ),
             RaisedButton(
               child: Text("showLoading"),
               onPressed: () {
-                HDialogUtil.showLoadingDialog(
-                  context,
-                );
+                // HDialogUtil.showLoadingDialog(
+                //   context,
+                // );
               },
             )
           ],

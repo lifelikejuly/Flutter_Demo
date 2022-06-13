@@ -1,6 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart' hide Action;
-import 'package:flutter_template/flutter_temple.dart';
 import 'FishModel.dart';
 import 'action.dart';
 import 'state.dart';
@@ -23,9 +22,9 @@ void _init(Action action, Context<fishdemepage2State> ctx){
 
 void _onActionAsync(Action action, Context<fishdemepage2State> ctx) async{
   print("fishdemepage2State _onActionAsync");
-  HDialogUtil.showLoadingDialog(
-    ctx.context,
-  );
+  // HDialogUtil.showLoadingDialog(
+  //   ctx.context,
+  // );
   List<FishModel> models = await Future.delayed(Duration(seconds: 2), (){
     List<FishModel> modles = List();
     modles.add(FishModel("ppppp2311"));

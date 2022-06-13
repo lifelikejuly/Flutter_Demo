@@ -1,4 +1,3 @@
-import 'package:external_texture_plugin/external_texture_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,14 +23,14 @@ class _TextureImageWidgetState extends State<TextureImageWidget> {
   }
 
   _loadTextureId() async {
-    var response = await ExternalTexturePlugin.loadImg(widget.url);
-    if (response != null && response["textureId"] != null) {
-      textureId = response["textureId"];
-      width = response["width"];
-      height = response["height"];
-      print("_loadTextureId width $width height $height");
-      if (mounted) setState(() {});
-    }
+    // var response = await ExternalTexturePlugin.loadImg(widget.url);
+    // if (response != null && response["textureId"] != null) {
+    //   textureId = response["textureId"];
+    //   width = response["width"];
+    //   height = response["height"];
+    //   print("_loadTextureId width $width height $height");
+    //   if (mounted) setState(() {});
+    // }
   }
 
   @override

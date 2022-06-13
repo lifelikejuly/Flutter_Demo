@@ -52,7 +52,6 @@ class _ReduxDemoState extends State<ReduxDemo> {
           },
           onInit: (store) {},
           onInitialBuild: (vm) {},
-          onDidChange: (vm) {},
           onDispose: (store) {},
           distinct: true,
           rebuildOnChange: true,
@@ -65,7 +64,6 @@ class _ReduxDemoState extends State<ReduxDemo> {
           },
           onInit: (store) {},
           onInitialBuild: (vm) {},
-          onDidChange: (vm) {},
           onDispose: (store) {},
           distinct: true,
 //            ignoreChange: (state) {

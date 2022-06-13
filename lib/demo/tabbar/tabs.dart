@@ -159,15 +159,15 @@ class _TabStyle extends AnimatedWidget {
     final TabBarTheme tabBarTheme = TabBarTheme.of(context);
 
     final TextStyle defaultStyle =
-        labelStyle ?? themeData.primaryTextTheme.body2;
+        labelStyle ?? themeData.primaryTextTheme.bodyText2;
     final TextStyle defaultUnselectedStyle =
-        unselectedLabelStyle ?? labelStyle ?? themeData.primaryTextTheme.body2;
+        unselectedLabelStyle ?? labelStyle ?? themeData.primaryTextTheme.bodyText2;
     final Animation<double> animation = listenable;
     final TextStyle textStyle =
     selected ? defaultStyle : defaultUnselectedStyle;
     final Color selectedColor = labelColor ??
         tabBarTheme.labelColor ??
-        themeData.primaryTextTheme.body2.color;
+        themeData.primaryTextTheme.bodyText2.color;
     final Color unselectedColor = unselectedLabelColor ??
         tabBarTheme.unselectedLabelColor ??
         selectedColor.withAlpha(0xB2); // 70% alpha
@@ -748,10 +748,10 @@ class _TabBarState extends State<H_TabBar> {
         .reduce((bool value, bool element) => value && element);
     if (isOnlyTabText) {
       final TextStyle defalutLabelStyle =
-          widget.labelStyle ?? Theme.of(context).primaryTextTheme.body2;
+          widget.labelStyle ?? Theme.of(context).primaryTextTheme.bodyText1;
       final TextStyle defalutUnselectedLabelStyle =
           widget.unselectedLabelStyle ??
-              Theme.of(context).primaryTextTheme.body2;
+              Theme.of(context).primaryTextTheme.bodyText1;
       final TextStyle defalutStyle =
       defalutLabelStyle.fontSize >= defalutUnselectedLabelStyle.fontSize
           ? defalutLabelStyle

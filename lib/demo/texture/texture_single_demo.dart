@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:external_texture_plugin/external_texture_plugin.dart';
 
 import 'mock.dart';
 
@@ -39,15 +38,15 @@ class _TextureTempState extends State<TextureTemp> {
   }
 
   _loadTextureId() async {
-    var response = await ExternalTexturePlugin.loadImg(
-        imgs[0]);
-    if (response != null && response["textureId"] != null) {
-      textureId = response["textureId"];
-      width = response["width"];
-      height = response["height"];
-      print("_loadTextureId width $width height $height");
-      if (mounted) setState(() {});
-    }
+    // var response = await ExternalTexturePlugin.loadImg(
+    //     imgs[0]);
+    // if (response != null && response["textureId"] != null) {
+    //   textureId = response["textureId"];
+    //   width = response["width"];
+    //   height = response["height"];
+    //   print("_loadTextureId width $width height $height");
+    //   if (mounted) setState(() {});
+    // }
   }
 
   @override

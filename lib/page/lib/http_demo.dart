@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/flutter_temple.dart';
 
 class HttpDemo extends StatefulWidget {
   @override
@@ -12,18 +11,18 @@ class _HttpDemoState extends State<HttpDemo> {
   @override
   void initState() {
     super.initState();
-    HNetClient.BASE_URL = "http://gank.io";
+    // HNetClient.BASE_URL = "http://gank.io";
   }
 
   _getReponse() async {
-    HDialogUtil.showLoadingDialog(context);
-    var response = await HNetClient.get("/api/xiandu/categories", {});
-    if (response != null) {
-      setState(() {
-        content = response.toString();
-      });
-    }
-    Navigator.of(context).pop();
+    // HDialogUtil.showLoadingDialog(context);
+    // var response = await HNetClient.get("/api/xiandu/categories", {});
+    // if (response != null) {
+    //   setState(() {
+    //     content = response.toString();
+    //   });
+    // }
+    // Navigator.of(context).pop();
   }
 
   @override

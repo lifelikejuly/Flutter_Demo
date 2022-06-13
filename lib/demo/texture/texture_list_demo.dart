@@ -1,4 +1,3 @@
-import 'package:external_texture_plugin/external_texture_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/demo/texture/mock.dart';
 
@@ -43,17 +42,17 @@ class _TextureTempState extends State<TextureTemp> {
   }
 
   _loadTextureId() async {
-    var response =
-        await ExternalTexturePlugin.loadImg(imgs[widget.num % imgs.length]);
-    if (response != null && response["textureId"] != null) {
-      textureId = response["textureId"];
-      width = response["width"];
-      height = response["height"];
-      print(
-          "_TextureTempState -- num: ${widget.num} -- textureId:${textureId.toString()}");
-
-      if (mounted) setState(() {});
-    }
+    // var response =
+    //     await ExternalTexturePlugin.loadImg(imgs[widget.num % imgs.length]);
+    // if (response != null && response["textureId"] != null) {
+    //   textureId = response["textureId"];
+    //   width = response["width"];
+    //   height = response["height"];
+    //   print(
+    //       "_TextureTempState -- num: ${widget.num} -- textureId:${textureId.toString()}");
+    //
+    //   if (mounted) setState(() {});
+    // }
   }
 
   @override
@@ -62,9 +61,9 @@ class _TextureTempState extends State<TextureTemp> {
    _releaseTexture();
   }
   _releaseTexture() async{
-    var response =
-    await ExternalTexturePlugin.release(imgs[widget.num % imgs.length]);
-    print("_TextureTempState -- dispose num: ${widget.num} $response");
+    // var response =
+    // await ExternalTexturePlugin.release(imgs[widget.num % imgs.length]);
+    // print("_TextureTempState -- dispose num: ${widget.num} $response");
   }
 
   @override

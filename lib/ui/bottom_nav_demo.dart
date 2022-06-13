@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/flutter_temple.dart';
 
 class BottomNavDemo extends StatefulWidget {
   @override
@@ -131,20 +130,20 @@ class _BottomNavDemoState extends State<BottomNavDemo> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        HBottomNavPage.builder(
-          appBar: AppBar(),
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            _onItemTapped(index);
-          },
-          navChildContent: (index) {
-            return Center(
-              child: _widgetOptions[index],
-            );
-          },
-          items: _navItems,
-          type: BottomNavigationBarType.fixed,
-        ),
+        // HBottomNavPage.builder(
+        //   appBar: AppBar(),
+        //   currentIndex: _selectedIndex,
+        //   onTap: (index) {
+        //     _onItemTapped(index);
+        //   },
+        //   navChildContent: (index) {
+        //     return Center(
+        //       child: _widgetOptions[index],
+        //     );
+        //   },
+        //   items: _navItems,
+        //   type: BottomNavigationBarType.fixed,
+        // ),
         Row(
           children: <Widget>[
             RaisedButton(
