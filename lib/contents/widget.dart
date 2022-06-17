@@ -10,6 +10,8 @@ import 'package:flutter_demo/page/widget/image/big_height_image_demo.dart';
 import 'package:flutter_demo/page/widget/image/image_page_view_demo.dart';
 import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
+import 'package:flutter_demo/page/widget/layout/layout_wrap_demo.dart';
+import 'package:flutter_demo/page/widget/list/list_auto_scroll_demo.dart';
 import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_with_icon_demo.dart';
@@ -45,6 +47,7 @@ class LearnWidget{
   // Layout组件
   static Map<String, Widget> LayoutDemos = {
     "Flow": LayoutFlowDemo(),
+    "Wrap": LayoutWrapDemo(),
   };
 
   // Text组件
@@ -81,6 +84,7 @@ class LearnWidget{
   static Map<String, Widget> ListDemos = {
     "ListWheelScrollView": ListWheelDemo(),
     "RefreshIndicator VS CupertinoSliverRefreshControl": ListPullRefreshDemo(),
+    "ListAutoUnlimitedScrollView": ListAutoScrollDemo(),
   };
 
   // Animation组件

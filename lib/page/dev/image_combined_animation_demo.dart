@@ -11,7 +11,7 @@ class ImageCombinedAnimationDemo extends StatefulWidget {
 class _ImageCombinedAnimationDemoState extends State<ImageCombinedAnimationDemo>
     with SingleTickerProviderStateMixin {
   final String IMAGE_SRC =
-      "http://pic37.nipic.com/20140113/8800276_184927469000_2.png";
+      "https://img0.baidu.com/it/u=3437372029,4262479223&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750";
 
   AnimationController _controller;
   Animation _animation;
@@ -51,52 +51,54 @@ class _ImageCombinedAnimationDemoState extends State<ImageCombinedAnimationDemo>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Image.network(
-          IMAGE_SRC,
-          fit: BoxFit.cover,
-        ),
-        AnimatedBuilder(
-            animation: _animation,
-            builder: (context, child) {
-              return Transform(
-                transform: Matrix4.identity()
-                  ..scale(getScaleValue())
-                  ..translate(
-                      0.0, _animation.value * (_screenHeight - 178.6) / 2.0),
-                child: ClipPath(
-                  clipper: TrianglePath(_animation.value, _screenWidth),
-                  child: GestureDetector(
-                    child: Image.network(
-                      IMAGE_SRC,
-                      fit: BoxFit.cover,
+    return SingleChildScrollView(
+      child:  Column(
+        children: <Widget>[
+          Image.network(
+            IMAGE_SRC,
+            fit: BoxFit.cover,
+          ),
+          AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return Transform(
+                  transform: Matrix4.identity()
+                    ..scale(getScaleValue())
+                    ..translate(
+                        0.0, _animation.value * (_screenHeight - 178.6) / 2.0),
+                  child: ClipPath(
+                    clipper: TrianglePath(_animation.value, _screenWidth),
+                    child: GestureDetector(
+                      child: Image.network(
+                        IMAGE_SRC,
+                        fit: BoxFit.cover,
+                      ),
+                      onTap: () {
+                        print("<> _controller.value ${_controller.value}");
+                        if (_controller.value == 0) {
+                          _controller.forward();
+                        } else {
+                          _controller.reverse();
+                        }
+                      },
                     ),
-                    onTap: () {
-                      print("<> _controller.value ${_controller.value}");
-                      if (_controller.value == 0) {
-                        _controller.forward();
-                      } else {
-                        _controller.reverse();
-                      }
-                    },
                   ),
-                ),
-              );
-            }),
-        FlatButton(
-          child: Text("+"),
-          onPressed: () {
-            _controller.forward();
-          },
-        ),
-        FlatButton(
-          child: Text("-"),
-          onPressed: () {
-            _controller.reverse();
-          },
-        ),
-      ],
+                );
+              }),
+          FlatButton(
+            child: Text("+"),
+            onPressed: () {
+              _controller.forward();
+            },
+          ),
+          FlatButton(
+            child: Text("-"),
+            onPressed: () {
+              _controller.reverse();
+            },
+          ),
+        ],
+      ),
     );
   }
 

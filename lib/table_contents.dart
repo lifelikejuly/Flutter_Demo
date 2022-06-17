@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_demo/page/dev/clippath_image_shape_demo.dart';
 import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
 import 'package:flutter_demo/page/dev/crash_demo.dart';
 import 'package:flutter_demo/page/dev/gif_play_one_bug_demo.dart';
+import 'package:flutter_demo/page/dev/horizontal_wrap_barrage_demo.dart';
 import 'package:flutter_demo/page/dev/one_line_warp_demo.dart';
 import 'package:flutter_demo/page/dev/page_cache_demo.dart';
 import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
@@ -72,7 +74,9 @@ class TableContents {
     "TextField输入框焦点问题": TextFieldFocusDemo(),
     "Gif图片有Loop只播放一次不显示问题": GifPlayOnceBugDemo(),
     "图片放大预览交互效果动画": ImageCombinedAnimationDemo(),
-    "下拉刷新上二楼效果": RefreshKeepDemo(),
+    "listview实现的弹幕效果": HorizontalWrapBarrageDemo(),
+    "Clip裁切": ClippathImageShapeDemo(),
+    // "下拉刷新上二楼效果": RefreshKeepDemo(),
   };
 
 

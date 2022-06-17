@@ -23,6 +23,7 @@ class _ListWheelDemoState extends State<ListWheelDemo> {
       onSelectedItemChanged: (index) {
         print("ListWheelScrollView onSelectedItemChanged $index");
       },
+      clipBehavior: Clip.none,
       childDelegate: ListWheelChildBuilderDelegate(
         builder: (context, index) {
           return Common.getWidget(index);
