@@ -45,15 +45,6 @@ class _ListAutoScrollDemoState extends State<ListAutoScrollDemo> {
 
 
     return GestureDetector(
-      onTap: (){
-
-        // _timer2?.cancel();
-        // _timer2 = Timer(Duration(seconds: 2),() {
-        //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        //     scroll();
-        //   });
-        // });
-      },
       onTapUp: (details){
         _timer?.cancel();
         Timer(Duration(milliseconds: 100),() {
