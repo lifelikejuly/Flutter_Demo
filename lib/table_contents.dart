@@ -24,6 +24,7 @@ import 'page/dart/stream_demo.dart';
 import 'page/dev/flex_tabbar_page_demo1/complex_page_demo1.dart';
 import 'page/dev/image_combined_animation_demo.dart';
 import 'page/dev/list_jump_init_demo.dart';
+import 'page/dev/scale_widget_demo.dart';
 import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
@@ -76,6 +77,7 @@ class TableContents {
     "图片放大预览交互效果动画": ImageCombinedAnimationDemo(),
     "listview实现的弹幕效果": HorizontalWrapBarrageDemo(),
     "Clip裁切": ClippathImageShapeDemo(),
+    "缩放动画": ScaleWidgetDemo(),
     // "下拉刷新上二楼效果": RefreshKeepDemo(),
   };
 

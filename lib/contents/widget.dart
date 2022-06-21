@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/demo/pageview/pageview_demo.dart';
 import 'package:flutter_demo/page/widget/animation/clip_animation_demo.dart';
 import 'package:flutter_demo/page/widget/animation/hero_animation_demo.dart';
+import 'package:flutter_demo/page/widget/animation/scale_transition_animation_demo.dart';
+import 'package:flutter_demo/page/widget/animation/size_transition_animation_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_circle_demo.dart';
 import 'package:flutter_demo/page/widget/canvas/canvas_dash_board_demo.dart';
 import 'package:flutter_demo/page/widget/gesture/gesture_behavior_demo.dart';
@@ -91,5 +93,7 @@ class LearnWidget{
   static Map<String, Widget> AnimationDemos = {
     "Hero动画": HeroAnimationDemo(),
     "Clip动画": ClipAnimationDemo(),
+    "ScaleTransition动画": ScaleTransitionAnimationDemo(),
+    "SizeTransition动画": SizeTransitionAnimationDemo(),
   };
 }
