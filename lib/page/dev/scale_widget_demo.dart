@@ -10,7 +10,7 @@ class _ScaleWidgetDemoState extends State<ScaleWidgetDemo>
   AnimationController _scaleAnimationController;
   Animation<double> scale;
 
-  GlobalKey globalKey = GlobalKey();
+  // GlobalKey globalKey = GlobalKey();
 
   double width = 0;
 
@@ -20,9 +20,7 @@ class _ScaleWidgetDemoState extends State<ScaleWidgetDemo>
       vsync: this,
       duration: Duration(milliseconds: 3000),
     );
-    // _scaleAnimationController.value = 1.0;
     scale = Tween(begin: 1.0, end: 1.29).animate(_scaleAnimationController);
-
     super.initState();
   }
 
@@ -58,28 +56,6 @@ class _ScaleWidgetDemoState extends State<ScaleWidgetDemo>
                   itemCount: 10,
                 ),
               ),
-              // Container(
-              //   color: Colors.red.withOpacity(0.5),
-              //   width: 50,
-              //   height: 50,
-              // ),
-              // AnimatedBuilder(
-              //   animation: scale,
-              //   builder: (context, widget) {
-              //     print("<> AnimatedBuilder builder");
-              //     return Transform.scale(
-              //       alignment: Alignment.centerLeft,
-              //       scale: scale.value,
-              //       child: widget,
-              //     );
-              //   },
-              //   child: Container(
-              //     color: Colors.red,
-              //     width: 50,
-              //     height: 50,
-              //     child: Text("AnimatedBuilder"),
-              //   ),
-              // )
             ],
           ),
         ));
@@ -90,12 +66,12 @@ class _ScaleWidgetDemoState extends State<ScaleWidgetDemo>
       animation: scale,
       builder: (context, widget) {
         if (index == 3) {
-          if (width == 0 &&
-              globalKey != null &&
-              globalKey.currentContext != null &&
-              globalKey.currentContext.size != null) {
-            width = globalKey.currentContext.size.width;
-          }
+          // if (width == 0 &&
+          //     globalKey != null &&
+          //     globalKey.currentContext != null &&
+          //     globalKey.currentContext.size != null) {
+          //   width = globalKey.currentContext.size.width;
+          // }
           return Transform.scale(
             alignment: Alignment.centerLeft,
             scale: scale.value,
@@ -109,18 +85,8 @@ class _ScaleWidgetDemoState extends State<ScaleWidgetDemo>
       },
       child: (index == 3 && width == 0)
           ?
-      // LayoutBuilder(builder: (context, box) {
-      //       print("<> LayoutBuilder ${box.toString()}");
-      //         return Container(
-      //           margin: EdgeInsets.only(left: 15, right: 15 * 1.3741),
-      //           color: Colors.blue,
-      //           width: 100,
-      //           height: 50,
-      //           child: Text("AnimatedBuilder"),
-      //         );
-      //       })
       Container(
-        key: globalKey,
+        // key: globalKey,
         margin: EdgeInsets.only(left: 15, right: 15),
         color: Colors.blue,
         width: 100,

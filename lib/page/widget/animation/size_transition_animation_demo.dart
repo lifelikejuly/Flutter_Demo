@@ -56,7 +56,7 @@ class _SizeTransitionAnimationDemoState
                 height: height,
                 alignment: Alignment.center,
                 child: Container(
-                  height: height,
+                  height: 50,
                   width: 50,
                   color: Colors.yellow,
                   child: Text("AnimatedSize"),
