@@ -1,6 +1,5 @@
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_demo/demo/pageview/pageview_demo.dart';
 import 'package:flutter_demo/page/widget/animation/animate_builder_demo.dart';
 import 'package:flutter_demo/page/widget/animation/clip_animation_demo.dart';
 import 'package:flutter_demo/page/widget/animation/hero_animation_demo.dart';
@@ -15,6 +14,7 @@ import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_wrap_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_auto_scroll_demo.dart';
+import 'package:flutter_demo/page/widget/tab/page_view_demo.dart';
 import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_with_icon_demo.dart';

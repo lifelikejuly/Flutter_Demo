@@ -24,6 +24,7 @@ class _PageViewDemoState extends State<PageViewDemo> {
         Expanded(
           child: PageView.custom(
             controller: pageController,
+            // pageSnapping: false,
             childrenDelegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return KeepAlive(

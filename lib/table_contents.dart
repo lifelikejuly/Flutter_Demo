@@ -12,8 +12,11 @@ import 'package:flutter_demo/page/dev/sliver_border_demo.dart';
 import 'package:flutter_demo/page/dev/sliver_customer_demo.dart';
 import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
 import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
+import 'package:flutter_demo/page/diy/circlelist/circle_list_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/diy/emoji/emoji_demo.dart';
+import 'package:flutter_demo/page/diy/wheel/list_wheel_diy_demo.dart';
+import 'package:flutter_demo/page/func/func_matrix4_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/lib/photo_view_demo.dart';
 
@@ -29,6 +32,8 @@ import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
+import 'page/func/func_matrix4_pentagon_demo.dart';
+import 'page/func/func_matrix4_u_demo.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -42,6 +47,8 @@ class TableContents {
     "大图预览交互效果FullSizePreviewImage":ImagePreviewAnimationDemo(),
     "自定义Emoji": EmojiDemo(),
     "图片外接纹理": TextureMainDemo(),
+    "圆形环绕列表": CircleListDemo(),
+    "自定义ListWheel": ListWheelDiyDemo(),
   };
 
   // 开发真实案例
@@ -114,6 +121,13 @@ class TableContents {
     "Stream使用": StreamDemo(),
   };
 
+  static Map<String, Widget> FuncDemos = {
+    "Matrix4实用": FuncMatrix4Demo(),
+    "Matrix4五边形": FuncMatrix4PentagonDemo(),
+    "Matrix4特殊U": FuncMatrix4UDemo(),
+  };
+
+
   static Map<String, Map<String, Widget>> tables = {
     "自定义功能": DIYDemos,
     "开发实战案例": DevDemos,
@@ -121,5 +135,6 @@ class TableContents {
     "第三方库": OpenLibDemos,
     "Dart语法相关": DartDemos,
     "基础技术相关":BaseSkillDemos,
+    "方法使用":FuncDemos,
   };
 }
