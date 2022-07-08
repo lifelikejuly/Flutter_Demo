@@ -569,9 +569,6 @@ class DIYListWheelScrollView extends StatefulWidget {
     this.diameterRatio = DIYRenderListWheelViewport.defaultDiameterRatio,
     this.perspective = DIYRenderListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
-    this.useMagnifier = false,
-    this.magnification = 1.0,
-    this.overAndUnderCenterOpacity = 1.0,
     @required this.itemExtent,
     this.squeeze = 1.0,
     this.onSelectedItemChanged,
@@ -586,9 +583,6 @@ class DIYListWheelScrollView extends StatefulWidget {
        assert(perspective != null),
        assert(perspective > 0),
        assert(perspective <= 0.01, DIYRenderListWheelViewport.perspectiveTooHighMessage),
-       assert(magnification > 0),
-       assert(overAndUnderCenterOpacity != null),
-       assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1),
        assert(itemExtent != null),
        assert(itemExtent > 0),
        assert(squeeze != null),
@@ -611,9 +605,6 @@ class DIYListWheelScrollView extends StatefulWidget {
     this.diameterRatio = DIYRenderListWheelViewport.defaultDiameterRatio,
     this.perspective = DIYRenderListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
-    this.useMagnifier = false,
-    this.magnification = 1.0,
-    this.overAndUnderCenterOpacity = 1.0,
     @required this.itemExtent,
     this.squeeze = 1.0,
     this.onSelectedItemChanged,
@@ -628,9 +619,6 @@ class DIYListWheelScrollView extends StatefulWidget {
        assert(perspective != null),
        assert(perspective > 0),
        assert(perspective <= 0.01, DIYRenderListWheelViewport.perspectiveTooHighMessage),
-       assert(magnification > 0),
-       assert(overAndUnderCenterOpacity != null),
-       assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1),
        assert(itemExtent != null),
        assert(itemExtent > 0),
        assert(squeeze != null),
@@ -680,15 +668,6 @@ class DIYListWheelScrollView extends StatefulWidget {
 
   /// {@macro flutter.rendering.DIYRenderListWheelViewport.offAxisFraction}
   final double offAxisFraction;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.useMagnifier}
-  final bool useMagnifier;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.magnification}
-  final double magnification;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.overAndUnderCenterOpacity}
-  final double overAndUnderCenterOpacity;
 
   /// Size of each child in the main axis. Must not be null and must be
   /// positive.
@@ -792,8 +771,6 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
             diameterRatio: widget.diameterRatio,
             perspective: widget.perspective,
             offAxisFraction: widget.offAxisFraction,
-            useMagnifier: widget.useMagnifier,
-            magnification: widget.magnification,
             itemExtent: widget.itemExtent,
             squeeze: widget.squeeze,
             renderChildrenOutsideViewport: widget.renderChildrenOutsideViewport,
@@ -805,25 +782,6 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
       ),
     );
   }
-}
-
-class _ForceImplicitScrollPhysics extends ScrollPhysics {
-  const _ForceImplicitScrollPhysics({
-    @required this.allowImplicitScrolling,
-    ScrollPhysics parent,
-  }) : assert(allowImplicitScrolling != null),
-        super(parent: parent);
-
-  @override
-  _ForceImplicitScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return _ForceImplicitScrollPhysics(
-      allowImplicitScrolling: allowImplicitScrolling,
-      parent: buildParent(ancestor),
-    );
-  }
-
-  @override
-  final bool allowImplicitScrolling;
 }
 
 /// Element that supports building children lazily for [ListWheelViewport].
@@ -1009,8 +967,6 @@ class ListWheelViewport extends RenderObjectWidget {
     this.diameterRatio = DIYRenderListWheelViewport.defaultDiameterRatio,
     this.perspective = DIYRenderListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
-    this.useMagnifier = false,
-    this.magnification = 1.0,
     @required this.itemExtent,
     this.squeeze = 1.0,
     this.renderChildrenOutsideViewport = false,
@@ -1044,12 +1000,6 @@ class ListWheelViewport extends RenderObjectWidget {
 
   /// {@macro flutter.rendering.DIYRenderListWheelViewport.offAxisFraction}
   final double offAxisFraction;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.useMagnifier}
-  final bool useMagnifier;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.magnification}
-  final double magnification;
 
 
   /// {@macro flutter.rendering.DIYRenderListWheelViewport.itemExtent}
@@ -1087,8 +1037,6 @@ class ListWheelViewport extends RenderObjectWidget {
       diameterRatio: diameterRatio,
       perspective: perspective,
       offAxisFraction: offAxisFraction,
-      useMagnifier: useMagnifier,
-      magnification: magnification,
       itemExtent: itemExtent,
       squeeze: squeeze,
       renderChildrenOutsideViewport: renderChildrenOutsideViewport,
@@ -1103,8 +1051,6 @@ class ListWheelViewport extends RenderObjectWidget {
       ..diameterRatio = diameterRatio
       ..perspective = perspective
       ..offAxisFraction = offAxisFraction
-      ..useMagnifier = useMagnifier
-      ..magnification = magnification
       ..itemExtent = itemExtent
       ..squeeze = squeeze
       ..renderChildrenOutsideViewport = renderChildrenOutsideViewport

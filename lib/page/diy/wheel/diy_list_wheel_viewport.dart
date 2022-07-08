@@ -132,8 +132,6 @@ class DIYRenderListWheelViewport
     double diameterRatio = defaultDiameterRatio,
     double perspective = defaultPerspective,
     double offAxisFraction = 0,
-    bool useMagnifier = false,
-    double magnification = 1,
     @required double itemExtent,
     double squeeze = 1,
     bool renderChildrenOutsideViewport = false,
@@ -147,9 +145,6 @@ class DIYRenderListWheelViewport
        assert(perspective > 0),
        assert(perspective <= 0.01, perspectiveTooHighMessage),
        assert(offAxisFraction != null),
-       assert(useMagnifier != null),
-       assert(magnification != null),
-       assert(magnification > 0),
        assert(itemExtent != null),
        assert(squeeze != null),
        assert(squeeze > 0),
@@ -164,8 +159,6 @@ class DIYRenderListWheelViewport
        _diameterRatio = diameterRatio,
        _perspective = perspective,
        _offAxisFraction = offAxisFraction,
-       _useMagnifier = useMagnifier,
-       _magnification = magnification,
        _itemExtent = itemExtent,
        _squeeze = squeeze,
        _renderChildrenOutsideViewport = renderChildrenOutsideViewport,
@@ -331,39 +324,6 @@ class DIYRenderListWheelViewport
     markNeedsPaint();
   }
 
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.useMagnifier}
-  /// Whether to use the magnifier for the center item of the wheel.
-  /// {@endtemplate}
-  bool get useMagnifier => _useMagnifier;
-  bool _useMagnifier = false;
-  set useMagnifier(bool value) {
-    assert(value != null);
-    if (value == _useMagnifier)
-      return;
-    _useMagnifier = value;
-    markNeedsPaint();
-  }
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.magnification}
-  /// The zoomed-in rate of the magnifier, if it is used.
-  ///
-  /// The default value is 1.0, which will not change anything.
-  /// If the value is > 1.0, the center item will be zoomed in by that rate, and
-  /// it will also be rendered as flat, not cylindrical like the rest of the list.
-  /// The item will be zoomed out if magnification < 1.0.
-  ///
-  /// Must be positive.
-  /// {@endtemplate}
-  double get magnification => _magnification;
-  double _magnification = 1.0;
-  set magnification(double value) {
-    assert(value != null);
-    assert(value > 0);
-    if (value == _magnification)
-      return;
-    _magnification = value;
-    markNeedsPaint();
-  }
-
 
   /// {@template flutter.rendering.DIYRenderListWheelViewport.itemExtent}
   /// The size of the children along the main axis. Children [RenderBox]es will
@@ -516,11 +476,21 @@ class DIYRenderListWheelViewport
     return -size.height / 2.0 + _itemExtent / 2.0;
   }
 
+  double get _leftScrollMarginExtent {
+    assert(hasSize);
+    // Consider adding alignment options other than center.
+    return -size.width / 2.0 + _itemExtent / 2.0;
+  }
+
   /// Transforms a **scrollable layout coordinates**' y position to the
   /// **untransformed plane's viewport painting coordinates**' y position given
   /// the current scroll offset.
   double _getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
     return layoutCoordinateY - _topScrollMarginExtent - offset.pixels;
+  }
+
+  double _getUntransformedPaintingCoordinateX(double layoutCoordinateX) {
+    return layoutCoordinateX - _leftScrollMarginExtent - offset.pixels;
   }
 
   /// Given the _diameterRatio, return the largest absolute angle of the item
@@ -639,6 +609,8 @@ class DIYRenderListWheelViewport
         minWidth: 0.0,
       );
 
+    // print("<> build performLayout childConstraints $childConstraints");
+
     // The height, in pixel, that children will be visible and might be laid out
     // and painted.
     double visibleHeight = size.height * _squeeze;
@@ -675,6 +647,8 @@ class DIYRenderListWheelViewport
       return;
     }
 
+    // print("<> build performLayout targetFirstIndex $targetFirstIndex targetLastIndex $targetLastIndex");
+
     // Now there are 2 cases:
     //  - The target index range and our current index range have intersection:
     //    We shorten and extend our current child list so that the two lists
@@ -699,6 +673,9 @@ class DIYRenderListWheelViewport
 
     int currentFirstIndex = indexOf(firstChild);
     int currentLastIndex = indexOf(lastChild);
+
+    // print("<> build performLayout currentFirstIndex $currentFirstIndex currentLastIndex $currentLastIndex");
+
 
     // Remove all unnecessary children by shortening the current child list, in
     // both directions.
@@ -753,8 +730,22 @@ class DIYRenderListWheelViewport
 
   @override
   void paint(PaintingContext context, Offset offset) {
+
+    // offset 默认为0，0
+    // size是视图大小 可以通过size确定中心点
+    print("<> build paint offset $offset size $size");
+    // 标准位置绘制
+    context.canvas.drawCircle(Offset(size.width / 2,size.height / 2),10,Paint()..color = Colors.red);
+    Path path = Path();
+    path.lineTo(0, 0);
+    path.lineTo(size.width,0);
+    path.lineTo(size.width,size.height);
+    path.lineTo(0,size.height);
+    path.lineTo(0,0);
+    context.canvas.drawPath(path, Paint()..color = Colors.black ..style = PaintingStyle.stroke..strokeWidth = 5);
+
     if (childCount > 0) {
-      print("<> paint _shouldClipAtCurrentOffset() ${_shouldClipAtCurrentOffset()} clipBehavior != Clip.none ${clipBehavior != Clip.none}");
+      // print("<> paint _shouldClipAtCurrentOffset() ${_shouldClipAtCurrentOffset()} clipBehavior != Clip.none ${clipBehavior != Clip.none}");
       if (_shouldClipAtCurrentOffset() && clipBehavior != Clip.none) {
         _clipRectLayer.layer = context.pushClipRect(
           needsCompositing,
@@ -789,7 +780,6 @@ class DIYRenderListWheelViewport
     }
   }
 
-
   /// Takes in a child with a **scrollable layout offset** and paints it in the
   /// **transformed cylindrical space viewport painting coordinates**.
   void _paintTransformedChild(
@@ -799,9 +789,11 @@ class DIYRenderListWheelViewport
     Offset layoutOffset,
   ) {
 
+    Offset centerPosition = Offset(size.width /2 - child.size.width / 2,size.height/ 2- child.size.height / 2);
+    offset =  Offset(size.width /2,size.height/ 2);
     final Offset untransformedPaintingCoordinates = offset
         + Offset(
-            layoutOffset.dx,
+            _getUntransformedPaintingCoordinateX(layoutOffset.dy),
             _getUntransformedPaintingCoordinateY(layoutOffset.dy)
         );
 
@@ -810,23 +802,52 @@ class DIYRenderListWheelViewport
     final double fractionalY =
         (untransformedPaintingCoordinates.dy + _itemExtent / 2.0) / size.height;
 
+    final double fractionalX =
+        (untransformedPaintingCoordinates.dx + _itemExtent / 2.0) / size.width;
+
+
+    // print("<> _paintTransformedChild 打印 childParentData.offset -> _itemExtent $_itemExtent offset $offset layoutOffset $layoutOffset  _topScrollMarginExtent $_topScrollMarginExtent  offset.pixels ${this.offset.pixels} fractionalY $fractionalY fractionalX $fractionalX");
+    // _itemExtent 固定值
+    // offset 固定值
+    // layoutOffset 可以理解为坐标
+    // _topScrollMarginExtent 固定值
+    // offset.pixels 偏移量
+
+
+
     // print("<> _paintTransformedChild 计算 fractionalY $fractionalY  新值 value ${fractionalY - 0.5} ");
     // 初始化 fractionalY 中间值为0.5
 
 
 
-    final double angle = lerpDouble( - math.pi / 2 , math.pi * 3/ 2 , fractionalY);
+    // final double angle = lerpDouble( - math.pi / 2 , math.pi * 3/ 2 , fractionalX);
+    final double angle = lerpDouble(0 , math.pi , fractionalX) - math.pi / 2;
+
+    // print("<> _paintTransformedChild 打印  -> layoutOffset.dx ${layoutOffset.dx} untransformedPaintingCoordinates.dx ${untransformedPaintingCoordinates.dx} fractionalX $fractionalX  fractionalXPuls ${fractionalX - 1} angle $angle");
+    // print("<> _paintTransformedChild 打印  -> layoutOffset.dy ${layoutOffset.dy} untransformedPaintingCoordinates.dy ${untransformedPaintingCoordinates.dy} fractionalY $fractionalY  fractionalYPuls ${fractionalY - 1} angle $angle");
+
+    print("<> _paintTransformedChild 打印  -> angle $angle  pi -> ${math.pi} math.pi / 2 -> ${math.pi / 2} ");
+
 
     // print("<> _paintTransformedChild 计算 angle $angle  ${math.pi * 2}");
     // print("<> _paintTransformedChild 计算 angle 新值 ${angle - lerpDouble( - math.pi / 2 , math.pi * 3/ 2 , 0.5)}");
     // 半径大小
-    double radius = itemExtent * 1.3;
+    double radius = itemExtent;
     double x = 0;
     double y =0;
     // 偏移计算
     if (angle >= 0 && angle <= math.pi) {
-      x = math.cos(angle) * radius;
-      y = math.sin(angle) * radius;
+      x = math.cos(angle) * radius + centerPosition.dx;
+      y = math.sin(angle) * radius + centerPosition.dy;
+
+
+      // x = math.cos(angle) * radius + centerPosition.dx;
+      // y = centerPosition.dy;
+
+      // x = centerPosition.dx;
+      // y = centerPosition.dy;
+      // print("<> _paintTransformedChild 偏移计算 angle $angle ${math.pi} x $x y $y");
+
     }else{
       if(angle > math.pi){
         x = radius  * (-1 + ((angle - math.pi) / (math.pi / 2)) );
@@ -841,6 +862,8 @@ class DIYRenderListWheelViewport
 
     final circleOffset = Offset(x, y);
 
+    // print("<> _paintTransformedChild 偏移计算 circleOffset $circleOffset");
+
     // Don't paint the backside of the cylinder when
     // renderChildrenOutsideViewport is true. Otherwise, only children within
     // suitable angles (via _first/lastVisibleLayoutOffset) reach the paint
@@ -850,28 +873,77 @@ class DIYRenderListWheelViewport
 
 
     // 缩小值
-    double scale = 1.0;
-    if(fractionalY < 0.5){
-      scale = 1.0 - (0.5 - fractionalY);
-    }else if(fractionalY > 0.5){
-      scale = 1.0 - (fractionalY - 0.5);
-    }
+    // double scale = 1.0;
+    // if(fractionalY < 0.5){
+    //   scale = 1.0 - (0.5 - fractionalY);
+    // }else if(fractionalY > 0.5){
+    //   scale = 1.0 - (fractionalY - 0.5);
+    // }
+    double scale = 1.0 - (fractionalY > 0 ? fractionalY : -fractionalY);
+
 
     // print("<> _paintTransformedChild 计算 scale $scale  ");
+    //
+    // final Matrix4 transform = Matrix4.translationValues(
+    //   circleOffset.dx - child.size.width / 2.0,
+    //   circleOffset.dy - child.size.height / 2.0,
+    //   0,
+    // );
+
 
     final Matrix4 transform = Matrix4.translationValues(
-      circleOffset.dx  * scale,
-      (circleOffset.dy + radius) * scale,
+      circleOffset.dx,
+      circleOffset.dy,
       0,
-    ).scaled(scale);
+    );
+
+    // final Matrix4 transform = Matrix4.translationValues(
+    //   circleOffset.dx  * scale,
+    //   (circleOffset.dy + radius) * scale,
+    //   0,
+    // ).scaled(scale);
+
 
     // 偏移量
     final Offset offsetToCenter = Offset(
       untransformedPaintingCoordinates.dx,
     0,
     );
+    _paintChildCylindrically(context, Offset.zero, child, transform, Offset.zero);
 
-    _paintChildCylindrically(context, Offset.zero, child, transform, offsetToCenter);
+    // TODO 辅助线
+    context.canvas.drawLine(Offset(offset.dx,
+        offset.dy),Offset(circleOffset.dx + child.size.width / 2,
+        circleOffset.dy+ child.size.height / 2 ), Paint()..color = Colors.blue);
+    final paragraphStyle = ParagraphStyle(
+      // 字体方向，有些国家语言是从右往左排版的
+        textDirection: TextDirection.ltr,
+        // 字体对齐方式
+        textAlign: TextAlign.justify,
+        fontSize: 14,
+        maxLines: 1,
+        // 字体超出大小时显示的提示
+        ellipsis: '...',
+        fontWeight: FontWeight.bold,
+        fontStyle: FontStyle.italic,
+        height: 5,
+        // 当我们设置[TextStyle.height]时 这个高度是否应用到字体顶部和底部
+        textHeightBehavior:
+        TextHeightBehavior(applyHeightToFirstAscent: true,applyHeightToLastDescent: true));
+// 第二步 与第三步
+    final paragraphBuilder = ParagraphBuilder(paragraphStyle)
+      ..addText('$angle');
+// 第四步
+    var paragraph = paragraphBuilder.build();
+// 第五步
+    paragraph.layout(ParagraphConstraints(width: 50));
+// 画一个辅助矩形（可以通过paragraph.width和paragraph.height来获取绘制文字的宽高）
+// 第六步
+    context.canvas.drawParagraph(paragraph, Offset(circleOffset.dx,
+      circleOffset.dy,));
+
+
+
   }
 
 
@@ -916,6 +988,7 @@ class DIYRenderListWheelViewport
       -centerOriginTranslation.dx * (-_offAxisFraction * 2 + 1),
       -centerOriginTranslation.dy,
     );
+    // print("<> build _centerOriginTransform size $size centerOriginTranslation $centerOriginTranslation _offAxisFraction $_offAxisFraction");
     return result;
   }
 
@@ -957,6 +1030,8 @@ class DIYRenderListWheelViewport
     final Matrix4 transform = target.getTransformTo(child);
     final Rect bounds = MatrixUtils.transformRect(transform, rect);
     final Rect targetRect = bounds.translate(0.0, (size.height - itemExtent) / 2);
+
+    // print("<> build getOffsetToReveal targetOffset $targetOffset");
 
     return RevealedOffset(offset: targetOffset, rect: targetRect);
   }
