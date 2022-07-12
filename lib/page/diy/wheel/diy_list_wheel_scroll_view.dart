@@ -421,6 +421,7 @@ class _FixedExtentScrollable extends Scrollable {
     ScrollController controller,
     ScrollPhysics physics,
     @required this.itemExtent,
+    @required this.childSize,
     @required ViewportBuilder viewportBuilder,
     String restorationId,
     ScrollBehavior scrollBehavior,
@@ -435,6 +436,7 @@ class _FixedExtentScrollable extends Scrollable {
   );
 
   final double itemExtent;
+  final Size childSize;
 
   @override
   _FixedExtentScrollableState createState() => _FixedExtentScrollableState();
@@ -570,6 +572,7 @@ class DIYListWheelScrollView extends StatefulWidget {
     this.perspective = DIYRenderListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
     @required this.itemExtent,
+    @required this.childSize,
     this.squeeze = 1.0,
     this.onSelectedItemChanged,
     this.renderChildrenOutsideViewport = false,
@@ -606,6 +609,7 @@ class DIYListWheelScrollView extends StatefulWidget {
     this.perspective = DIYRenderListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
     @required this.itemExtent,
+    @required this.childSize,
     this.squeeze = 1.0,
     this.onSelectedItemChanged,
     this.renderChildrenOutsideViewport = false,
@@ -672,6 +676,8 @@ class DIYListWheelScrollView extends StatefulWidget {
   /// Size of each child in the main axis. Must not be null and must be
   /// positive.
   final double itemExtent;
+
+  final Size childSize;
 
   /// {@macro flutter.rendering.DIYRenderListWheelViewport.squeeze}
   ///
@@ -764,6 +770,7 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
         controller: scrollController,
         physics: widget.physics,
         itemExtent: widget.itemExtent,
+        childSize: widget.childSize,
         restorationId: widget.restorationId,
         scrollBehavior: widget.scrollBehavior ?? ScrollConfiguration.of(context).copyWith(scrollbars: false),
         viewportBuilder: (BuildContext context, ViewportOffset offset) {
@@ -772,6 +779,7 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
             perspective: widget.perspective,
             offAxisFraction: widget.offAxisFraction,
             itemExtent: widget.itemExtent,
+            childSize: widget.childSize,
             squeeze: widget.squeeze,
             renderChildrenOutsideViewport: widget.renderChildrenOutsideViewport,
             offset: offset,
@@ -968,6 +976,7 @@ class ListWheelViewport extends RenderObjectWidget {
     this.perspective = DIYRenderListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
     @required this.itemExtent,
+    @required this.childSize,
     this.squeeze = 1.0,
     this.renderChildrenOutsideViewport = false,
     @required this.offset,
@@ -1005,6 +1014,8 @@ class ListWheelViewport extends RenderObjectWidget {
   /// {@macro flutter.rendering.DIYRenderListWheelViewport.itemExtent}
   final double itemExtent;
 
+  final Size childSize;
+
   /// {@macro flutter.rendering.DIYRenderListWheelViewport.squeeze}
   ///
   /// Defaults to 1.
@@ -1038,6 +1049,7 @@ class ListWheelViewport extends RenderObjectWidget {
       perspective: perspective,
       offAxisFraction: offAxisFraction,
       itemExtent: itemExtent,
+      childSize: childSize,
       squeeze: squeeze,
       renderChildrenOutsideViewport: renderChildrenOutsideViewport,
       clipBehavior: clipBehavior,

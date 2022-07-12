@@ -133,6 +133,7 @@ class DIYRenderListWheelViewport
     double perspective = defaultPerspective,
     double offAxisFraction = 0,
     @required double itemExtent,
+    @required Size childSize,
     double squeeze = 1,
     bool renderChildrenOutsideViewport = false,
     Clip clipBehavior = Clip.none,
@@ -160,6 +161,7 @@ class DIYRenderListWheelViewport
        _perspective = perspective,
        _offAxisFraction = offAxisFraction,
        _itemExtent = itemExtent,
+       _childSize = childSize,
        _squeeze = squeeze,
        _renderChildrenOutsideViewport = renderChildrenOutsideViewport,
        _clipBehavior = clipBehavior {
@@ -341,6 +343,10 @@ class DIYRenderListWheelViewport
     _itemExtent = value;
     markNeedsLayout();
   }
+
+
+  Size _childSize;
+
 
 
   /// {@template flutter.rendering.DIYRenderListWheelViewport.squeeze}
@@ -613,12 +619,13 @@ class DIYRenderListWheelViewport
 
     // The height, in pixel, that children will be visible and might be laid out
     // and painted.
-    double visibleHeight = size.height * _squeeze;
+    /// 修改绘制可见cell范围
+    double visibleHeight = _childSize.width;
     // If renderChildrenOutsideViewport is true, we spawn extra children by
     // doubling the visibility range, those that are in the backside of the
     // cylinder won't be painted anyway.
     if (renderChildrenOutsideViewport)
-      visibleHeight *= 2;
+      visibleHeight *= 4;
 
     final double firstVisibleOffset =
         offset.pixels + _itemExtent / 2 - visibleHeight / 2;
@@ -733,19 +740,21 @@ class DIYRenderListWheelViewport
 
     // offset 默认为0，0
     // size是视图大小 可以通过size确定中心点
-    print("<> build paint offset $offset size $size");
+    // print("<> build paint offset $offset size $size");
     // 标准位置绘制
     context.canvas.drawCircle(Offset(size.width / 2,size.height / 2),10,Paint()..color = Colors.red);
-    Path path = Path();
-    path.lineTo(0, 0);
-    path.lineTo(size.width,0);
-    path.lineTo(size.width,size.height);
-    path.lineTo(0,size.height);
-    path.lineTo(0,0);
-    context.canvas.drawPath(path, Paint()..color = Colors.black ..style = PaintingStyle.stroke..strokeWidth = 5);
+
+    // Path path = Path();
+    // path.lineTo(0, 0);
+    // path.lineTo(size.width,0);
+    // path.lineTo(size.width,size.height);
+    // path.lineTo(0,size.height);
+    // path.lineTo(0,0);
+    // context.canvas.drawPath(path, Paint()..color = Colors.black ..style = PaintingStyle.stroke..strokeWidth = 5);
+
 
     if (childCount > 0) {
-      // print("<> paint _shouldClipAtCurrentOffset() ${_shouldClipAtCurrentOffset()} clipBehavior != Clip.none ${clipBehavior != Clip.none}");
+      print("<> paint _shouldClipAtCurrentOffset() ${_shouldClipAtCurrentOffset()} clipBehavior != Clip.none ${clipBehavior != Clip.none} childCount $childCount");
       if (_shouldClipAtCurrentOffset() && clipBehavior != Clip.none) {
         _clipRectLayer.layer = context.pushClipRect(
           needsCompositing,
@@ -780,6 +789,9 @@ class DIYRenderListWheelViewport
     }
   }
 
+
+
+
   /// Takes in a child with a **scrollable layout offset** and paints it in the
   /// **transformed cylindrical space viewport painting coordinates**.
   void _paintTransformedChild(
@@ -790,28 +802,41 @@ class DIYRenderListWheelViewport
   ) {
 
     Offset centerPosition = Offset(size.width /2 - child.size.width / 2,size.height/ 2- child.size.height / 2);
+
+
     offset =  Offset(size.width /2,size.height/ 2);
-    final Offset untransformedPaintingCoordinates = offset
-        + Offset(
-            _getUntransformedPaintingCoordinateX(layoutOffset.dy),
-            _getUntransformedPaintingCoordinateY(layoutOffset.dy)
-        );
+
+
+    // final Offset untransformedPaintingCoordinates = offset
+    //     + Offset(
+    //         _getUntransformedPaintingCoordinateX(layoutOffset.dy),
+    //         _getUntransformedPaintingCoordinateY(layoutOffset.dy)
+    //     );
+
+
 
 
     // Get child's center as a fraction of the viewport's height.
-    final double fractionalY =
-        (untransformedPaintingCoordinates.dy + _itemExtent / 2.0) / size.height;
+    // final double fractionalY =
+    //     (untransformedPaintingCoordinates.dy + _itemExtent / 2.0) / size.height;
+    //
+    //  double fractionalX =
+    //     (untransformedPaintingCoordinates.dx + _itemExtent / 2.0) / size.width;
 
-    final double fractionalX =
-        (untransformedPaintingCoordinates.dx + _itemExtent / 2.0) / size.width;
 
 
-    // print("<> _paintTransformedChild 打印 childParentData.offset -> _itemExtent $_itemExtent offset $offset layoutOffset $layoutOffset  _topScrollMarginExtent $_topScrollMarginExtent  offset.pixels ${this.offset.pixels} fractionalY $fractionalY fractionalX $fractionalX");
+    final fractionalX = (layoutOffset.dy - this.offset.pixels + itemExtent)  / itemExtent;
+
+
+
+    print("<> _paintTransformedChild 打印 childParentData.offset -> layoutOffset $layoutOffset _itemExtent $_itemExtent offset $offset layoutOffset $layoutOffset  _topScrollMarginExtent $_topScrollMarginExtent  offset.pixels ${this.offset.pixels}  fractionalX $fractionalX");
     // _itemExtent 固定值
     // offset 固定值
     // layoutOffset 可以理解为坐标
     // _topScrollMarginExtent 固定值
     // offset.pixels 偏移量
+
+
 
 
 
@@ -821,43 +846,52 @@ class DIYRenderListWheelViewport
 
 
     // final double angle = lerpDouble( - math.pi / 2 , math.pi * 3/ 2 , fractionalX);
-    final double angle = lerpDouble(0 , math.pi , fractionalX) - math.pi / 2;
-
-    // print("<> _paintTransformedChild 打印  -> layoutOffset.dx ${layoutOffset.dx} untransformedPaintingCoordinates.dx ${untransformedPaintingCoordinates.dx} fractionalX $fractionalX  fractionalXPuls ${fractionalX - 1} angle $angle");
-    // print("<> _paintTransformedChild 打印  -> layoutOffset.dy ${layoutOffset.dy} untransformedPaintingCoordinates.dy ${untransformedPaintingCoordinates.dy} fractionalY $fractionalY  fractionalYPuls ${fractionalY - 1} angle $angle");
-
-    print("<> _paintTransformedChild 打印  -> angle $angle  pi -> ${math.pi} math.pi / 2 -> ${math.pi / 2} ");
+    final double angle = lerpDouble(0 , math.pi , fractionalX / 2.0);
 
 
-    // print("<> _paintTransformedChild 计算 angle $angle  ${math.pi * 2}");
-    // print("<> _paintTransformedChild 计算 angle 新值 ${angle - lerpDouble( - math.pi / 2 , math.pi * 3/ 2 , 0.5)}");
+
     // 半径大小
     double radius = itemExtent;
     double x = 0;
-    double y =0;
+    double y = 0;
+    double scaleSize = 1.0;
+
+    // double angle5 = double.parse(angle.toStringAsFixed(2));
+    // double pi5 =  double.parse(math.pi.toStringAsFixed(2));
+
     // 偏移计算
+    // if (angle5.compareTo(0) >=0  &&  (pi5.compareTo(angle5) >= 0) ) {
+    //   x = math.cos(angle5) * radius  * scaleSize + centerPosition.dx;
+    //   y = centerPosition.dy;
+    //   print("<> _paintTransformedChild left  偏移计算 angle5 $angle5 pi5 $pi5 x $x y $y");
+    // }else{
+    //   if(angle5 > pi5){
+    //     x = radius  * (-1 + ((angle5 - pi5) / (pi5 / 2)) ) * scaleSize - 2.5 * centerPosition.dx;
+    //     y = - radius * ((angle5 - pi5) / (pi5 / 2)) + 1.5 * centerPosition.dy;
+    //   }else{
+    //     x = radius  *(1 - (- angle5 / (pi5 / 2)) ) * scaleSize + 4.5 * centerPosition.dx;
+    //     y = - radius  * (- angle5 / (pi5 / 2)) +  1.5 * centerPosition.dy;
+    //   }
+    //   print("<> _paintTransformedChild right 偏移计算 angle5 $angle5 pi5 $pi5 x $x y $y   ${(pi5 - angle) >=0}");
+    // }
+
+
+
+
+    // 偏移计算
+
     if (angle >= 0 && angle <= math.pi) {
-      x = math.cos(angle) * radius + centerPosition.dx;
-      y = math.sin(angle) * radius + centerPosition.dy;
-
-
-      // x = math.cos(angle) * radius + centerPosition.dx;
-      // y = centerPosition.dy;
-
-      // x = centerPosition.dx;
-      // y = centerPosition.dy;
-      // print("<> _paintTransformedChild 偏移计算 angle $angle ${math.pi} x $x y $y");
-
+      x = math.cos(angle) * radius  * scaleSize+ centerPosition.dx;
+      y = centerPosition.dy;
     }else{
       if(angle > math.pi){
-        x = radius  * (-1 + ((angle - math.pi) / (math.pi / 2)) );
-        y = - radius * ((angle - math.pi) / (math.pi / 2));
+        x = radius  * (-1 + ((angle - math.pi) / (math.pi / 2)) )* scaleSize + centerPosition.dx;
+        y = - radius * ((angle - math.pi) / (math.pi / 2)) + centerPosition.dy;
       }else{
-        x = radius  *(1 - (- angle / (math.pi / 2)) );
-        y = - radius  * (- angle / (math.pi / 2));
+        x = radius  *(1 - (- angle / (math.pi / 2)) )* scaleSize + centerPosition.dx;
+        y = - radius  * (- angle / (math.pi / 2)) + centerPosition.dy;
       }
     }
-
 
 
     final circleOffset = Offset(x, y);
@@ -879,68 +913,69 @@ class DIYRenderListWheelViewport
     // }else if(fractionalY > 0.5){
     //   scale = 1.0 - (fractionalY - 0.5);
     // }
-    double scale = 1.0 - (fractionalY > 0 ? fractionalY : -fractionalY);
+    double scale = 0.64 + 0.36 * (fractionalX > 1 ? 2 - fractionalX : fractionalX);
+
+    // print("<>_paintTransformedChild  计算 scale $scale angle $angle pi ${math.pi}  math.pi - angle ${math.pi - angle} fractionalX $fractionalX ${ (layoutOffset.dy - this.offset.pixels + itemExtent)  / itemExtent}");
 
 
-    // print("<> _paintTransformedChild 计算 scale $scale  ");
-    //
+    final Matrix4 transform = Matrix4.translationValues(
+      circleOffset.dx * scale,
+      circleOffset.dy * scale,
+      0,
+    ).scaled(scale);
+
     // final Matrix4 transform = Matrix4.translationValues(
-    //   circleOffset.dx - child.size.width / 2.0,
-    //   circleOffset.dy - child.size.height / 2.0,
+    //   circleOffset.dx ,
+    //   circleOffset.dy,
     //   0,
     // );
 
 
-    final Matrix4 transform = Matrix4.translationValues(
-      circleOffset.dx,
-      circleOffset.dy,
-      0,
-    );
-
-    // final Matrix4 transform = Matrix4.translationValues(
-    //   circleOffset.dx  * scale,
-    //   (circleOffset.dy + radius) * scale,
-    //   0,
-    // ).scaled(scale);
-
-
     // 偏移量
-    final Offset offsetToCenter = Offset(
-      untransformedPaintingCoordinates.dx,
-    0,
-    );
-    _paintChildCylindrically(context, Offset.zero, child, transform, Offset.zero);
+    // final Offset offsetToCenter = Offset(
+    //   untransformedPaintingCoordinates.dx,
+    // 0,
+    // );
+
+    // print("<> _paintTransformedChild 打印 childParentData.offset -> \n layoutOffset $layoutOffset \n fractionalY $fractionalY fractionalX $fractionalX");
+
+
+
+    _paintChildCylindrically(context,Offset.zero, child, transform, Offset.zero);
 
     // TODO 辅助线
     context.canvas.drawLine(Offset(offset.dx,
         offset.dy),Offset(circleOffset.dx + child.size.width / 2,
         circleOffset.dy+ child.size.height / 2 ), Paint()..color = Colors.blue);
-    final paragraphStyle = ParagraphStyle(
-      // 字体方向，有些国家语言是从右往左排版的
-        textDirection: TextDirection.ltr,
-        // 字体对齐方式
-        textAlign: TextAlign.justify,
-        fontSize: 14,
-        maxLines: 1,
-        // 字体超出大小时显示的提示
-        ellipsis: '...',
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.italic,
-        height: 5,
-        // 当我们设置[TextStyle.height]时 这个高度是否应用到字体顶部和底部
-        textHeightBehavior:
-        TextHeightBehavior(applyHeightToFirstAscent: true,applyHeightToLastDescent: true));
-// 第二步 与第三步
-    final paragraphBuilder = ParagraphBuilder(paragraphStyle)
-      ..addText('$angle');
-// 第四步
-    var paragraph = paragraphBuilder.build();
-// 第五步
-    paragraph.layout(ParagraphConstraints(width: 50));
-// 画一个辅助矩形（可以通过paragraph.width和paragraph.height来获取绘制文字的宽高）
-// 第六步
-    context.canvas.drawParagraph(paragraph, Offset(circleOffset.dx,
-      circleOffset.dy,));
+
+    context.canvas.drawCircle(Offset(circleOffset.dx + child.size.width / 2,
+        circleOffset.dy+ child.size.height / 2 ), 5, Paint()..color= Colors.black);
+//     final paragraphStyle = ParagraphStyle(
+//       // 字体方向，有些国家语言是从右往左排版的
+//         textDirection: TextDirection.ltr,
+//         // 字体对齐方式
+//         textAlign: TextAlign.justify,
+//         fontSize: 14,
+//         maxLines: 1,
+//         // 字体超出大小时显示的提示
+//         ellipsis: '...',
+//         fontWeight: FontWeight.bold,
+//         fontStyle: FontStyle.italic,
+//         height: 5,
+//         // 当我们设置[TextStyle.height]时 这个高度是否应用到字体顶部和底部
+//         textHeightBehavior:
+//         TextHeightBehavior(applyHeightToFirstAscent: true,applyHeightToLastDescent: true));
+// // 第二步 与第三步
+//     final paragraphBuilder = ParagraphBuilder(paragraphStyle)
+//       ..addText('$angle');
+// // 第四步
+//     var paragraph = paragraphBuilder.build();
+// // 第五步
+//     paragraph.layout(ParagraphConstraints(width: 50));
+// // 画一个辅助矩形（可以通过paragraph.width和paragraph.height来获取绘制文字的宽高）
+// // 第六步
+//     context.canvas.drawParagraph(paragraph, Offset(circleOffset.dx,
+//       circleOffset.dy,));
 
 
 
