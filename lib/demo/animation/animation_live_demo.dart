@@ -250,7 +250,7 @@ class LiveAnimationWidget extends StatelessWidget {
           curves: Curves.easeOutSine,
         ),
         LiveAnimationLogo(
-          "res/img/wa.png",
+          "res/img/wa2.png",
           delayed: 1000,
           curves: Curves.easeOut,
         ),
@@ -292,7 +292,7 @@ class _LiveWidgetState extends State<LiveWidget> {
           curves: Curves.easeOutSine,
         ),
         LiveAnimationLogo(
-          "res/img/wa.png",
+          "res/img/wa2.png",
           delayed: 1000,
           curves: Curves.easeOut,
         ),

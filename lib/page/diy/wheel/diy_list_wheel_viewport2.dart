@@ -3,50 +3,56 @@
 // found in the LICENSE file.
 
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:vector_math/vector_math_64.dart' show Matrix4, Quaternion, Vector3;
+import 'package:vector_math/vector_math_64.dart' show Matrix4;
 
 
 typedef _ChildSizingFunction = double Function(RenderBox child);
 
-/// A delegate used by [DIYRenderListWheelViewport] to manage its children.
+/// A delegate used by [RenderDIY2ListWheelViewport] to manage its children.
 ///
-/// [DIYRenderListWheelViewport] during layout will ask the delegate to create
+/// [RenderDIY2ListWheelViewport] during layout will ask the delegate to create
 /// children that are visible in the viewport and remove those that are not.
-abstract class DIYListWheelChildManager {
-  /// The maximum number of children that can be provided to
-  /// [DIYRenderListWheelViewport].
-  ///
-  /// If non-null, the children will have index in the range
-  /// `[0, childCount - 1]`.
-  ///
-  /// If null, then there's no explicit limits to the range of the children
-  /// except that it has to be contiguous. If [childExistsAt] for a certain
-  /// index returns false, that index is already past the limit.
-  int get childCount;
+// abstract class DIY2ListWheelChildManager {
+//   /// The maximum number of children that can be provided to
+//   /// [RenderDIY2ListWheelViewport].
+//   ///
+//   /// If non-null, the children will have index in the range
+//   /// `[0, childCount - 1]`.
+//   ///
+//   /// If null, then there's no explicit limits to the range of the children
+//   /// except that it has to be contiguous. If [childExistsAt] for a certain
+//   /// index returns false, that index is already past the limit.
+//   int get childCount;
+//
+//   /// Checks whether the delegate is able to provide a child widget at the given
+//   /// index.
+//   ///
+//   /// This function is not about whether the child at the given index is
+//   /// attached to the [RenderDIY2ListWheelViewport] or not.
+//   bool childExistsAt(int index);
+//
+//   /// Creates a new child at the given index and updates it to the child list
+//   /// of [RenderDIY2ListWheelViewport]. If no child corresponds to `index`, then do
+//   /// nothing.
+//   ///
+//   /// It is possible to create children with negative indices.
+//   void createChild(int index, { @required RenderBox after });
+//
+//   /// Removes the child element corresponding with the given RenderBox.
+//   void removeChild(RenderBox child);
+// }
 
-  /// Checks whether the delegate is able to provide a child widget at the given
-  /// index.
-  ///
-  /// This function is not about whether the child at the given index is
-  /// attached to the [DIYRenderListWheelViewport] or not.
-  bool childExistsAt(int index);
-
-  /// Creates a new child at the given index and updates it to the child list
-  /// of [DIYRenderListWheelViewport]. If no child corresponds to `index`, then do
-  /// nothing.
-  ///
-  /// It is possible to create children with negative indices.
-  void createChild(int index, { @required RenderBox after });
-
-  /// Removes the child element corresponding with the given RenderBox.
-  void removeChild(RenderBox child);
-}
-
+/// [ParentData] for use with [RenderDIY2ListWheelViewport].
+// class ListWheelParentData extends ContainerBoxParentData<RenderBox> {
+//   /// Index of this child in its parent's child list.
+//   ///
+//   /// This must be maintained by the [ListWheelChildManager].
+//   int index;
+// }
 
 /// Render, onto a wheel, a bigger sequential set of objects inside this viewport.
 ///
@@ -109,31 +115,33 @@ abstract class DIYListWheelChildManager {
 ///    diameter is [diameterRatio] times longer, as long as those angles are
 ///    between -pi/2 and pi/2.
 ///
-///    For example, if [diameterRatio] is 2.0 and this [DIYRenderListWheelViewport]
+///    For example, if [diameterRatio] is 2.0 and this [RenderDIY2ListWheelViewport]
 ///    is 100.0px in the main axis, then the diameter is 200.0. And children
 ///    will be evenly laid out between that cylinder's -arcsin(1/2) and
 ///    arcsin(1/2) angles.
 ///
 ///    The cylinder's 0 degree side is always centered in the
-///    [DIYRenderListWheelViewport]. The transformation from **untransformed
+///    [RenderDIY2ListWheelViewport]. The transformation from **untransformed
 ///    plane's viewport painting coordinates** is also done such that the child
 ///    in the center of that plane will be mostly untransformed with children
 ///    above and below it being transformed more as the angle increases.
-class DIYRenderListWheelViewport
+class RenderDIY2ListWheelViewport
     extends RenderBox
     with ContainerRenderObjectMixin<RenderBox, ListWheelParentData>
     implements RenderAbstractViewport {
-  /// Creates a [DIYRenderListWheelViewport] which renders children on a wheel.
+  /// Creates a [RenderDIY2ListWheelViewport] which renders children on a wheel.
   ///
   /// All arguments must not be null. Optional arguments have reasonable defaults.
-  DIYRenderListWheelViewport({
+  RenderDIY2ListWheelViewport({
     @required this.childManager,
     @required ViewportOffset offset,
     double diameterRatio = defaultDiameterRatio,
     double perspective = defaultPerspective,
     double offAxisFraction = 0,
+    bool useMagnifier = false,
+    double magnification = 1,
+    double overAndUnderCenterOpacity = 1,
     @required double itemExtent,
-    @required Size childSize,
     double squeeze = 1,
     bool renderChildrenOutsideViewport = false,
     Clip clipBehavior = Clip.none,
@@ -146,6 +154,11 @@ class DIYRenderListWheelViewport
        assert(perspective > 0),
        assert(perspective <= 0.01, perspectiveTooHighMessage),
        assert(offAxisFraction != null),
+       assert(useMagnifier != null),
+       assert(magnification != null),
+       assert(magnification > 0),
+       assert(overAndUnderCenterOpacity != null),
+       assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1),
        assert(itemExtent != null),
        assert(squeeze != null),
        assert(squeeze > 0),
@@ -160,8 +173,10 @@ class DIYRenderListWheelViewport
        _diameterRatio = diameterRatio,
        _perspective = perspective,
        _offAxisFraction = offAxisFraction,
+       _useMagnifier = useMagnifier,
+       _magnification = magnification,
+       _overAndUnderCenterOpacity = overAndUnderCenterOpacity,
        _itemExtent = itemExtent,
-       _childSize = childSize,
        _squeeze = squeeze,
        _renderChildrenOutsideViewport = renderChildrenOutsideViewport,
        _clipBehavior = clipBehavior {
@@ -193,7 +208,7 @@ class DIYRenderListWheelViewport
   /// The delegate that manages the children of this object.
   ///
   /// This delegate must maintain the [ListWheelParentData.index] value.
-  final DIYListWheelChildManager childManager;
+  final ListWheelChildManager childManager;
 
   /// The associated ViewportOffset object for the viewport describing the part
   /// of the content inside that's visible.
@@ -218,7 +233,7 @@ class DIYRenderListWheelViewport
     markNeedsLayout();
   }
 
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.diameterRatio}
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.diameterRatio}
   /// A ratio between the diameter of the cylinder and the viewport's size
   /// in the main axis.
   ///
@@ -261,7 +276,7 @@ class DIYRenderListWheelViewport
     markNeedsSemanticsUpdate();
   }
 
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.perspective}
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.perspective}
   /// Perspective of the cylindrical projection.
   ///
   /// A number between 0 and 0.01 where 0 means looking at the cylinder from
@@ -291,7 +306,7 @@ class DIYRenderListWheelViewport
     markNeedsSemanticsUpdate();
   }
 
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.offAxisFraction}
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.offAxisFraction}
   /// How much the wheel is horizontally off-center, as a fraction of its width.
 
   /// This property creates the visual effect of looking at a vertical wheel from
@@ -326,8 +341,59 @@ class DIYRenderListWheelViewport
     markNeedsPaint();
   }
 
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.useMagnifier}
+  /// Whether to use the magnifier for the center item of the wheel.
+  /// {@endtemplate}
+  bool get useMagnifier => _useMagnifier;
+  bool _useMagnifier = false;
+  set useMagnifier(bool value) {
+    assert(value != null);
+    if (value == _useMagnifier)
+      return;
+    _useMagnifier = value;
+    markNeedsPaint();
+  }
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.magnification}
+  /// The zoomed-in rate of the magnifier, if it is used.
+  ///
+  /// The default value is 1.0, which will not change anything.
+  /// If the value is > 1.0, the center item will be zoomed in by that rate, and
+  /// it will also be rendered as flat, not cylindrical like the rest of the list.
+  /// The item will be zoomed out if magnification < 1.0.
+  ///
+  /// Must be positive.
+  /// {@endtemplate}
+  double get magnification => _magnification;
+  double _magnification = 1.0;
+  set magnification(double value) {
+    assert(value != null);
+    assert(value > 0);
+    if (value == _magnification)
+      return;
+    _magnification = value;
+    markNeedsPaint();
+  }
 
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.itemExtent}
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.overAndUnderCenterOpacity}
+  /// The opacity value that will be applied to the wheel that appears below and
+  /// above the magnifier.
+  ///
+  /// The default value is 1.0, which will not change anything.
+  ///
+  /// Must be greater than or equal to 0, and less than or equal to 1.
+  /// {@endtemplate}
+  double get overAndUnderCenterOpacity => _overAndUnderCenterOpacity;
+  double _overAndUnderCenterOpacity = 1.0;
+  set overAndUnderCenterOpacity(double value) {
+    assert(value != null);
+    assert(value >= 0 && value <= 1);
+    if (value == _overAndUnderCenterOpacity)
+      return;
+    _overAndUnderCenterOpacity = value;
+    markNeedsPaint();
+  }
+
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.itemExtent}
   /// The size of the children along the main axis. Children [RenderBox]es will
   /// be given the [BoxConstraints] of this exact size.
   ///
@@ -345,22 +411,18 @@ class DIYRenderListWheelViewport
   }
 
 
-  Size _childSize;
-
-
-
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.squeeze}
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.squeeze}
   /// The angular compactness of the children on the wheel.
   ///
   /// This denotes a ratio of the number of children on the wheel vs the number
   /// of children that would fit on a flat list of equivalent size, assuming
   /// [diameterRatio] of 1.
   ///
-  /// For instance, if this DIYRenderListWheelViewport has a height of 100px and
+  /// For instance, if this RenderDIY2ListWheelViewport has a height of 100px and
   /// [itemExtent] is 20px, 5 items would fit on an equivalent flat list.
   /// With a [squeeze] of 1, 5 items would also be shown in the
-  /// DIYRenderListWheelViewport. With a [squeeze] of 2, 10 items would be shown
-  /// in the DIYRenderListWheelViewport.
+  /// RenderDIY2ListWheelViewport. With a [squeeze] of 2, 10 items would be shown
+  /// in the RenderDIY2ListWheelViewport.
   ///
   /// Changing this value will change the number of children built and shown
   /// inside the wheel.
@@ -381,7 +443,7 @@ class DIYRenderListWheelViewport
     markNeedsSemanticsUpdate();
   }
 
-  /// {@template flutter.rendering.DIYRenderListWheelViewport.renderChildrenOutsideViewport}
+  /// {@template flutter.rendering.RenderDIY2ListWheelViewport.renderChildrenOutsideViewport}
   /// Whether to paint children inside the viewport only.
   ///
   /// If false, every child will be painted. However the [Scrollable] is still
@@ -482,21 +544,11 @@ class DIYRenderListWheelViewport
     return -size.height / 2.0 + _itemExtent / 2.0;
   }
 
-  double get _leftScrollMarginExtent {
-    assert(hasSize);
-    // Consider adding alignment options other than center.
-    return -size.width / 2.0 + _itemExtent / 2.0;
-  }
-
   /// Transforms a **scrollable layout coordinates**' y position to the
   /// **untransformed plane's viewport painting coordinates**' y position given
   /// the current scroll offset.
   double _getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
     return layoutCoordinateY - _topScrollMarginExtent - offset.pixels;
-  }
-
-  double _getUntransformedPaintingCoordinateX(double layoutCoordinateX) {
-    return layoutCoordinateX - _leftScrollMarginExtent - offset.pixels;
   }
 
   /// Given the _diameterRatio, return the largest absolute angle of the item
@@ -615,17 +667,14 @@ class DIYRenderListWheelViewport
         minWidth: 0.0,
       );
 
-    // print("<> build performLayout childConstraints $childConstraints");
-
     // The height, in pixel, that children will be visible and might be laid out
     // and painted.
-    /// 修改绘制可见cell范围
-    double visibleHeight = _childSize.width;
+    double visibleHeight = size.height * _squeeze;
     // If renderChildrenOutsideViewport is true, we spawn extra children by
     // doubling the visibility range, those that are in the backside of the
     // cylinder won't be painted anyway.
     if (renderChildrenOutsideViewport)
-      visibleHeight *= 4;
+      visibleHeight *= 2;
 
     final double firstVisibleOffset =
         offset.pixels + _itemExtent / 2 - visibleHeight / 2;
@@ -654,8 +703,6 @@ class DIYRenderListWheelViewport
       return;
     }
 
-    // print("<> build performLayout targetFirstIndex $targetFirstIndex targetLastIndex $targetLastIndex");
-
     // Now there are 2 cases:
     //  - The target index range and our current index range have intersection:
     //    We shorten and extend our current child list so that the two lists
@@ -680,9 +727,6 @@ class DIYRenderListWheelViewport
 
     int currentFirstIndex = indexOf(firstChild);
     int currentLastIndex = indexOf(lastChild);
-
-    // print("<> build performLayout currentFirstIndex $currentFirstIndex currentLastIndex $currentLastIndex");
-
 
     // Remove all unnecessary children by shortening the current child list, in
     // both directions.
@@ -737,24 +781,7 @@ class DIYRenderListWheelViewport
 
   @override
   void paint(PaintingContext context, Offset offset) {
-
-    // offset 默认为0，0
-    // size是视图大小 可以通过size确定中心点
-    // print("<> build paint offset $offset size $size");
-    // 标准位置绘制
-    // context.canvas.drawCircle(Offset(size.width / 2,size.height / 2),10,Paint()..color = Colors.red);
-
-    // Path path = Path();
-    // path.lineTo(0, 0);
-    // path.lineTo(size.width,0);
-    // path.lineTo(size.width,size.height);
-    // path.lineTo(0,size.height);
-    // path.lineTo(0,0);
-    // context.canvas.drawPath(path, Paint()..color = Colors.black ..style = PaintingStyle.stroke..strokeWidth = 5);
-
-
     if (childCount > 0) {
-      // print("<> paint _shouldClipAtCurrentOffset() ${_shouldClipAtCurrentOffset()} clipBehavior != Clip.none ${clipBehavior != Clip.none} childCount $childCount  offset $offset");
       if (_shouldClipAtCurrentOffset() && clipBehavior != Clip.none) {
         _clipRectLayer.layer = context.pushClipRect(
           needsCompositing,
@@ -781,36 +808,13 @@ class DIYRenderListWheelViewport
 
   /// Paints all children visible in the current viewport.
   void _paintVisibleChildren(PaintingContext context, Offset offset) {
-    // RenderBox childToPaint = firstChild;
-    // while (childToPaint != null) {
-    //   final ListWheelParentData childParentData = childToPaint.parentData as ListWheelParentData;
-    //   _paintTransformedChild(childToPaint, context, offset, childParentData.offset);
-    //   childToPaint = childAfter(childToPaint);
-    // }
-
-    // 绘制先后顺序调整
-    RenderBox bChildToPaint = firstChild;
-    RenderBox lChildToPaint = lastChild;
-    while (lChildToPaint != null && bChildToPaint != null && bChildToPaint != lChildToPaint) {
-      final ListWheelParentData lChildParentData = lChildToPaint.parentData as ListWheelParentData;
-      _paintTransformedChild(lChildToPaint, context, offset, lChildParentData.offset);
-      lChildToPaint = childBefore(lChildToPaint);
-
-      final ListWheelParentData bChildParentData = bChildToPaint.parentData as ListWheelParentData;
-      _paintTransformedChild(bChildToPaint, context, offset, bChildParentData.offset);
-      bChildToPaint = childAfter(bChildToPaint);
+    RenderBox childToPaint = firstChild;
+    while (childToPaint != null) {
+      final ListWheelParentData childParentData = childToPaint.parentData as ListWheelParentData;
+      _paintTransformedChild(childToPaint, context, offset, childParentData.offset);
+      childToPaint = childAfter(childToPaint);
     }
-
-    if(lChildToPaint == bChildToPaint && bChildToPaint != null){
-      final ListWheelParentData bChildParentData = bChildToPaint.parentData as ListWheelParentData;
-      _paintTransformedChild(bChildToPaint, context, offset, bChildParentData.offset);
-    }
-
-
   }
-
-
-
 
   /// Takes in a child with a **scrollable layout offset** and paints it in the
   /// **transformed cylindrical space viewport painting coordinates**.
@@ -820,169 +824,47 @@ class DIYRenderListWheelViewport
     Offset offset,
     Offset layoutOffset,
   ) {
-
-    Offset centerPosition = Offset(size.width /2 - child.size.width / 2,size.height/ 2- child.size.height / 2);
-
-
-    offset =  Offset(size.width /2,size.height/ 2);
-
-
-    // final Offset untransformedPaintingCoordinates = offset
-    //     + Offset(
-    //         _getUntransformedPaintingCoordinateX(layoutOffset.dy),
-    //         _getUntransformedPaintingCoordinateY(layoutOffset.dy)
-    //     );
-
-
-
+    final Offset untransformedPaintingCoordinates = offset
+        + Offset(
+            layoutOffset.dx,
+            _getUntransformedPaintingCoordinateY(layoutOffset.dy),
+        );
 
     // Get child's center as a fraction of the viewport's height.
-    // final double fractionalY =
-    //     (untransformedPaintingCoordinates.dy + _itemExtent / 2.0) / size.height;
-    //
-    //  double fractionalX =
-    //     (untransformedPaintingCoordinates.dx + _itemExtent / 2.0) / size.width;
-
-
-
-    final fractionalX = (layoutOffset.dy - this.offset.pixels + itemExtent)  / itemExtent;
-
-
-
-    // print("<> _paintTransformedChild 打印 childParentData.offset -> layoutOffset $layoutOffset _itemExtent $_itemExtent offset $offset layoutOffset $layoutOffset  _topScrollMarginExtent $_topScrollMarginExtent  offset.pixels ${this.offset.pixels}  fractionalX $fractionalX");
-    // _itemExtent 固定值
-    // offset 固定值
-    // layoutOffset 可以理解为坐标
-    // _topScrollMarginExtent 固定值
-    // offset.pixels 偏移量
-
-
-
-
-
-    // print("<> _paintTransformedChild 计算 fractionalY $fractionalY  新值 value ${fractionalY - 0.5} ");
-    // 初始化 fractionalY 中间值为0.5
-
-
-
-    // final double angle = lerpDouble( - math.pi / 2 , math.pi * 3/ 2 , fractionalX);
-    final double angle = lerpDouble(0 , math.pi , fractionalX / 2.0);
-
-
-
-    // 半径大小 也是调整娃娃之间的间距大小
-    double radius = itemExtent * 0.7;
-    double x = 0;
-    double y = 0;
-    double scaleSize = 1.0;
-
-    // double angle5 = double.parse(angle.toStringAsFixed(2));
-    // double pi5 =  double.parse(math.pi.toStringAsFixed(2));
-
-    // 偏移计算
-    // if (angle5.compareTo(0) >=0  &&  (pi5.compareTo(angle5) >= 0) ) {
-    //   x = math.cos(angle5) * radius  * scaleSize + centerPosition.dx;
-    //   y = centerPosition.dy;
-    //   print("<> _paintTransformedChild left  偏移计算 angle5 $angle5 pi5 $pi5 x $x y $y");
-    // }else{
-    //   if(angle5 > pi5){
-    //     x = radius  * (-1 + ((angle5 - pi5) / (pi5 / 2)) ) * scaleSize - 2.5 * centerPosition.dx;
-    //     y = - radius * ((angle5 - pi5) / (pi5 / 2)) + 1.5 * centerPosition.dy;
-    //   }else{
-    //     x = radius  *(1 - (- angle5 / (pi5 / 2)) ) * scaleSize + 4.5 * centerPosition.dx;
-    //     y = - radius  * (- angle5 / (pi5 / 2)) +  1.5 * centerPosition.dy;
-    //   }
-    //   print("<> _paintTransformedChild right 偏移计算 angle5 $angle5 pi5 $pi5 x $x y $y   ${(pi5 - angle) >=0}");
-    // }
-
-
-
-
-    // 偏移计算
-    final double maxLeftOffset = math.cos(math.pi) * radius  * scaleSize;
-    final double maxRightOffset = math.cos(0) * radius  * scaleSize;
-
-    if (angle >= 0 && angle <= math.pi) {
-      x = math.cos(angle) * radius  * scaleSize + centerPosition.dx;
-      y = centerPosition.dy;
-    }else{
-      if(angle > math.pi * 3 / 2 + 0.1 || angle < - math.pi / 2 - 0.1){  // 超出角度范围不绘制
-        return;
-      }
-      if(angle > math.pi){
-        // x = radius  * (-1 + ((angle - math.pi) / (math.pi / 2)) )* scaleSize + centerPosition.dx;
-        // y = - radius * ((angle - math.pi) / (math.pi / 2)) + centerPosition.dy;
-
-        x = maxLeftOffset  + centerPosition.dx - ((angle - math.pi) / (math.pi / 2))  * maxLeftOffset * math.cos(angle * 16 / 40);
-        y = centerPosition.dy - ((angle - math.pi) / (math.pi / 2)) * radius  * 16 / 15;
-      }else{
-        // x = radius  * (1 - (- angle / (math.pi / 2)) )* scaleSize + centerPosition.dx;
-        // y = - radius  * (- angle / (math.pi / 2)) + centerPosition.dy;
-
-        x = maxRightOffset + centerPosition.dx  - (-angle / (math.pi / 2))  * maxLeftOffset * math.sin(-angle * 8 / 40);
-        y = centerPosition.dy - (-angle  / (math.pi / 2)) * radius  * 16 / 15;
-
-      }
-    }
-
-
-    final circleOffset = Offset(x, y);
-
-    // print("<> _paintTransformedChild 偏移计算 circleOffset $circleOffset");
-
+    final double fractionalY =
+        (untransformedPaintingCoordinates.dy + _itemExtent / 2.0) / size.height;
+    final double angle = -(fractionalY - 0.5) * 2.0 * _maxVisibleRadian / squeeze;
     // Don't paint the backside of the cylinder when
     // renderChildrenOutsideViewport is true. Otherwise, only children within
     // suitable angles (via _first/lastVisibleLayoutOffset) reach the paint
     // phase.
-    // if (angle > math.pi / 2.0 || angle < -math.pi / 2.0)
-    //   return;
+    if (angle > math.pi / 2.0 || angle < -math.pi / 2.0)
+      return;
 
+    // final Matrix4 transform = MatrixUtils.createCylindricalProjectionTransform(
+    //   radius: size.height * _diameterRatio / 2.0,
+    //   angle: angle,
+    //   perspective: _perspective,
+    // );
 
-    // 缩小值
-    // double scale = 1.0;
-    // if(fractionalY < 0.5){
-    //   scale = 1.0 - (0.5 - fractionalY);
-    // }else if(fractionalY > 0.5){
-    //   scale = 1.0 - (fractionalY - 0.5);
-    // }
-    double scale = 0.64 + 0.36 * (fractionalX > 1 ? 2 - fractionalX : fractionalX);
-
-    // print("<>_paintTransformedChild  计算 circleOffset $circleOffset scale $scale angle $angle pi ${math.pi}  pi* 3/2 ${math.pi * 3 / 2}  2pi ${math.pi * 2} fractionalX $fractionalX ${ (layoutOffset.dy - this.offset.pixels + itemExtent)  / itemExtent}");
-
-
+      // DIY step 2 横向绘制 (修改坐标)
     final Matrix4 transform = Matrix4.translationValues(
-      circleOffset.dx * scale,
-      circleOffset.dy * scale,
+      -untransformedPaintingCoordinates.dy,
       0,
-    ).scaled(scale);
+      0,
+    );
 
-    // final Matrix4 transform = Matrix4.translationValues(
-    //   circleOffset.dx ,
-    //   circleOffset.dy,
-    //   0,
-    // );
+    // Offset that helps painting everything in the center (e.g. angle = 0).
+    final Offset offsetToCenter = Offset(
+      untransformedPaintingCoordinates.dx,
+      -_topScrollMarginExtent,
+    );
 
+    print("<> _paintTransformedChild size $size offset $offset layoutOffset $layoutOffset untransformedPaintingCoordinates $untransformedPaintingCoordinates fractionalY $fractionalY offsetToCenter $offsetToCenter");
 
-    // 偏移量
-    // final Offset offsetToCenter = Offset(
-    //   untransformedPaintingCoordinates.dx,
-    // 0,
-    // );
+    _paintChildCylindrically(context, offset, child, transform, offsetToCenter);
 
-    // print("<> _paintTransformedChild 打印 childParentData.offset -> \n layoutOffset $layoutOffset \n fractionalY $fractionalY fractionalX $fractionalX");
-
-
-
-    _paintChildCylindrically(context,Offset.zero, child, transform, Offset.zero);
-
-    // context.canvas.drawLine(Offset(offset.dx,
-    //     offset.dy),Offset(circleOffset.dx + child.size.width / 2,
-    //     circleOffset.dy+ child.size.height / 2 ), Paint()..color = Colors.blue);
-    //
-    // context.canvas.drawCircle(Offset(circleOffset.dx + child.size.width / 2,
-    //     circleOffset.dy+ child.size.height / 2 ), 5, Paint()..color= Colors.black);
-
-
+    // context.canvas.drawColor(Colors.blue, BlendMode.src);
   }
 
 
@@ -1004,14 +886,19 @@ class DIYRenderListWheelViewport
     }
 
     // Paint child cylindrically, with [overAndUnderCenterOpacity].
+    void opacityPainter(PaintingContext context, Offset offset) {
+      context.pushOpacity(offset, (overAndUnderCenterOpacity * 255).round(), painter);
+    }
 
     context.pushTransform(
       needsCompositing,
       offset,
       _centerOriginTransform(cylindricalTransform),
-      painter,
+      // Pre-transform painting function.
+      overAndUnderCenterOpacity == 1 ? painter : opacityPainter,
     );
   }
+
 
   /// Apply incoming transformation with the transformation's origin at the
   /// viewport's center or horizontally off to the side based on offAxisFraction.
@@ -1027,7 +914,6 @@ class DIYRenderListWheelViewport
       -centerOriginTranslation.dx * (-_offAxisFraction * 2 + 1),
       -centerOriginTranslation.dy,
     );
-    // print("<> build _centerOriginTransform size $size centerOriginTranslation $centerOriginTranslation _offAxisFraction $_offAxisFraction");
     return result;
   }
 
@@ -1069,8 +955,6 @@ class DIYRenderListWheelViewport
     final Matrix4 transform = target.getTransformTo(child);
     final Rect bounds = MatrixUtils.transformRect(transform, rect);
     final Rect targetRect = bounds.translate(0.0, (size.height - itemExtent) / 2);
-
-    // print("<> build getOffsetToReveal targetOffset $targetOffset");
 
     return RevealedOffset(offset: targetOffset, rect: targetRect);
   }

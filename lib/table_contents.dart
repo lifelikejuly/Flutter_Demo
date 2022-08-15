@@ -4,6 +4,7 @@ import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
 import 'package:flutter_demo/page/dev/crash_demo.dart';
 import 'package:flutter_demo/page/dev/gif_play_one_bug_demo.dart';
 import 'package:flutter_demo/page/dev/horizontal_wrap_barrage_demo.dart';
+import 'package:flutter_demo/page/dev/list_scrool_change_demo.dart';
 import 'package:flutter_demo/page/dev/one_line_warp_demo.dart';
 import 'package:flutter_demo/page/dev/page_cache_demo.dart';
 import 'package:flutter_demo/page/dev/reuse_key_list_demo.dart';
@@ -17,11 +18,13 @@ import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/diy/emoji/emoji_demo.dart';
 import 'package:flutter_demo/page/diy/wheel/list_wheel_diy_demo.dart';
 import 'package:flutter_demo/page/func/func_matrix4_demo.dart';
+import 'package:flutter_demo/page/layout/test_how_to_refresh_ui_demo.dart';
 import 'package:flutter_demo/page/lib/extened_nested_scroll_view_demo.dart';
 import 'package:flutter_demo/page/lib/photo_view_demo.dart';
 
 import 'contents/widget.dart';
 import 'demo/texture/texture_main_demo.dart';
+import 'page/dart/future_wait_demo.dart';
 import 'page/dart/map_demo.dart';
 import 'page/dart/stream_demo.dart';
 import 'page/dev/flex_tabbar_page_demo1/complex_page_demo1.dart';
@@ -32,6 +35,7 @@ import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
+import 'page/diy/tabbar/diy_tabbar_demo.dart';
 import 'page/func/func_matrix4_pentagon_demo.dart';
 import 'page/func/func_matrix4_u_demo.dart';
 import 'simple_import.dart';
@@ -49,6 +53,7 @@ class TableContents {
     "图片外接纹理": TextureMainDemo(),
     "圆形环绕列表": CircleListDemo(),
     "自定义ListWheel": ListWheelDiyDemo(),
+    "自定义TabBarView(主题色功能)": DiyTabbarDemo(),
   };
 
   // 开发真实案例
@@ -59,7 +64,7 @@ class TableContents {
     "列表滑动的阻尼效果自定义": DIYScrollDemo(),
     "Gif控制播放": GifPlayerDemo(),
     "Text组件中英文组合显示": TextChineseEnglishDemo(),
-    "TabBar切换动效": TabBarSwitchDemo(),
+    "TabBar原生切换动效去抖": TabBarSwitchDemo(),
     "侧滑拉取获取更多": SidePullDemo(), // 借鉴refresh组件改造
     "MethodChannel调用": NativeDemo(),
     "Webp加载bug": WebpBugDemo(),
@@ -79,12 +84,12 @@ class TableContents {
     "复杂页面交互布局实战Demo1": ComplexPageDemo1(),
     "页面结构实战Demo2": StickyTabsPage(),
     "Key复用导致的问题": ReuseKeyListDemo(),
-    "TextField输入框焦点问题": TextFieldFocusDemo(),
     "Gif图片有Loop只播放一次不显示问题": GifPlayOnceBugDemo(),
     "图片放大预览交互效果动画": ImageCombinedAnimationDemo(),
     "listview实现的弹幕效果": HorizontalWrapBarrageDemo(),
     "Clip裁切": ClippathImageShapeDemo(),
     "缩放动画": ScaleWidgetDemo(),
+    "列表滚动改造": ListScrollChangeDemo(),
     // "下拉刷新上二楼效果": RefreshKeepDemo(),
   };
 
@@ -114,17 +119,20 @@ class TableContents {
   static Map<String, Widget> BaseSkillDemos = {
     // "路由检查页面": NavigatorRouterDemo(),
     "Crash错误捕捉":CrashDemo(),
+    "刷新机制":TestHowToRefreshUIDemo(),
   };
 
   static Map<String, Widget> DartDemos = {
     "Map集合类型添加的异常": MapDemo(),
     "Stream使用": StreamDemo(),
+    "Future wait使用": FutureWaitDemo(),
   };
 
   static Map<String, Widget> FuncDemos = {
     "Matrix4实用": FuncMatrix4Demo(),
     "Matrix4五边形": FuncMatrix4PentagonDemo(),
     "Matrix4特殊U": FuncMatrix4UDemo(),
+    "输入框和软键盘的使用": TextFieldFocusDemo(),
   };
 
 

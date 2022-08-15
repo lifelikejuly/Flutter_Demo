@@ -14,6 +14,8 @@ import 'package:flutter_demo/page/widget/image/image_view_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_flow_demo.dart';
 import 'package:flutter_demo/page/widget/layout/layout_wrap_demo.dart';
 import 'package:flutter_demo/page/widget/list/list_auto_scroll_demo.dart';
+import 'package:flutter_demo/page/widget/scrollview/custom_scroll_demo.dart';
+import 'package:flutter_demo/page/widget/scrollview/nested_scroll_demo.dart';
 import 'package:flutter_demo/page/widget/tab/page_view_demo.dart';
 import 'package:flutter_demo/page/widget/tab/tabbar_view_demo.dart';
 import 'package:flutter_demo/page/widget/text/text_align_demo.dart';
@@ -31,7 +33,8 @@ class LearnWidget{
     "GestureDetector组件": CommonWidgetDemo(GestureDetectorDemos),
     "Text组件": CommonWidgetDemo(TextDemos),
     "Image组件": CommonWidgetDemo(ImageDemos),
-    "Animation组件": CommonWidgetDemo(AnimationDemos)
+    "Animation组件": CommonWidgetDemo(AnimationDemos),
+    "ScrollView组件": CommonWidgetDemo(scrollViewDemos),
   };
 
   // Tab组件
@@ -97,5 +100,11 @@ class LearnWidget{
     "ScaleTransition动画": ScaleTransitionAnimationDemo(),
     "SizeTransition动画": SizeTransitionAnimationDemo(),
     "AnimatedBuilder动画": AnimateBuilderDemo(),
+  };
+
+  // 滑动组件
+  static Map<String, Widget> scrollViewDemos = {
+    "CustomScroll组件": CustomScrollDemo(),
+    "NestedScroll组件": NestedScrollDemo(),
   };
 }

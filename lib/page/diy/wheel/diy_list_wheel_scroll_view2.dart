@@ -10,25 +10,26 @@ import 'package:flutter/physics.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
-import 'diy_list_wheel_viewport.dart';
+import 'diy_list_wheel_viewport2.dart';
+import 'diy_list_wheel_viewport2.dart';
 
 
-/// A delegate that supplies children for [DIYListWheelScrollView].
+/// A delegate that supplies children for [DIY2ListWheelScrollView].
 ///
-/// [DIYListWheelScrollView] lazily constructs its children during layout to avoid
+/// [DIY2ListWheelScrollView] lazily constructs its children during layout to avoid
 /// creating more children than are visible through the [Viewport]. This
-/// delegate is responsible for providing children to [DIYListWheelScrollView]
+/// delegate is responsible for providing children to [DIY2ListWheelScrollView]
 /// during that stage.
 ///
 /// See also:
 ///
-///  * [DIYListWheelChildListDelegate], a delegate that supplies children using an
+///  * [DIY2ListWheelChildListDelegate], a delegate that supplies children using an
 ///    explicit list.
-///  * [DIYListWheelChildLoopingListDelegate], a delegate that supplies infinite
+///  * [DIY2ListWheelChildLoopingListDelegate], a delegate that supplies infinite
 ///    children by looping an explicit list.
-///  * [DIYListWheelChildBuilderDelegate], a delegate that supplies children using
+///  * [DIY2ListWheelChildBuilderDelegate], a delegate that supplies children using
 ///    a builder callback.
-abstract class DIYListWheelChildDelegate {
+abstract class DIY2ListWheelChildDelegate {
   /// Return the child at the given index. If the child at the given
   /// index does not exist, return null.
   Widget build(BuildContext context, int index);
@@ -37,30 +38,30 @@ abstract class DIYListWheelChildDelegate {
   int get estimatedChildCount;
 
   /// Returns the true index for a child built at a given index. Defaults to
-  /// the given index, however if the delegate is [DIYListWheelChildLoopingListDelegate],
+  /// the given index, however if the delegate is [DIY2ListWheelChildLoopingListDelegate],
   /// this value is the index of the true element that the delegate is looping to.
   ///
   ///
-  /// Example: [DIYListWheelChildLoopingListDelegate] is built by looping a list of
+  /// Example: [DIY2ListWheelChildLoopingListDelegate] is built by looping a list of
   /// length 8. Then, trueIndexOf(10) = 2 and trueIndexOf(-5) = 3.
   int trueIndexOf(int index) => index;
 
   /// Called to check whether this and the old delegate are actually 'different',
   /// so that the caller can decide to rebuild or not.
-  bool shouldRebuild(covariant DIYListWheelChildDelegate oldDelegate);
+  bool shouldRebuild(covariant DIY2ListWheelChildDelegate oldDelegate);
 }
 
-/// A delegate that supplies children for [DIYListWheelScrollView] using an
+/// A delegate that supplies children for [DIY2ListWheelScrollView] using an
 /// explicit list.
 ///
-/// [DIYListWheelScrollView] lazily constructs its children to avoid creating more
+/// [DIY2ListWheelScrollView] lazily constructs its children to avoid creating more
 /// children than are visible through the [Viewport]. This delegate provides
 /// children using an explicit list, which is convenient but reduces the benefit
 /// of building children lazily.
 ///
 /// In general building all the widgets in advance is not efficient. It is
 /// better to create a delegate that builds them on demand using
-/// [DIYListWheelChildBuilderDelegate] or by subclassing [DIYListWheelChildDelegate]
+/// [DIY2ListWheelChildBuilderDelegate] or by subclassing [DIY2ListWheelChildDelegate]
 /// directly.
 ///
 /// This class is provided for the cases where either the list of children is
@@ -70,9 +71,9 @@ abstract class DIYListWheelChildDelegate {
 /// always visible (and thus there is nothing to be gained by building it on
 /// demand). For example, the body of a dialog box might fit both of these
 /// conditions.
-class DIYListWheelChildListDelegate extends DIYListWheelChildDelegate {
+class DIY2ListWheelChildListDelegate extends DIY2ListWheelChildDelegate {
   /// Constructs the delegate from a concrete list of children.
-  DIYListWheelChildListDelegate({@required this.children}) : assert(children != null);
+  DIY2ListWheelChildListDelegate({@required this.children}) : assert(children != null);
 
   /// The list containing all children that can be supplied.
   final List<Widget> children;
@@ -88,22 +89,22 @@ class DIYListWheelChildListDelegate extends DIYListWheelChildDelegate {
   }
 
   @override
-  bool shouldRebuild(covariant DIYListWheelChildListDelegate oldDelegate) {
+  bool shouldRebuild(covariant DIY2ListWheelChildListDelegate oldDelegate) {
     return children != oldDelegate.children;
   }
 }
 
-/// A delegate that supplies infinite children for [DIYListWheelScrollView] by
+/// A delegate that supplies infinite children for [DIY2ListWheelScrollView] by
 /// looping an explicit list.
 ///
-/// [DIYListWheelScrollView] lazily constructs its children to avoid creating more
+/// [DIY2ListWheelScrollView] lazily constructs its children to avoid creating more
 /// children than are visible through the [Viewport]. This delegate provides
 /// children using an explicit list, which is convenient but reduces the benefit
 /// of building children lazily.
 ///
 /// In general building all the widgets in advance is not efficient. It is
 /// better to create a delegate that builds them on demand using
-/// [DIYListWheelChildBuilderDelegate] or by subclassing [DIYListWheelChildDelegate]
+/// [DIY2ListWheelChildBuilderDelegate] or by subclassing [DIY2ListWheelChildDelegate]
 /// directly.
 ///
 /// This class is provided for the cases where either the list of children is
@@ -113,9 +114,9 @@ class DIYListWheelChildListDelegate extends DIYListWheelChildDelegate {
 /// always visible (and thus there is nothing to be gained by building it on
 /// demand). For example, the body of a dialog box might fit both of these
 /// conditions.
-class DIYListWheelChildLoopingListDelegate extends DIYListWheelChildDelegate {
+class DIY2ListWheelChildLoopingListDelegate extends DIY2ListWheelChildDelegate {
   /// Constructs the delegate from a concrete list of children.
-  DIYListWheelChildLoopingListDelegate({@required this.children}) : assert(children != null);
+  DIY2ListWheelChildLoopingListDelegate({@required this.children}) : assert(children != null);
 
   /// The list containing all children that can be supplied.
   final List<Widget> children;
@@ -134,21 +135,21 @@ class DIYListWheelChildLoopingListDelegate extends DIYListWheelChildDelegate {
   }
 
   @override
-  bool shouldRebuild(covariant DIYListWheelChildLoopingListDelegate oldDelegate) {
+  bool shouldRebuild(covariant DIY2ListWheelChildLoopingListDelegate oldDelegate) {
     return children != oldDelegate.children;
   }
 }
 
-/// A delegate that supplies children for [DIYListWheelScrollView] using a builder
+/// A delegate that supplies children for [DIY2ListWheelScrollView] using a builder
 /// callback.
 ///
-/// [DIYListWheelScrollView] lazily constructs its children to avoid creating more
+/// [DIY2ListWheelScrollView] lazily constructs its children to avoid creating more
 /// children than are visible through the [Viewport]. This delegate provides
 /// children using an [IndexedWidgetBuilder] callback, so that the children do
 /// not have to be built until they are displayed.
-class DIYListWheelChildBuilderDelegate extends DIYListWheelChildDelegate {
+class DIY2ListWheelChildBuilderDelegate extends DIY2ListWheelChildDelegate {
   /// Constructs the delegate from a builder callback.
-  DIYListWheelChildBuilderDelegate({
+  DIY2ListWheelChildBuilderDelegate({
     @required this.builder,
     this.childCount,
   }) : assert(builder != null);
@@ -156,7 +157,7 @@ class DIYListWheelChildBuilderDelegate extends DIYListWheelChildDelegate {
   /// Called lazily to build children.
   final NullableIndexedWidgetBuilder builder;
 
-  /// {@template flutter.widgets.DIYListWheelChildBuilderDelegate.childCount}
+  /// {@template flutter.widgets.DIY2ListWheelChildBuilderDelegate.childCount}
   /// If non-null, [childCount] is the maximum number of children that can be
   /// provided, and children are available from 0 to [childCount] - 1.
   ///
@@ -181,7 +182,7 @@ class DIYListWheelChildBuilderDelegate extends DIYListWheelChildDelegate {
   }
 
   @override
-  bool shouldRebuild(covariant DIYListWheelChildBuilderDelegate oldDelegate) {
+  bool shouldRebuild(covariant DIY2ListWheelChildBuilderDelegate oldDelegate) {
     return builder != oldDelegate.builder || childCount != oldDelegate.childCount;
   }
 }
@@ -194,17 +195,17 @@ class DIYListWheelChildBuilderDelegate extends DIYListWheelChildDelegate {
 ///
 /// See also:
 ///
-///  * [DIYListWheelScrollView], a scrollable view widget with fixed size items
+///  * [DIY2ListWheelScrollView], a scrollable view widget with fixed size items
 ///    that this widget controls.
 ///  * [FixedExtentMetrics], the `metrics` property exposed by
-///    [ScrollNotification] from [DIYListWheelScrollView] which can be used
+///    [ScrollNotification] from [DIY2ListWheelScrollView] which can be used
 ///    to listen to the current item index on a push basis rather than polling
-///    the [FixedExtentScrollController].
-class DIYFixedExtentScrollController extends ScrollController {
+///    the [DIY2FixedExtentScrollController].
+class DIY2FixedExtentScrollController extends ScrollController {
   /// Creates a scroll controller for scrollables whose items have the same size.
   ///
   /// [initialItem] defaults to 0 and must not be null.
-  DIYFixedExtentScrollController({
+  DIY2FixedExtentScrollController({
     this.initialItem = 0,
   }) : assert(initialItem != null);
 
@@ -215,25 +216,25 @@ class DIYFixedExtentScrollController extends ScrollController {
 
   /// The currently selected item index that's closest to the center of the viewport.
   ///
-  /// There are circumstances that this [FixedExtentScrollController] can't know
+  /// There are circumstances that this [DIY2FixedExtentScrollController] can't know
   /// the current item. Reading [selectedItem] will throw an [AssertionError] in
   /// the following cases:
   ///
-  /// 1. No scroll view is currently using this [FixedExtentScrollController].
-  /// 2. More than one scroll views using the same [FixedExtentScrollController].
+  /// 1. No scroll view is currently using this [DIY2FixedExtentScrollController].
+  /// 2. More than one scroll views using the same [DIY2FixedExtentScrollController].
   ///
   /// The [hasClients] property can be used to check if a scroll view is
   /// attached prior to accessing [selectedItem].
   int get selectedItem {
     assert(
       positions.isNotEmpty,
-      'FixedExtentScrollController.selectedItem cannot be accessed before a '
+      'DIY2FixedExtentScrollController.selectedItem cannot be accessed before a '
       'scroll view is built with it.',
     );
     assert(
       positions.length == 1,
       'The selectedItem property cannot be read when multiple scroll views are '
-      'attached to the same FixedExtentScrollController.',
+      'attached to the same DIY2FixedExtentScrollController.',
     );
     final _FixedExtentScrollPosition position = this.position as _FixedExtentScrollPosition;
     return position.itemIndex;
@@ -288,7 +289,7 @@ class DIYFixedExtentScrollController extends ScrollController {
 /// Metrics for a [ScrollPosition] to a scroll view with fixed item sizes.
 ///
 /// The metrics are available on [ScrollNotification]s generated from a scroll
-/// views such as [DIYListWheelScrollView]s with a [FixedExtentScrollController]
+/// views such as [DIY2ListWheelScrollView]s with a [DIY2FixedExtentScrollController]
 /// and exposes the current [itemIndex] and the scroll view's extents.
 ///
 /// `FixedExtent` refers to the fact that the scrollable items have the same
@@ -296,7 +297,7 @@ class DIYFixedExtentScrollController extends ScrollController {
 /// [FixedScrollMetrics] which refers to its immutability.
 class FixedExtentMetrics extends FixedScrollMetrics {
   /// Creates an immutable snapshot of values associated with a
-  /// [DIYListWheelScrollView].
+  /// [DIY2ListWheelScrollView].
   FixedExtentMetrics({
     @required double minScrollExtent,
     @required double maxScrollExtent,
@@ -364,7 +365,7 @@ class _FixedExtentScrollPosition extends ScrollPositionWithSingleContext impleme
     String debugLabel,
   }) : assert(
          context is _FixedExtentScrollableState,
-         'FixedExtentScrollController can only be used with DIYListWheelScrollViews',
+         'DIY2FixedExtentScrollController can only be used with DIY2ListWheelScrollViews',
        ),
        super(
          physics: physics,
@@ -385,11 +386,11 @@ class _FixedExtentScrollPosition extends ScrollPositionWithSingleContext impleme
   @override
   int get itemIndex {
     return _getItemFromOffset(
-      offset: hasPixels ? pixels : 0,
-      itemExtent: itemExtent ?? 0,
-      minScrollExtent: hasContentDimensions ? minScrollExtent : 0,
-      maxScrollExtent: hasContentDimensions? maxScrollExtent : 0,
-    ) ?? 0;
+      offset: pixels,
+      itemExtent: itemExtent,
+      minScrollExtent: minScrollExtent,
+      maxScrollExtent: maxScrollExtent,
+    );
   }
 
   @override
@@ -413,15 +414,16 @@ class _FixedExtentScrollPosition extends ScrollPositionWithSingleContext impleme
 }
 
 /// A [Scrollable] which must be given its viewport children's item extent
-/// size so it can pass it on ultimately to the [FixedExtentScrollController].
+/// size so it can pass it on ultimately to the [DIY2FixedExtentScrollController].
 class _FixedExtentScrollable extends Scrollable {
   const _FixedExtentScrollable({
     Key key,
+    // DIY step1 滑动方向修改
+    // AxisDirection axisDirection = AxisDirection.down,
     AxisDirection axisDirection = AxisDirection.left,
     ScrollController controller,
     ScrollPhysics physics,
     @required this.itemExtent,
-    @required this.childSize,
     @required ViewportBuilder viewportBuilder,
     String restorationId,
     ScrollBehavior scrollBehavior,
@@ -436,7 +438,6 @@ class _FixedExtentScrollable extends Scrollable {
   );
 
   final double itemExtent;
-  final Size childSize;
 
   @override
   _FixedExtentScrollableState createState() => _FixedExtentScrollableState();
@@ -459,27 +460,24 @@ class _FixedExtentScrollableState extends ScrollableState {
 /// never overshoots and rolls back within a single item if it's to settle on
 /// that item.
 ///
-/// Must be used with a scrollable that uses a [FixedExtentScrollController].
+/// Must be used with a scrollable that uses a [DIY2FixedExtentScrollController].
 ///
 /// Defers back to the parent beyond the scroll extents.
-class DIYFixedExtentScrollPhysics extends ScrollPhysics {
+class DIY2FixedExtentScrollPhysics extends ScrollPhysics {
   /// Creates a scroll physics that always lands on items.
-  const DIYFixedExtentScrollPhysics({ ScrollPhysics parent }) : super(parent: parent);
+  const DIY2FixedExtentScrollPhysics({ ScrollPhysics parent }) : super(parent: parent);
 
   @override
-  DIYFixedExtentScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return DIYFixedExtentScrollPhysics(parent: buildParent(ancestor));
+  DIY2FixedExtentScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return DIY2FixedExtentScrollPhysics(parent: buildParent(ancestor));
   }
-
-  static final SpringDescription _spring =
-      SpringDescription(mass: 10000, stiffness: 10000.0, damping: 10.0);
 
   @override
   Simulation createBallisticSimulation(ScrollMetrics position, double velocity) {
     assert(
       position is _FixedExtentScrollPosition,
-      'DIYFixedExtentScrollPhysics can only be used with Scrollables that uses '
-      'the FixedExtentScrollController',
+      'DIY2FixedExtentScrollPhysics can only be used with Scrollables that uses '
+      'the DIY2FixedExtentScrollController',
     );
 
     final _FixedExtentScrollPosition metrics = position as _FixedExtentScrollPosition;
@@ -542,19 +540,12 @@ class DIYFixedExtentScrollPhysics extends ScrollPhysics {
     // Scenario 5:
     // Create a new friction simulation except the drag will be tweaked to land
     // exactly on the item closest to the natural stopping point.
-    return ScrollSpringSimulation(
-      _spring,
+    return FrictionSimulation.through(
       metrics.pixels,
-      metrics.pixels + metrics.itemExtent/2 * velocity.sign,
+      settlingPixels,
       velocity,
-      tolerance: tolerance,
+      tolerance.velocity * velocity.sign,
     );
-    // return FrictionSimulation.through(
-    //   metrics.pixels,
-    //   metrics.pixels + metrics.itemExtent / 2 * velocity.sign,
-    //   velocity,
-    //   tolerance.velocity * velocity.sign,
-    // );
   }
 }
 
@@ -571,18 +562,20 @@ class DIYFixedExtentScrollPhysics extends ScrollPhysics {
 ///
 /// The children are rendered as if rotating on a wheel instead of scrolling on
 /// a plane.
-class DIYListWheelScrollView extends StatefulWidget {
+class DIY2ListWheelScrollView extends StatefulWidget {
   /// Constructs a list in which children are scrolled a wheel. Its children
   /// are passed to a delegate and lazily built during layout.
-  DIYListWheelScrollView({
+  DIY2ListWheelScrollView({
     Key key,
     this.controller,
     this.physics,
-    this.diameterRatio = DIYRenderListWheelViewport.defaultDiameterRatio,
-    this.perspective = DIYRenderListWheelViewport.defaultPerspective,
+    this.diameterRatio = RenderDIY2ListWheelViewport.defaultDiameterRatio,
+    this.perspective = RenderDIY2ListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
+    this.useMagnifier = false,
+    this.magnification = 1.0,
+    this.overAndUnderCenterOpacity = 1.0,
     @required this.itemExtent,
-    @required this.childSize,
     this.squeeze = 1.0,
     this.onSelectedItemChanged,
     this.renderChildrenOutsideViewport = false,
@@ -592,10 +585,13 @@ class DIYListWheelScrollView extends StatefulWidget {
     @required List<Widget> children,
   }) : assert(children != null),
        assert(diameterRatio != null),
-       assert(diameterRatio > 0.0, DIYRenderListWheelViewport.diameterRatioZeroMessage),
+       assert(diameterRatio > 0.0, RenderDIY2ListWheelViewport.diameterRatioZeroMessage),
        assert(perspective != null),
        assert(perspective > 0),
-       assert(perspective <= 0.01, DIYRenderListWheelViewport.perspectiveTooHighMessage),
+       assert(perspective <= 0.01, RenderDIY2ListWheelViewport.perspectiveTooHighMessage),
+       assert(magnification > 0),
+       assert(overAndUnderCenterOpacity != null),
+       assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1),
        assert(itemExtent != null),
        assert(itemExtent > 0),
        assert(squeeze != null),
@@ -604,22 +600,24 @@ class DIYListWheelScrollView extends StatefulWidget {
        assert(clipBehavior != null),
        assert(
          !renderChildrenOutsideViewport || clipBehavior == Clip.none,
-         DIYRenderListWheelViewport.clipBehaviorAndRenderChildrenOutsideViewportConflict,
+         RenderDIY2ListWheelViewport.clipBehaviorAndRenderChildrenOutsideViewportConflict,
        ),
-       childDelegate = DIYListWheelChildListDelegate(children: children),
+       childDelegate = DIY2ListWheelChildListDelegate(children: children),
        super(key: key);
 
   /// Constructs a list in which children are scrolled a wheel. Its children
   /// are managed by a delegate and are lazily built during layout.
-  const DIYListWheelScrollView.useDelegate({
+  const DIY2ListWheelScrollView.useDelegate({
     Key key,
     this.controller,
     this.physics,
-    this.diameterRatio = DIYRenderListWheelViewport.defaultDiameterRatio,
-    this.perspective = DIYRenderListWheelViewport.defaultPerspective,
+    this.diameterRatio = RenderDIY2ListWheelViewport.defaultDiameterRatio,
+    this.perspective = RenderDIY2ListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
+    this.useMagnifier = false,
+    this.magnification = 1.0,
+    this.overAndUnderCenterOpacity = 1.0,
     @required this.itemExtent,
-    @required this.childSize,
     this.squeeze = 1.0,
     this.onSelectedItemChanged,
     this.renderChildrenOutsideViewport = false,
@@ -629,10 +627,13 @@ class DIYListWheelScrollView extends StatefulWidget {
     @required this.childDelegate,
   }) : assert(childDelegate != null),
        assert(diameterRatio != null),
-       assert(diameterRatio > 0.0, DIYRenderListWheelViewport.diameterRatioZeroMessage),
+       assert(diameterRatio > 0.0, RenderDIY2ListWheelViewport.diameterRatioZeroMessage),
        assert(perspective != null),
        assert(perspective > 0),
-       assert(perspective <= 0.01, DIYRenderListWheelViewport.perspectiveTooHighMessage),
+       assert(perspective <= 0.01, RenderDIY2ListWheelViewport.perspectiveTooHighMessage),
+       assert(magnification > 0),
+       assert(overAndUnderCenterOpacity != null),
+       assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1),
        assert(itemExtent != null),
        assert(itemExtent > 0),
        assert(squeeze != null),
@@ -641,19 +642,19 @@ class DIYListWheelScrollView extends StatefulWidget {
        assert(clipBehavior != null),
        assert(
          !renderChildrenOutsideViewport || clipBehavior == Clip.none,
-         DIYRenderListWheelViewport.clipBehaviorAndRenderChildrenOutsideViewportConflict,
+         RenderDIY2ListWheelViewport.clipBehaviorAndRenderChildrenOutsideViewportConflict,
        ),
        super(key: key);
 
-  /// Typically a [FixedExtentScrollController] used to control the current item.
+  /// Typically a [DIY2FixedExtentScrollController] used to control the current item.
   ///
-  /// A [FixedExtentScrollController] can be used to read the currently
+  /// A [DIY2FixedExtentScrollController] can be used to read the currently
   /// selected/centered child item and can be used to change the current item.
   ///
-  /// If none is provided, a new [FixedExtentScrollController] is implicitly
+  /// If none is provided, a new [DIY2FixedExtentScrollController] is implicitly
   /// created.
   ///
-  /// If a [ScrollController] is used instead of [FixedExtentScrollController],
+  /// If a [ScrollController] is used instead of [DIY2FixedExtentScrollController],
   /// [ScrollNotification.metrics] will no longer provide [FixedExtentMetrics]
   /// to indicate the current item index and [onSelectedItemChanged] will not
   /// work.
@@ -674,22 +675,29 @@ class DIYListWheelScrollView extends StatefulWidget {
   /// Defaults to matching platform conventions.
   final ScrollPhysics physics;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.diameterRatio}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.diameterRatio}
   final double diameterRatio;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.perspective}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.perspective}
   final double perspective;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.offAxisFraction}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.offAxisFraction}
   final double offAxisFraction;
+
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.useMagnifier}
+  final bool useMagnifier;
+
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.magnification}
+  final double magnification;
+
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.overAndUnderCenterOpacity}
+  final double overAndUnderCenterOpacity;
 
   /// Size of each child in the main axis. Must not be null and must be
   /// positive.
   final double itemExtent;
 
-  final Size childSize;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.squeeze}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.squeeze}
   ///
   /// Defaults to 1.
   final double squeeze;
@@ -697,11 +705,11 @@ class DIYListWheelScrollView extends StatefulWidget {
   /// On optional listener that's called when the centered item changes.
   final ValueChanged<int> onSelectedItemChanged;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.renderChildrenOutsideViewport}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.renderChildrenOutsideViewport}
   final bool renderChildrenOutsideViewport;
 
   /// A delegate that helps lazily instantiating child.
-  final DIYListWheelChildDelegate childDelegate;
+  final DIY2ListWheelChildDelegate childDelegate;
 
   /// {@macro flutter.material.Material.clipBehavior}
   ///
@@ -723,73 +731,25 @@ class DIYListWheelScrollView extends StatefulWidget {
   final ScrollBehavior scrollBehavior;
 
   @override
-  State<DIYListWheelScrollView> createState() => _DIYListWheelScrollViewState();
+  State<DIY2ListWheelScrollView> createState() => _DIY2ListWheelScrollViewState();
 }
 
-
-
-// class WheelPageScrollPhysics extends ScrollPhysics {
-//   final double itemExtent;
-//   const WheelPageScrollPhysics({ ScrollPhysics parent,@required this.itemExtent }) : super(parent: parent);
-//
-//   @override
-//   PageScrollPhysics applyTo(ScrollPhysics ancestor) {
-//     return PageScrollPhysics(parent: buildParent(ancestor));
-//   }
-//
-//   double _getPage(ScrollMetrics position) {
-//     print("<> WheelPageScrollPhysics _getPage position $position");
-//     return position.pixels / itemExtent;
-//   }
-//
-//   double _getPixels(ScrollMetrics position, double page) {
-//     print("<> WheelPageScrollPhysics _getPixels ScrollMetrics $position page $page");
-//     return page * itemExtent;
-//   }
-//
-//   double _getTargetPixels(ScrollMetrics position, Tolerance tolerance, double velocity) {
-//     double page = _getPage(position);
-//     if (velocity < -tolerance.velocity)
-//       page -= 0.5;
-//     else if (velocity > tolerance.velocity)
-//       page += 0.5;
-//     return _getPixels(position, page.roundToDouble());
-//   }
-//
-//   @override
-//   Simulation createBallisticSimulation(ScrollMetrics position, double velocity) {
-//     // If we're out of range and not headed back in range, defer to the parent
-//     // ballistics, which should put us back in range at a page boundary.
-//     if ((velocity <= 0.0 && position.pixels <= position.minScrollExtent) ||
-//         (velocity >= 0.0 && position.pixels >= position.maxScrollExtent))
-//       return super.createBallisticSimulation(position, velocity);
-//     final Tolerance tolerance = this.tolerance;
-//     final double target = _getTargetPixels(position, tolerance, velocity);
-//     if (target != position.pixels)
-//       return ScrollSpringSimulation(spring, position.pixels, target, velocity, tolerance: tolerance);
-//     return null;
-//   }
-//
-//   @override
-//   bool get allowImplicitScrolling => false;
-// }
-
-class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
+class _DIY2ListWheelScrollViewState extends State<DIY2ListWheelScrollView> {
   int _lastReportedItemIndex = 0;
   ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
-    scrollController = widget.controller ?? FixedExtentScrollController();
-    if (widget.controller is FixedExtentScrollController) {
-      final FixedExtentScrollController controller = widget.controller as FixedExtentScrollController;
+    scrollController = widget.controller ?? DIY2FixedExtentScrollController();
+    if (widget.controller is DIY2FixedExtentScrollController) {
+      final DIY2FixedExtentScrollController controller = widget.controller as DIY2FixedExtentScrollController;
       _lastReportedItemIndex = controller.initialItem;
     }
   }
 
   @override
-  void didUpdateWidget(DIYListWheelScrollView oldWidget) {
+  void didUpdateWidget(DIY2ListWheelScrollView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != null && widget.controller != scrollController) {
       final ScrollController oldScrollController = scrollController;
@@ -802,12 +762,6 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    // final ScrollPhysics physics = _ForceImplicitScrollPhysics(
-    //   allowImplicitScrolling: false,
-    // ).applyTo(WheelPageScrollPhysics(itemExtent:widget.childSize.width / 2.0).applyTo(widget.physics ?? widget.scrollBehavior?.getScrollPhysics(context)));
-
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification notification) {
         if (notification.depth == 0
@@ -828,16 +782,17 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
         controller: scrollController,
         physics: widget.physics,
         itemExtent: widget.itemExtent,
-        childSize: widget.childSize,
         restorationId: widget.restorationId,
         scrollBehavior: widget.scrollBehavior ?? ScrollConfiguration.of(context).copyWith(scrollbars: false),
         viewportBuilder: (BuildContext context, ViewportOffset offset) {
-          return ListWheelViewport(
+          return DIY2ListWheelViewport(
             diameterRatio: widget.diameterRatio,
             perspective: widget.perspective,
             offAxisFraction: widget.offAxisFraction,
+            useMagnifier: widget.useMagnifier,
+            magnification: widget.magnification,
+            overAndUnderCenterOpacity: widget.overAndUnderCenterOpacity,
             itemExtent: widget.itemExtent,
-            childSize: widget.childSize,
             squeeze: widget.squeeze,
             renderChildrenOutsideViewport: widget.renderChildrenOutsideViewport,
             offset: offset,
@@ -850,35 +805,16 @@ class _DIYListWheelScrollViewState extends State<DIYListWheelScrollView> {
   }
 }
 
-class _ForceImplicitScrollPhysics extends ScrollPhysics {
-  const _ForceImplicitScrollPhysics({
-    @required this.allowImplicitScrolling,
-    ScrollPhysics parent,
-  }) : assert(allowImplicitScrolling != null),
-        super(parent: parent);
-
-  @override
-  _ForceImplicitScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return _ForceImplicitScrollPhysics(
-      allowImplicitScrolling: allowImplicitScrolling,
-      parent: buildParent(ancestor),
-    );
-  }
-
-  @override
-  final bool allowImplicitScrolling;
-}
-
-/// Element that supports building children lazily for [ListWheelViewport].
-class ListWheelElement extends RenderObjectElement implements DIYListWheelChildManager {
+/// Element that supports building children lazily for [DIY2ListWheelViewport].
+class DIY2ListWheelElement extends RenderObjectElement implements ListWheelChildManager {
   /// Creates an element that lazily builds children for the given widget.
-  ListWheelElement(ListWheelViewport widget) : super(widget);
+  DIY2ListWheelElement(DIY2ListWheelViewport widget) : super(widget);
 
   @override
-  ListWheelViewport get widget => super.widget as ListWheelViewport;
+  DIY2ListWheelViewport get widget => super.widget as DIY2ListWheelViewport;
 
   @override
-  DIYRenderListWheelViewport get renderObject => super.renderObject as DIYRenderListWheelViewport;
+  RenderDIY2ListWheelViewport get renderObject => super.renderObject as RenderDIY2ListWheelViewport;
 
   // We inflate widgets at two different times:
   //  1. When we ourselves are told to rebuild (see performRebuild).
@@ -895,11 +831,11 @@ class ListWheelElement extends RenderObjectElement implements DIYListWheelChildM
   final SplayTreeMap<int, Element> _childElements = SplayTreeMap<int, Element>();
 
   @override
-  void update(ListWheelViewport newWidget) {
-    final ListWheelViewport oldWidget = widget;
+  void update(DIY2ListWheelViewport newWidget) {
+    final DIY2ListWheelViewport oldWidget = widget;
     super.update(newWidget);
-    final DIYListWheelChildDelegate newDelegate = newWidget.childDelegate;
-    final DIYListWheelChildDelegate oldDelegate = oldWidget.childDelegate;
+    final DIY2ListWheelChildDelegate newDelegate = newWidget.childDelegate;
+    final DIY2ListWheelChildDelegate oldDelegate = oldWidget.childDelegate;
     if (newDelegate != oldDelegate &&
         (newDelegate.runtimeType != oldDelegate.runtimeType || newDelegate.shouldRebuild(oldDelegate))) {
       performRebuild();
@@ -985,7 +921,7 @@ class ListWheelElement extends RenderObjectElement implements DIYListWheelChildM
 
   @override
   void insertRenderObjectChild(RenderObject child, int slot) {
-    final DIYRenderListWheelViewport renderObject = this.renderObject;
+    final RenderDIY2ListWheelViewport renderObject = this.renderObject;
     assert(renderObject.debugValidateChild(child));
     renderObject.insert(child as RenderBox, after: _childElements[slot - 1]?.renderObject as RenderBox);
     assert(renderObject == this.renderObject);
@@ -1022,17 +958,17 @@ class ListWheelElement extends RenderObjectElement implements DIYListWheelChildM
 
 /// A viewport showing a subset of children on a wheel.
 ///
-/// Typically used with [DIYListWheelScrollView], this viewport is similar to
+/// Typically used with [DIY2ListWheelScrollView], this viewport is similar to
 /// [Viewport] in that it shows a subset of children in a scrollable based
 /// on the scrolling offset and the children's dimensions. But uses
-/// [DIYRenderListWheelViewport] to display the children on a wheel.
+/// [RenderDIY2ListWheelViewport] to display the children on a wheel.
 ///
 /// See also:
 ///
-///  * [DIYListWheelScrollView], widget that combines this viewport with a scrollable.
-///  * [DIYRenderListWheelViewport], the render object that renders the children
+///  * [DIY2ListWheelScrollView], widget that combines this viewport with a scrollable.
+///  * [RenderDIY2ListWheelViewport], the render object that renders the children
 ///    on a wheel.
-class ListWheelViewport extends RenderObjectWidget {
+class DIY2ListWheelViewport extends RenderObjectWidget {
   /// Creates a viewport where children are rendered onto a wheel.
   ///
   /// The [diameterRatio] argument defaults to 2.0 and must not be null.
@@ -1047,13 +983,15 @@ class ListWheelViewport extends RenderObjectWidget {
   /// not be null.
   ///
   /// The [offset] argument must be provided and must not be null.
-  const ListWheelViewport({
+  const DIY2ListWheelViewport({
     Key key,
-    this.diameterRatio = DIYRenderListWheelViewport.defaultDiameterRatio,
-    this.perspective = DIYRenderListWheelViewport.defaultPerspective,
+    this.diameterRatio = RenderDIY2ListWheelViewport.defaultDiameterRatio,
+    this.perspective = RenderDIY2ListWheelViewport.defaultPerspective,
     this.offAxisFraction = 0.0,
+    this.useMagnifier = false,
+    this.magnification = 1.0,
+    this.overAndUnderCenterOpacity = 1.0,
     @required this.itemExtent,
-    @required this.childSize,
     this.squeeze = 1.0,
     this.renderChildrenOutsideViewport = false,
     @required this.offset,
@@ -1062,10 +1000,12 @@ class ListWheelViewport extends RenderObjectWidget {
   }) : assert(childDelegate != null),
        assert(offset != null),
        assert(diameterRatio != null),
-       assert(diameterRatio > 0, DIYRenderListWheelViewport.diameterRatioZeroMessage),
+       assert(diameterRatio > 0, RenderDIY2ListWheelViewport.diameterRatioZeroMessage),
        assert(perspective != null),
        assert(perspective > 0),
-       assert(perspective <= 0.01, DIYRenderListWheelViewport.perspectiveTooHighMessage),
+       assert(perspective <= 0.01, RenderDIY2ListWheelViewport.perspectiveTooHighMessage),
+       assert(overAndUnderCenterOpacity != null),
+       assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1),
        assert(itemExtent != null),
        assert(itemExtent > 0),
        assert(squeeze != null),
@@ -1074,31 +1014,37 @@ class ListWheelViewport extends RenderObjectWidget {
        assert(clipBehavior != null),
        assert(
          !renderChildrenOutsideViewport || clipBehavior == Clip.none,
-         DIYRenderListWheelViewport.clipBehaviorAndRenderChildrenOutsideViewportConflict,
+         RenderDIY2ListWheelViewport.clipBehaviorAndRenderChildrenOutsideViewportConflict,
        ),
        super(key: key);
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.diameterRatio}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.diameterRatio}
   final double diameterRatio;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.perspective}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.perspective}
   final double perspective;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.offAxisFraction}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.offAxisFraction}
   final double offAxisFraction;
 
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.useMagnifier}
+  final bool useMagnifier;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.itemExtent}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.magnification}
+  final double magnification;
+
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.overAndUnderCenterOpacity}
+  final double overAndUnderCenterOpacity;
+
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.itemExtent}
   final double itemExtent;
 
-  final Size childSize;
-
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.squeeze}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.squeeze}
   ///
   /// Defaults to 1.
   final double squeeze;
 
-  /// {@macro flutter.rendering.DIYRenderListWheelViewport.renderChildrenOutsideViewport}
+  /// {@macro flutter.rendering.RenderDIY2ListWheelViewport.renderChildrenOutsideViewport}
   final bool renderChildrenOutsideViewport;
 
   /// [ViewportOffset] object describing the content that should be visible
@@ -1106,7 +1052,7 @@ class ListWheelViewport extends RenderObjectWidget {
   final ViewportOffset offset;
 
   /// A delegate that lazily instantiates children.
-  final DIYListWheelChildDelegate childDelegate;
+  final DIY2ListWheelChildDelegate childDelegate;
 
   /// {@macro flutter.material.Material.clipBehavior}
   ///
@@ -1114,19 +1060,21 @@ class ListWheelViewport extends RenderObjectWidget {
   final Clip clipBehavior;
 
   @override
-  ListWheelElement createElement() => ListWheelElement(this);
+  DIY2ListWheelElement createElement() => DIY2ListWheelElement(this);
 
   @override
-  DIYRenderListWheelViewport createRenderObject(BuildContext context) {
-    final ListWheelElement childManager = context as ListWheelElement;
-    return DIYRenderListWheelViewport(
+  RenderDIY2ListWheelViewport createRenderObject(BuildContext context) {
+    final DIY2ListWheelElement childManager = context as DIY2ListWheelElement;
+    return RenderDIY2ListWheelViewport(
       childManager: childManager,
       offset: offset,
       diameterRatio: diameterRatio,
       perspective: perspective,
       offAxisFraction: offAxisFraction,
+      useMagnifier: useMagnifier,
+      magnification: magnification,
+      overAndUnderCenterOpacity: overAndUnderCenterOpacity,
       itemExtent: itemExtent,
-      childSize: childSize,
       squeeze: squeeze,
       renderChildrenOutsideViewport: renderChildrenOutsideViewport,
       clipBehavior: clipBehavior,
@@ -1134,16 +1082,18 @@ class ListWheelViewport extends RenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, DIYRenderListWheelViewport renderObject) {
+  void updateRenderObject(BuildContext context, RenderDIY2ListWheelViewport renderObject) {
     renderObject
       ..offset = offset
       ..diameterRatio = diameterRatio
       ..perspective = perspective
       ..offAxisFraction = offAxisFraction
+      ..useMagnifier = useMagnifier
+      ..magnification = magnification
+      ..overAndUnderCenterOpacity = overAndUnderCenterOpacity
       ..itemExtent = itemExtent
       ..squeeze = squeeze
       ..renderChildrenOutsideViewport = renderChildrenOutsideViewport
       ..clipBehavior = clipBehavior;
   }
-
 }
