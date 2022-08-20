@@ -551,7 +551,7 @@ class DIYCupertinoSliverRefreshControlState extends State<DIYCupertinoSliverRefr
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           latestIndicatorBoxExtent = constraints.maxHeight;
-          print("<> latestIndicatorBoxExtent $latestIndicatorBoxExtent");
+          // print("<> latestIndicatorBoxExtent $latestIndicatorBoxExtent");
           refreshState = transitionNextState();
           if (widget.builder != null && latestIndicatorBoxExtent > 0) {
             return Container(

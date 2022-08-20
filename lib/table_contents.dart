@@ -35,9 +35,11 @@ import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
+import 'page/diy/shoppage/shop_page_demo.dart';
 import 'page/diy/tabbar/diy_tabbar_demo.dart';
 import 'page/func/func_matrix4_pentagon_demo.dart';
 import 'page/func/func_matrix4_u_demo.dart';
+import 'page/lib/over_nested_scroll_demo.dart';
 import 'simple_import.dart';
 
 class TableContents {
@@ -54,6 +56,7 @@ class TableContents {
     "圆形环绕列表": CircleListDemo(),
     "自定义ListWheel": ListWheelDiyDemo(),
     "自定义TabBarView(主题色功能)": DiyTabbarDemo(),
+    // "自定义主体框架页面": ShopPageDemo(),
   };
 
   // 开发真实案例
@@ -113,6 +116,7 @@ class TableContents {
     "Gif播放控制flutter_gifimage": GifControllerDemo(),
     "图片阅读器photo_view": PhotoViewDemo(),
     "extended_nested_scroll_view": OldExtendedNestedScrollViewDemo(),
+    "OverNestedScrollDemo":OverNestedScrollDemo(),
   };
 
   // 基础技术方案

@@ -30,6 +30,7 @@ dependencies:
   # 自定义外接纹理Demo
 #  external_texture_plugin:
 #    path: ./external_texture_plugin/
+  visibility_detector: 0.1.5
   flutter_swiper: 1.1.6
   pull_to_refresh: ^2.0.0
   uuid: 3.0.0

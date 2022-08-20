@@ -85,29 +85,6 @@ class MagicTabIndicator extends Decoration {
 }
 
 
-class _ChangeAnimation extends Animation<double> with AnimationWithParentMixin<double> {
-  _ChangeAnimation(this.controller);
-
-  final TabController controller;
-
-  @override
-  Animation<double> get parent => controller.animation;
-
-  @override
-  void removeStatusListener(AnimationStatusListener listener) {
-    if (controller.animation != null)
-      super.removeStatusListener(listener);
-  }
-
-  @override
-  void removeListener(VoidCallback listener) {
-    if (controller.animation != null)
-      super.removeListener(listener);
-  }
-
-  @override
-  double get value => _indexChangeProgress(controller);
-}
 
 double _indexChangeProgress(TabController controller) {
   final double controllerValue = controller.animation.value;

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/magic/diy_refresh.dart';
 import 'package:flutter_demo/page/common/common.dart';
+
+import 'NestedClampingScrollPhysics.dart';
 
 class CustomScrollDemo extends StatefulWidget {
   @override
@@ -14,7 +17,13 @@ class _CustomScrollDemoState extends State<CustomScrollDemo> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: NestedClampingScrollPhysics(),
       slivers: <Widget>[
+        DIYCupertinoSliverRefreshControl(
+          onRefresh: () async {
+
+          },
+        ),
         SliverToBoxAdapter(
           child: SizedBox(
             height: 20,
@@ -74,14 +83,91 @@ class _CustomScrollDemoState extends State<CustomScrollDemo> {
           ),
           itemExtent: 40.0,
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return Common.getWidget(index);
-            },
-          ),
+        // SliverList(
+        //   delegate: SliverChildBuilderDelegate(
+        //     (context, index) {
+        //       return Common.getWidget(index);
+        //     },
+        //   ),
+        // ),
+        SliverFillRemaining(
+          child:  TestViewDemo(),
+          fillOverscroll: true,
+          hasScrollBody: true,
         ),
       ],
     );
+  }
+}
+
+
+class TestViewDemo extends StatefulWidget {
+
+  @override
+  State<TestViewDemo> createState() => _TestViewDemoState();
+}
+
+class _TestViewDemoState extends State<TestViewDemo> with TickerProviderStateMixin{
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    // return DefaultTabController(length: 3, child:TabBarView(
+    //   children: [
+    //     Container(
+    //       height: 1200,
+    //       color: Colors.black,
+    //       child: Text("1"),
+    //     ),
+    //     Container(
+    //       height: 1200,
+    //       color: Colors.red,
+    //       child: Text("2"),),
+    //     Container(
+    //         height: 1200,
+    //         color: Colors.green,
+    //         child: Text("3")),
+    //   ],
+    // ));
+    return DefaultTabController(length: 3, child: SizedBox(
+      child:  TabBarView(
+        children: [
+          SizedBox(
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              // controller: ScrollController(),
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context,index){
+                return Text("显示不全 100 $index");
+              },
+              itemCount: 100,
+            ),
+          ),
+          SizedBox(
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context,index){
+                return Text("$index");
+              },
+              itemCount: 100,
+            ),),
+          SizedBox(
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context,index){
+                return Text("$index");
+              },
+              itemCount: 100,
+            ),),
+        ],
+      ),
+    ));
   }
 }

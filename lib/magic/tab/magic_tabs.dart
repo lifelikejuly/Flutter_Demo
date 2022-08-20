@@ -1116,16 +1116,8 @@ class _MagicTabBarState extends State<MagicTabBar> {
 
     Color labelColor;
     Color unselectedLabelColor;
-    Color unselectedBeforeLabelColor;
-    Color unselectedLastLabelColor;
     labelColor = widget.labelColors[position];
     unselectedLabelColor = widget.labelColors[currentPosition];
-    // unselectedBeforeLabelColor = currentPosition == controller.length - 1
-    //     ? unselectedLabelColor
-    //     : widget.labelColors[currentPosition + 1];
-    // unselectedLastLabelColor = currentPosition == 0
-    //     ? unselectedLabelColor
-    //     : widget.labelColors[currentPosition - 1];
 
     return _TabStyle(
       animation: animation,

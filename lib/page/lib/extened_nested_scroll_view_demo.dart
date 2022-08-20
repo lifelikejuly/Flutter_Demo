@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart' hide NestedScrollView;
+import 'package:flutter/widgets.dart';
 
-import 'extended_nested_scroll/src/nested_scroll_view_inner_scroll_position_key_widget.dart';
-import 'extended_nested_scroll/src/nested_scroll_view_refresh_indicator.dart';
-import 'extended_nested_scroll/src/old_extended_nested_scroll_view.dart';
 
 class OldExtendedNestedScrollViewDemo extends StatefulWidget {
   @override
@@ -45,85 +43,85 @@ class _OldExtendedNestedScrollViewDemoState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildScaffoldBody(),
+      body: null,
     );
   }
 
-  Widget _buildScaffoldBody() {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final double pinnedHeaderHeight =
-        //statusBar height
-        statusBarHeight +
-            //pinned SliverAppBar height in header
-            kToolbarHeight;
-    return NestedScrollViewRefreshIndicator(
-      onRefresh: onRefresh,
-      child: NestedScrollView(
-          headerSliverBuilder: (BuildContext c, bool f) {
-            return buildSliverHeader();
-          },
-          //1.[pinned sliver header issue](https://github.com/flutter/flutter/issues/22393)
-          pinnedHeaderSliverHeightBuilder: () {
-            return pinnedHeaderHeight;
-          },
-          //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
-          innerScrollPositionKeyBuilder: () {
-            String index = 'Tab';
-            if (primaryTC.index == 0) {
-              index +=
-                  primaryTC.index.toString() + secondaryTC.index.toString();
-            } else {
-              index += primaryTC.index.toString();
-            }
-            return Key(index);
-          },
-          body: Column(
-            children: <Widget>[
-              TabBar(
-                controller: primaryTC,
-                labelColor: Colors.blue,
-                indicatorColor: Colors.blue,
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorWeight: 2.0,
-                isScrollable: false,
-                unselectedLabelColor: Colors.grey,
-                tabs: const <Tab>[
-                  Tab(text: 'Tab0'),
-                  Tab(text: 'Tab1'),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: primaryTC,
-                  children: <Widget>[
-                    SecondaryTabView('Tab0', secondaryTC, true),
-                    NestedScrollViewInnerScrollPositionKeyWidget(
-                      const Key('Tab1'),
-                      GlowNotificationWidget(
-                        ListView.builder(
-                          //store Page state
-                          key: const PageStorageKey<String>('Tab1'),
-                          physics: const ClampingScrollPhysics(),
-                          itemBuilder: (BuildContext c, int i) {
-                            return Container(
-                              alignment: Alignment.center,
-                              height: 60.0,
-                              child: Text(const Key('Tab1').toString() +
-                                  ': ListView$i'),
-                            );
-                          },
-                          itemCount: 50,
-                        ),
-                        showGlowLeading: false,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          )),
-    );
-  }
+  // Widget _buildScaffoldBody() {
+  //   final double statusBarHeight = MediaQuery.of(context).padding.top;
+  //   final double pinnedHeaderHeight =
+  //       //statusBar height
+  //       statusBarHeight +
+  //           //pinned SliverAppBar height in header
+  //           kToolbarHeight;
+  //   return NestedScrollViewRefreshIndicator(
+  //     onRefresh: onRefresh,
+  //     child: NestedScrollView(
+  //         headerSliverBuilder: (BuildContext c, bool f) {
+  //           return buildSliverHeader();
+  //         },
+  //         //1.[pinned sliver header issue](https://github.com/flutter/flutter/issues/22393)
+  //         pinnedHeaderSliverHeightBuilder: () {
+  //           return pinnedHeaderHeight;
+  //         },
+  //         //2.[inner scrollables in tabview sync issue](https://github.com/flutter/flutter/issues/21868)
+  //         innerScrollPositionKeyBuilder: () {
+  //           String index = 'Tab';
+  //           if (primaryTC.index == 0) {
+  //             index +=
+  //                 primaryTC.index.toString() + secondaryTC.index.toString();
+  //           } else {
+  //             index += primaryTC.index.toString();
+  //           }
+  //           return Key(index);
+  //         },
+  //         body: Column(
+  //           children: <Widget>[
+  //             TabBar(
+  //               controller: primaryTC,
+  //               labelColor: Colors.blue,
+  //               indicatorColor: Colors.blue,
+  //               indicatorSize: TabBarIndicatorSize.label,
+  //               indicatorWeight: 2.0,
+  //               isScrollable: false,
+  //               unselectedLabelColor: Colors.grey,
+  //               tabs: const <Tab>[
+  //                 Tab(text: 'Tab0'),
+  //                 Tab(text: 'Tab1'),
+  //               ],
+  //             ),
+  //             Expanded(
+  //               child: TabBarView(
+  //                 controller: primaryTC,
+  //                 children: <Widget>[
+  //                   SecondaryTabView('Tab0', secondaryTC, true),
+  //                   NestedScrollViewInnerScrollPositionKeyWidget(
+  //                     const Key('Tab1'),
+  //                     GlowNotificationWidget(
+  //                       ListView.builder(
+  //                         //store Page state
+  //                         key: const PageStorageKey<String>('Tab1'),
+  //                         physics: const ClampingScrollPhysics(),
+  //                         itemBuilder: (BuildContext c, int i) {
+  //                           return Container(
+  //                             alignment: Alignment.center,
+  //                             height: 60.0,
+  //                             child: Text(const Key('Tab1').toString() +
+  //                                 ': ListView$i'),
+  //                           );
+  //                         },
+  //                         itemCount: 50,
+  //                       ),
+  //                       showGlowLeading: false,
+  //                     ),
+  //                   )
+  //                 ],
+  //               ),
+  //             )
+  //           ],
+  //         )),
+  //   );
+  // }
 
   Future<bool> onRefresh() {
     return Future<bool>.delayed(const Duration(seconds: 1), () {
@@ -229,10 +227,10 @@ class _SecondaryTabViewState extends State<SecondaryTabView>
           child: TabBarView(
             controller: widget.tc,
             children: <Widget>[
-              TabViewItem(Key(widget.tabKey + '0'), widget.oldDemo),
-              TabViewItem(Key(widget.tabKey + '1'), widget.oldDemo),
-              TabViewItem(Key(widget.tabKey + '2'), widget.oldDemo),
-              TabViewItem(Key(widget.tabKey + '3'), widget.oldDemo),
+              // TabViewItem(Key(widget.tabKey + '0'), widget.oldDemo),
+              // TabViewItem(Key(widget.tabKey + '1'), widget.oldDemo),
+              // TabViewItem(Key(widget.tabKey + '2'), widget.oldDemo),
+              // TabViewItem(Key(widget.tabKey + '3'), widget.oldDemo),
             ],
           ),
         )
@@ -243,51 +241,51 @@ class _SecondaryTabViewState extends State<SecondaryTabView>
   @override
   bool get wantKeepAlive => true;
 }
-class TabViewItem extends StatefulWidget {
-  const TabViewItem(this.tabKey, this.oldDemo);
-  final Key tabKey;
-  final bool oldDemo;
-  @override
-  _TabViewItemState createState() => _TabViewItemState();
-}
+// class TabViewItem extends StatefulWidget {
+//   const TabViewItem(this.tabKey, this.oldDemo);
+//   final Key tabKey;
+//   final bool oldDemo;
+//   @override
+//   _TabViewItemState createState() => _TabViewItemState();
+// }
 
-class _TabViewItemState extends State<TabViewItem>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    final GlowNotificationWidget child = GlowNotificationWidget(
-      //margin: EdgeInsets.only(left: 190.0),
-      ListView.builder(
-          physics: const ClampingScrollPhysics(),
-          itemBuilder: (BuildContext c, int i) {
-            return Container(
-              //decoration: BoxDecoration(border: Border.all(color: Colors.orange,width: 1.0)),
-              alignment: Alignment.center,
-              height: 60.0,
-              width: double.infinity,
-              //color: Colors.blue,
-              child: Text(widget.tabKey.toString() + ': List$i'),
-            );
-          },
-          itemCount: 100,
-          padding: const EdgeInsets.all(0.0)),
-      showGlowLeading: false,
-    );
-
-    if (widget.oldDemo) {
-      return NestedScrollViewInnerScrollPositionKeyWidget(widget.tabKey, child);
-    }
-
-    /// new one doesn't need NestedScrollViewInnerScrollPositionKeyWidget any more.
-    else {
-      return child;
-    }
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
+// class _TabViewItemState extends State<TabViewItem>
+//     with AutomaticKeepAliveClientMixin {
+//   @override
+//   Widget build(BuildContext context) {
+//     super.build(context);
+//     final GlowNotificationWidget child = GlowNotificationWidget(
+//       //margin: EdgeInsets.only(left: 190.0),
+//       ListView.builder(
+//           physics: const ClampingScrollPhysics(),
+//           itemBuilder: (BuildContext c, int i) {
+//             return Container(
+//               //decoration: BoxDecoration(border: Border.all(color: Colors.orange,width: 1.0)),
+//               alignment: Alignment.center,
+//               height: 60.0,
+//               width: double.infinity,
+//               //color: Colors.blue,
+//               child: Text(widget.tabKey.toString() + ': List$i'),
+//             );
+//           },
+//           itemCount: 100,
+//           padding: const EdgeInsets.all(0.0)),
+//       showGlowLeading: false,
+//     );
+//
+//     if (widget.oldDemo) {
+//       return NestedScrollViewInnerScrollPositionKeyWidget(widget.tabKey, child);
+//     }
+//
+//     /// new one doesn't need NestedScrollViewInnerScrollPositionKeyWidget any more.
+//     else {
+//       return child;
+//     }
+//   }
+//
+//   @override
+//   bool get wantKeepAlive => true;
+// }
 
 class GlowNotificationWidget extends StatelessWidget {
   /// Whether to show the overscroll glow on the side with negative scroll
