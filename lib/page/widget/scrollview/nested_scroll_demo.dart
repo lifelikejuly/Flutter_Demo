@@ -13,11 +13,61 @@ class NestedScrollDemo extends StatefulWidget {
 class _NestedScrollDemoState extends State<NestedScrollDemo> {
   @override
   Widget build(BuildContext context) {
-    return NormalNestedScroll();
+    return TabBarListNestedScroll();
+
+    // return NormalNestedScroll();
     // return OfficialNestedScroll();
     // return NestedScrollWithSliverOverlapAbsorber();
     // return TabBarViewMagicNestedScroll();
     // return TabBarViewOverNestedScroll();
+  }
+}
+
+
+class TabBarListNestedScroll extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> _tabs = <String>['Tab 1', 'Tab 2'];
+    return DefaultTabController(
+      length: _tabs.length, // This is the number of tabs.child: Scaffold(
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            DIYCupertinoSliverRefreshControl(
+              onRefresh: () async {
+
+              },
+            ),
+            SliverAppBar(
+              pinned: true,
+              snap: false,
+              floating: false,
+              leading: SizedBox(),
+              expandedHeight: 160.0,
+              flexibleSpace: const FlexibleSpaceBar(
+                title: Text('SliverAppBar'),
+                background: FlutterLogo(),
+              ),
+            ),
+          ];
+        },
+        body: TabBarView(
+          children: _tabs.map((String name) {
+            return  ListView.builder(
+              // physics: NeverScrollableScrollPhysics(),
+              controller: ScrollController(),
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context,index){
+                return Text("显示不全 100 $index");
+              },
+              itemCount: 100,
+            );
+          }).toList(),
+        ),
+      ),
+    );
   }
 }
 

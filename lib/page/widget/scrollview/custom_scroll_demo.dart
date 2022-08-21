@@ -159,7 +159,7 @@ class _TestViewDemoState extends State<TestViewDemo> with TickerProviderStateMix
             ),),
           SizedBox(
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context,index){
                 return Text("$index");
