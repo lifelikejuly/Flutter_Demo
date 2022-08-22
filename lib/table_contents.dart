@@ -14,6 +14,7 @@ import 'package:flutter_demo/page/dev/sliver_customer_demo.dart';
 import 'package:flutter_demo/page/dev/tabbar_add_jump_demo.dart';
 import 'package:flutter_demo/page/dev/textField_focus_demo.dart';
 import 'package:flutter_demo/page/diy/circlelist/circle_list_demo.dart';
+import 'package:flutter_demo/page/diy/download/download_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/diy/emoji/emoji_demo.dart';
 import 'package:flutter_demo/page/diy/wheel/list_wheel_diy_demo.dart';
@@ -56,6 +57,7 @@ class TableContents {
     "圆形环绕列表": CircleListDemo(),
     "自定义ListWheel": ListWheelDiyDemo(),
     "自定义TabBarView(主题色功能)": DiyTabbarDemo(),
+    "下载组件实现": DownloadDemo(),
     // "自定义主体框架页面": ShopPageDemo(),
   };
 
