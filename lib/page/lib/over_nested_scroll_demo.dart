@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/magic/diy_refresh.dart';
@@ -44,6 +45,7 @@ class TabBarViewOverNestedScroll extends StatelessWidget {
                     DIYCupertinoSliverRefreshControl(
                       onRefresh: () async {},
                     ),
+                // CupertinoSliverRefreshControl(),
                     SliverToBoxAdapter(
                       child: SizedBox(
                         height: 20,

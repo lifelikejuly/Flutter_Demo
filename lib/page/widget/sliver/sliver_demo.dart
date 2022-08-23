@@ -10,6 +10,8 @@ class SliverDemo extends StatefulWidget {
 class _SliverDemoState extends State<SliverDemo> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: SliverToBoxAdapter(),
+    );
   }
 }

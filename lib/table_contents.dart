@@ -36,6 +36,7 @@ import 'page/dev/sliver_refresh_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
+import 'page/diy/refresh/custom_refresh_demo.dart';
 import 'page/diy/shoppage/shop_page_demo.dart';
 import 'page/diy/tabbar/diy_tabbar_demo.dart';
 import 'page/func/func_matrix4_pentagon_demo.dart';
@@ -58,6 +59,7 @@ class TableContents {
     "自定义ListWheel": ListWheelDiyDemo(),
     "自定义TabBarView(主题色功能)": DiyTabbarDemo(),
     "下载组件实现": DownloadDemo(),
+    "自定义下拉刷新组件":CustomRefreshDemo(),
     // "自定义主体框架页面": ShopPageDemo(),
   };
 

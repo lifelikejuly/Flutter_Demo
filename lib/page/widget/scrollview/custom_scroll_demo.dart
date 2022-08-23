@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/magic/diy_refresh.dart';
 import 'package:flutter_demo/page/common/common.dart';
@@ -24,6 +25,7 @@ class _CustomScrollDemoState extends State<CustomScrollDemo> {
 
           },
         ),
+        // CupertinoSliverRefreshControl(),
         SliverToBoxAdapter(
           child: SizedBox(
             height: 20,

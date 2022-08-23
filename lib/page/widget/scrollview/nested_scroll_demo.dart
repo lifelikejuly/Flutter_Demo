@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/magic/diy_refresh.dart';
 import 'package:flutter_demo/magic/scrollview/magic_nested_scroll_view.dart' hide SliverOverlapAbsorber,SliverOverlapInjector;
 import 'package:flutter_demo/page/common/common.dart';
+import 'package:flutter_demo/page/lib/over_nested_scroll_demo.dart';
 
 import 'NestedClampingScrollPhysics.dart';
 
@@ -13,13 +15,13 @@ class NestedScrollDemo extends StatefulWidget {
 class _NestedScrollDemoState extends State<NestedScrollDemo> {
   @override
   Widget build(BuildContext context) {
-    return TabBarListNestedScroll();
+    // return TabBarListNestedScroll();
 
     // return NormalNestedScroll();
     // return OfficialNestedScroll();
     // return NestedScrollWithSliverOverlapAbsorber();
     // return TabBarViewMagicNestedScroll();
-    // return TabBarViewOverNestedScroll();
+    return TabBarViewOverNestedScroll();
   }
 }
 
@@ -34,11 +36,12 @@ class TabBarListNestedScroll extends StatelessWidget {
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            DIYCupertinoSliverRefreshControl(
-              onRefresh: () async {
-
-              },
-            ),
+            // DIYCupertinoSliverRefreshControl(
+            //   onRefresh: () async {
+            //
+            //   },
+            // ),
+            CupertinoSliverRefreshControl(),
             SliverAppBar(
               pinned: true,
               snap: false,
@@ -56,7 +59,7 @@ class TabBarListNestedScroll extends StatelessWidget {
           children: _tabs.map((String name) {
             return  ListView.builder(
               // physics: NeverScrollableScrollPhysics(),
-              controller: ScrollController(),
+              // controller: ScrollController(),
               shrinkWrap: true,
               primary: false,
               itemBuilder: (context,index){
