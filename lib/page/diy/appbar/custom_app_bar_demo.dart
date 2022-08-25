@@ -1,17 +1,18 @@
+import 'dart:async';
 import 'dart:math';
+
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_demo/magic/diy_refresh.dart';
 import 'package:flutter_demo/magic/sliver/magic_app_bar.dart';
 import 'package:flutter_demo/magic/sliver/magic_flexible_space_bar.dart';
 import 'package:flutter_demo/magic/tab/magic_tab_indicator.dart';
 import 'package:flutter_demo/magic/tab/magic_tabs.dart';
 import 'package:flutter_demo/page/common/common.dart';
-import 'package:flutter_demo/page/diy/tabbar/diy_tabbar_demo.dart';
-import 'package:flutter_demo/page/widget/common_widget_demo.dart';
 import 'package:flutter_demo/page/widget/scrollview/NestedClampingScrollPhysics.dart';
+
 
 class CustomAppBarDemo extends StatefulWidget {
   @override
@@ -40,7 +41,6 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
     Colors.cyan,
   ];
 
-
   List<String> picUrls = [
     'images/bg0.jpeg',
     'images/bg1.jpeg',
@@ -61,9 +61,23 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
     return colors.elementAt(random.nextInt(colors.length));
   }
 
+  Stream<double> offsetStream;
+  StreamController<double> _headerController;
+
+  ScrollController scrollController;
+  ScrollController fatherController;
+
+  double offset = 0;
+
   @override
   void initState() {
     super.initState();
+
+    _headerController = StreamController.broadcast();
+    offsetStream = _headerController.stream;
+
+    scrollController = ScrollController();
+    fatherController = ScrollController();
     int index = 0;
     tabWidgets = List();
     tabPageViews = List();
@@ -84,13 +98,23 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
       // tabPageViews.add(ListView.builder(itemBuilder: (context, index) {
       //   return Common.getWidget(index);
       // }));
-      tabPageViews.add(CustomScrollView(
+      tabPageViews.add(NotificationListener(
+          onNotification: (position) {
+            if(position is OverscrollIndicatorNotification ||
+                position is ScrollMetricsNotification) return false;
+
+            if (position.metrics.axis != Axis.vertical) return false;
+
+            offset = listenerScrollOffset(
+                position, offset, fatherController);
+            return false;
+          },
+          child: CustomScrollView(
+        controller: scrollController,
         physics: NestedClampingScrollPhysics(),
         slivers: <Widget>[
           CupertinoSliverRefreshControl(
-            onRefresh: () async {
-
-            },
+            onRefresh: () async {},
           ),
           SliverPadding(
             padding: const EdgeInsets.all(8.0),
@@ -105,7 +129,7 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
             ),
           ),
         ],
-      ));
+      )));
       index++;
     });
     tabController1 = TabController(
@@ -118,7 +142,9 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
   @override
   Widget build(BuildContext context) {
     Widget child = NestedScrollView(
-       physics: NeverScrollableScrollPhysics(),
+        controller: fatherController,
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             MagicSliverAppBar(
@@ -128,71 +154,74 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
               elevation: 0,
               expandedHeight: 92,
               backgroundColor: Colors.transparent,
-              foregroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
+              // foregroundColor: Colors.transparent,
+              // shadowColor: Colors.transparent,
               forceElevated: innerBoxIsScrolled,
               flexibleSpace: MagicFlexibleSpaceBar(
                 collapseMode: CollapseMode.pin,
                 background: PreferredSize(
                   child: AppBar(
-                    toolbarOpacity: 1.0,
-                    bottomOpacity: 1.0,
                     backgroundColor: Colors.transparent,
-                    shadowColor:Colors.transparent,
+                    shadowColor: Colors.transparent,
                     titleSpacing: 0.0,
                     automaticallyImplyLeading: false,
-                    title: Container(
-                      color:Colors.transparent,
-                      padding: EdgeInsets.only(bottom: 11, left: 12, right: 12),
-                      child: Container(
-                        padding: EdgeInsets.only(left: 9),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        child: Row(
-                          children: [
-                            Text("头像"),
-                            Text("搜索栏"),
-                            Text("入口"),
-                          ],
-                        ),
-                      ),
+                    title: Row(
+                      children: [
+                        Text("头像"),
+                        Expanded(child: Container(
+                          padding: EdgeInsets.only(bottom: 11, left: 12, right: 12),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 9),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(9),
+                            ),
+                            child: Text("搜索栏"),
+                          ),
+                        )),
+                        Text("入口"),
+                      ],
                     ),
                   ),
                   preferredSize: Size.fromHeight(48),
                 ),
               ),
               bottom: PreferredSize(
-                child: MagicTabBar(
-                  tabs: tabWidgets,
-                  controller: tabController1,
-                  isScrollable: true,
-                  labelColors: colors,
-                  labelColor: Color(0xFF333333),
-                  unselectedLabelColor: Colors.deepOrange,
-                  labelPadding: EdgeInsets.all(0),
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333),
-                  ),
-                  labelStyle: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF333333),
-                  ),
-                  indicatorSize: MagicTabBarIndicatorSize.tab,
-                  indicatorColor: Colors.deepOrange,
-                  indicatorPadding: EdgeInsets.zero,
-                  indicatorWeight: 0,
-                  indicator: MagicTabIndicator(
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: MagicTabBar(
+                      tabs: tabWidgets,
+                      controller: tabController1,
+                      isScrollable: true,
                       labelColors: colors,
-                      pageController: tabController1,
-                      borderSide:
-                      BorderSide(width: 5.0, color: Colors.deepOrange),
-                      // insets: EdgeInsets.all(10),
-                      width: 20),
+                      labelColor: Color(0xFF333333),
+                      unselectedLabelColor: Colors.deepOrange,
+                      labelPadding: EdgeInsets.all(0),
+                      unselectedLabelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF333333),
+                      ),
+                      labelStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF333333),
+                      ),
+                      indicatorSize: MagicTabBarIndicatorSize.tab,
+                      indicatorColor: Colors.deepOrange,
+                      indicatorPadding: EdgeInsets.zero,
+                      indicatorWeight: 0,
+                      indicator: MagicTabIndicator(
+                          labelColors: colors,
+                          pageController: tabController1,
+                          borderSide:
+                              BorderSide(width: 5.0, color: Colors.deepOrange),
+                          // insets: EdgeInsets.all(10),
+                          width: 20),
+                    )),
+                    Text("新入口"),
+                  ],
                 ),
                 preferredSize: Size.fromHeight(50),
               ),
@@ -200,64 +229,120 @@ class _AppBarDemoState extends State<CustomAppBarDemo>
           ];
         },
         body: MagicTabBarView(
-            // 测试page切换临近Tab不做初始化
-            controller: tabController1,
-            children: tabPageViews,
+          // 测试page切换临近Tab不做初始化
+          controller: tabController1,
+          children: tabPageViews,
         ));
+
+    child = Scaffold(
+      backgroundColor: Colors.transparent,
+      body: child,
+    );
     child = Stack(
       children: [
-        AnimatedBuilder(animation: tabController1.animation, builder: (context, child) {
-          double page = 0;
-          int realPage = 0;
-          page =  tabController1.index + tabController1.offset ?? 0;
-          realPage = tabController1.index +  tabController1.offset?.floor() ?? 0;
-          // if (realPage >= colors?.length) {
-          //   page = 0;
-          //   realPage = 0;
-          // }
-          double opacity = 1 - (page - realPage).abs();
+        Positioned(
+          top: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child:  AnimatedBuilder(
+              animation: tabController1.animation,
+              builder: (context, child) {
+                double page = 0;
+                int realPage = 0;
+                page = tabController1.index + tabController1.offset ?? 0;
+                realPage =
+                    tabController1.index + tabController1.offset?.floor() ?? 0;
+                // if (realPage >= colors?.length) {
+                //   page = 0;
+                //   realPage = 0;
+                // }
+                double opacity = 1 - (page - realPage).abs();
 
-          print("<> page $page realPage $realPage  ${tabController1?.offset}");
+                print(
+                    "<> page $page realPage $realPage  ${tabController1?.offset}");
 
-          int nextIndex = realPage + 1 < colors.length ? realPage + 1 : realPage;
-          Color thisColor = colors != null ? colors[realPage] : Colors.white;
-          Color nextColor = colors != null ? colors[nextIndex] : Colors.white;
+                int nextIndex =
+                realPage + 1 < colors.length ? realPage + 1 : realPage;
+                Color thisColor =
+                colors != null ? colors[realPage] : Colors.white;
+                Color nextColor =
+                colors != null ? colors[nextIndex] : Colors.white;
 
+                String thisPic = picUrls[realPage];
+                String nextPic = picUrls[
+                realPage + 1 < picUrls.length ? realPage + 1 : realPage];
+                List<Widget> childs = List();
+                if (thisPic != null && thisPic != '') {
+                  childs.add(
+                    Opacity(
+                      opacity: opacity,
+                      child: Image.asset(
+                        thisPic,
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.topCenter,
+                      ),
+                    ),
+                  );
+                }
+                if (nextPic != null && nextPic != '') {
+                  childs.add(Opacity(
+                    opacity: 1 - opacity,
+                    child: Image.asset(
+                      picUrls[realPage + 1 < picUrls.length
+                          ? realPage + 1
+                          : realPage],
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.topCenter,
+                    ),
+                  ));
+                }
+                return Stack(
+                  children: childs,
+                );
+              }),
+        ),
 
-          String thisPic = picUrls[realPage];
-          String nextPic =
-          picUrls[realPage + 1 < picUrls.length ? realPage + 1 : realPage];
-          List<Widget> childs = List();
-          if (thisPic != null && thisPic != '') {
-            childs.add(Opacity(
-              opacity: opacity,
-              child: Image.asset(
-                thisPic,
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-                ),
-              ),
-            );
-          }
-          if (nextPic != null && nextPic != '') {
-            childs.add(Opacity(
-              opacity: 1 - opacity,
-              child: Image.asset(
-                picUrls[realPage + 1 < picUrls.length ? realPage + 1 : realPage],
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-              ),
-            ));
-          }
-          return Stack(
-            children: childs,
-          );
-
-        }),
         child,
       ],
     );
-
     return child;
+  }
+
+
+  listenerScrollOffset(ScrollNotification position, double offset,
+      ScrollController fatherController,{bool toJump = true}) {
+    if (position is ScrollUpdateNotification &&
+        position.depth == 0 &&
+        position.metrics.axis == Axis.vertical) {
+      if (!(fatherController?.hasClients ?? false)) return;
+      double nowOffset = position.metrics.pixels;
+      double fatherOffset;
+
+        fatherOffset = fatherController.offset;
+      if (!position.metrics.atEdge && nowOffset > 50) {
+        if (nowOffset >= offset) {
+          if (fatherOffset < 44) {
+            fatherOffset += (nowOffset - offset);
+            fatherOffset = min(44, fatherOffset);
+            if(toJump)
+              fatherController?.jumpTo(fatherOffset);
+          }
+        } else {
+          if (fatherOffset > 0) {
+            fatherOffset -= (offset - nowOffset);
+            fatherOffset = max(fatherOffset, 0);
+            if(toJump)
+              fatherController?.jumpTo(fatherOffset);
+          }
+        }
+      } else {
+        if (fatherOffset > 0 && nowOffset < offset) {
+          if(toJump)
+            fatherController?.jumpTo(0);
+        }
+      }
+      return nowOffset;
+    }
+    return offset;
   }
 }
