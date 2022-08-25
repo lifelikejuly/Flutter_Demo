@@ -211,8 +211,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: "2.5.1009"
-      resolved-ref: "95de0feac16ddc6c43a437ac9c3d57f58bfdc7d1"
+      ref: "2.5.1025"
+      resolved-ref: "7c42ed4126c049ef00b9e1a4a0e763ff4d4ebc05"
       url: "ssh://git@gitlab.vdian.net:60022/flutter/sky_engine.git"
     source: git
     version: "0.0.99"

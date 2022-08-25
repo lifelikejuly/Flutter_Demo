@@ -18,10 +18,10 @@ class _NestedScrollDemoState extends State<NestedScrollDemo> {
     // return TabBarListNestedScroll();
 
     // return NormalNestedScroll();
-    // return OfficialNestedScroll();
+    return OfficialNestedScroll();
     // return NestedScrollWithSliverOverlapAbsorber();
     // return TabBarViewMagicNestedScroll();
-    return TabBarViewOverNestedScroll();
+    // return TabBarViewOverNestedScroll();
   }
 }
 
@@ -87,9 +87,9 @@ class OfficialNestedScroll extends StatelessWidget {
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
-                title: const Text('Books'),
                 pinned: true,
-                leading: null,
+                title: null,
+                leading: SizedBox(),
                 expandedHeight: 150.0,
                 forceElevated: innerBoxIsScrolled,
                 bottom: TabBar(
@@ -109,6 +109,7 @@ class OfficialNestedScroll extends StatelessWidget {
                   return CustomScrollView(
                     key: PageStorageKey<String>(name),
                     slivers: <Widget>[
+                      // 可以用来填充高度
                       SliverOverlapInjector(
                         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                             context),

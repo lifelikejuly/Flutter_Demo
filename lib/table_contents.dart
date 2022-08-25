@@ -33,6 +33,7 @@ import 'page/dev/image_combined_animation_demo.dart';
 import 'page/dev/list_jump_init_demo.dart';
 import 'page/dev/scale_widget_demo.dart';
 import 'page/dev/sliver_refresh_demo.dart';
+import 'page/diy/appbar/custom_app_bar_demo.dart';
 import 'page/diy/carousel/carousel_demo.dart';
 import 'page/diy/draglistview/sliver_reorder_listview_demo.dart';
 import 'page/diy/preview/image_preview_animation_demo.dart';
@@ -58,6 +59,7 @@ class TableContents {
     "圆形环绕列表": CircleListDemo(),
     "自定义ListWheel": ListWheelDiyDemo(),
     "自定义TabBarView(主题色功能)": DiyTabbarDemo(),
+    "自定义频道页(主题色功能)":CustomAppBarDemo(),
     "下载组件实现": DownloadDemo(),
     "自定义下拉刷新组件":CustomRefreshDemo(),
     // "自定义主体框架页面": ShopPageDemo(),
