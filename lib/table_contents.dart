@@ -17,6 +17,7 @@ import 'package:flutter_demo/page/diy/circlelist/circle_list_demo.dart';
 import 'package:flutter_demo/page/diy/download/download_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/diy/emoji/emoji_demo.dart';
+import 'package:flutter_demo/page/diy/loadmore/custom_loadmore_demo.dart';
 import 'package:flutter_demo/page/diy/wheel/list_wheel_diy_demo.dart';
 import 'package:flutter_demo/page/func/func_matrix4_demo.dart';
 import 'package:flutter_demo/page/layout/test_how_to_refresh_ui_demo.dart';
@@ -62,6 +63,7 @@ class TableContents {
     "自定义频道页(主题色功能)":CustomAppBarDemo(),
     "下载组件实现": DownloadDemo(),
     "自定义下拉刷新组件":CustomRefreshDemo(),
+    "自定义上拉加载组件":CustomLoadMoreDemo(),
     // "自定义主体框架页面": ShopPageDemo(),
   };
 

@@ -12,6 +12,8 @@ class _ListDemoState extends State<ListDemo> {
   @override
   void initState() {
     super.initState();
+    List<int>  lists = List(3);
+    lists.addAll([2,3,4]);
   }
 
 
