@@ -43,7 +43,7 @@ class _CustomSimpleLoadMoreDemoState extends State<CustomSimpleLoadMoreDemo> {
         return false;
       },
       child: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: CustomBouncingScrollPhysics(),
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildBuilderDelegate(
