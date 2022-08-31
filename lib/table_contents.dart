@@ -18,6 +18,7 @@ import 'package:flutter_demo/page/diy/download/download_demo.dart';
 import 'package:flutter_demo/page/diy/draggridview/diy_drag_gridview_demo.dart';
 import 'package:flutter_demo/page/diy/emoji/emoji_demo.dart';
 import 'package:flutter_demo/page/diy/loadmore/custom_loadmore_demo.dart';
+import 'package:flutter_demo/page/diy/sprite/custome_sprite_demo.dart';
 import 'package:flutter_demo/page/diy/wheel/list_wheel_diy_demo.dart';
 import 'package:flutter_demo/page/func/func_matrix4_demo.dart';
 import 'package:flutter_demo/page/layout/test_how_to_refresh_ui_demo.dart';
@@ -41,6 +42,7 @@ import 'page/diy/preview/image_preview_animation_demo.dart';
 import 'page/diy/refresh/custom_refresh_demo.dart';
 import 'page/diy/shoppage/shop_page_demo.dart';
 import 'page/diy/tabbar/diy_tabbar_demo.dart';
+import 'page/func/func_file_path_demo.dart';
 import 'page/func/func_matrix4_pentagon_demo.dart';
 import 'page/func/func_matrix4_u_demo.dart';
 import 'page/lib/over_nested_scroll_demo.dart';
@@ -64,6 +66,7 @@ class TableContents {
     "下载组件实现": DownloadDemo(),
     "自定义下拉刷新组件":CustomRefreshDemo(),
     "自定义上拉加载组件":CustomLoadMoreDemo(),
+    "精灵图使用":CustomeSpriteDemo(),
     // "自定义主体框架页面": ShopPageDemo(),
   };
 
@@ -145,6 +148,7 @@ class TableContents {
     "Matrix4五边形": FuncMatrix4PentagonDemo(),
     "Matrix4特殊U": FuncMatrix4UDemo(),
     "输入框和软键盘的使用": TextFieldFocusDemo(),
+    "了解文件路径": FuncFilePathDemo(),
   };
 
 

@@ -68,6 +68,9 @@ dependencies:
   # 文件选择器
 #  file_picker: 3.0.1
 
+  bonfire: ^2.0.0
+  flame: ^1.0.0
+
 dev_dependencies:
 #  flutter_test:
 #    sdk: flutter
