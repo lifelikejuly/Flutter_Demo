@@ -18,9 +18,9 @@ class _CustomSimpleLoadMoreDemoState extends State<CustomSimpleLoadMoreDemo> {
     Size size = MediaQuery.of(context).size;
     return NotificationListener(
       onNotification: (scrollNotification) {
-        // if(scrollNotification is OverscrollIndicatorNotification){
-        //   return false;
-        // }
+        if(scrollNotification is OverscrollIndicatorNotification){
+          return false;
+        }
         if ((scrollNotification.metrics.pixels >=
                 scrollNotification.metrics.maxScrollExtent - size.height) &&
             (scrollNotification.depth == 0)) {
