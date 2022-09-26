@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_demo/magic/animation/test_animation_demo.dart';
 import 'package:flutter_demo/page/dev/clippath_image_shape_demo.dart';
 import 'package:flutter_demo/page/dev/complex_page_demo2.dart';
 import 'package:flutter_demo/page/dev/crash_demo.dart';
@@ -67,6 +68,7 @@ class TableContents {
     "自定义下拉刷新组件":CustomRefreshDemo(),
     "自定义上拉加载组件":CustomLoadMoreDemo(),
     "精灵图使用":CustomeSpriteDemo(),
+    "动画组件":TestAnimationDemo(),
     // "自定义主体框架页面": ShopPageDemo(),
   };
 
