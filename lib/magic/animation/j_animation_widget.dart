@@ -1,15 +1,15 @@
-import 'dart:math' as math;
-import 'package:flame/components.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/magic/animation/j_animation_info.dart';
 
 class JAnimationWidget extends StatefulWidget {
   final Widget child;
   final List<JAnimationInfo> animations;
+  final JAnimationController jAnimationController;
 
   JAnimationWidget({
     @required this.child,
     @required this.animations,
+    @required this.jAnimationController,
   });
 
   @override
@@ -18,85 +18,136 @@ class JAnimationWidget extends StatefulWidget {
 
 class _JAnimationWidgetState extends State<JAnimationWidget>
     with TickerProviderStateMixin {
-  AnimationController animationController;
+  JAnimationController get jAnimationController => widget.jAnimationController;
 
   List<JAnimationInfo> get animations => widget.animations;
 
   Widget get child => widget.child;
 
+  JAnimationManager _jAnimationManager;
+
   @override
   void dispose() {
-    animationController?.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-
-    int startTime = 0;
-    int endTime = 0;
-    animations.forEach((element) {
-      startTime = math.min(element.startTime, startTime);
-      endTime = math.max(element.endTime, endTime);
-    });
-    Duration duration = Duration(milliseconds: endTime - startTime);
-    animationController = AnimationController(vsync: this, duration: duration);
-    animationController.addListener(() {});
-    animationController.forward(from: 0);
+    _jAnimationManager = JAnimationManager(animations);
+    jAnimationController.init(this, _jAnimationManager.duration);
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController,
+      animation: jAnimationController._animationController,
       child: widget.child,
       builder: (context, child) {
-        return Transform(
-          transform: _calculateMatrix(),
-          child: child,
-          alignment: Alignment.center,
-          // origin: Offset(0, 0),
+        return Opacity(
+          opacity: _jAnimationManager
+              .calculateOpacity(jAnimationController.getMilliseconds()),
+          child: Transform(
+            transform: _jAnimationManager
+                .calculateMatrix(jAnimationController.getMilliseconds()),
+            child: child,
+            alignment: Alignment.center,
+            // origin: Offset(0, 0),
+          ),
         );
       },
     );
   }
+}
 
-  Matrix4 _calculateMatrix() {
-    Matrix4 matrix4 = Matrix4.identity();
-    double value;
-    double millTime = _getMilliseconds() / Duration.microsecondsPerMillisecond;
-    for (JAnimationInfo animation in animations) {
-      if (animation.startTime <= millTime && animation.endTime >= millTime) {
-        double pre = (millTime - animation.startTime) /
-            (animation.endTime - animation.startTime);
-        value = animation.startValue +
-            (animation.endValue - animation.startValue) * pre;
-      } else if (animation.startTime < millTime) {
-        value = animation.startValue;
-      } else if (animation.endTime > millTime) {
-        value = animation.endValue;
-      }
-      switch (animation.animationType) {
-        case "scale":
-          matrix4.scale(Vector3(1, 1, value));
-          break;
-        case "rotation":
-          matrix4.rotate(Vector3(1, 1, 1),value);
-          break;
-        case "transition":
-          matrix4.translate(value);
-          break;
-      }
-    }
-    return matrix4;
+class JAnimationController {
+  bool autoPlay = false;
+  bool repeat = false;
+  bool reverse = false;
+  double lowerBound;
+  double upperBound;
+  AnimationController _animationController;
+
+  toForward({double from}) {
+    _animationController?.forward(from: from);
   }
 
-  double _getMilliseconds() {
-    return animationController?.lastElapsedDuration?.inMicroseconds
-            ?.toDouble() ??
-        (animationController.status == AnimationStatus.forward
-            ? 0.0
-            : animationController.duration.inMicroseconds.toDouble());
+  toReverse({double from}) {
+    _animationController?.reverse(from: from);
+  }
+
+  JAnimationController({
+    this.autoPlay = false,
+    this.repeat = false,
+    this.reverse = false,
+    double lowerBound = 0.0,
+    double upperBound = 1.0,
+  })  : this.lowerBound = lowerBound.clamp(0.0, 1.0),
+        this.upperBound = upperBound.clamp(0.0, 1.0);
+
+  init(TickerProvider vsync, Duration duration) {
+    _animationController = AnimationController(
+        vsync: vsync,
+        lowerBound: lowerBound,
+        upperBound: upperBound,
+        duration: duration,
+        reverseDuration: duration);
+    _animationController.addStatusListener((status) {
+      switch (status) {
+        case AnimationStatus.completed:
+          if (repeat) {
+            _animationController.forward(from: lowerBound);
+          }
+          break;
+        case AnimationStatus.dismissed:
+          if (repeat) {
+            _animationController.reverse(from: upperBound);
+          }
+          break;
+      }
+    });
+    if (autoPlay) {
+      if (reverse) {
+        _animationController.reverse(from: upperBound);
+      } else {
+        _animationController.forward(from: lowerBound);
+      }
+    }
+  }
+
+  // 获取时间
+  double getMilliseconds() {
+    // bool _getDirect() {
+    //   bool loading = reverse
+    //       ? (_animationController.status == AnimationStatus.reverse ||
+    //           _animationController.status == AnimationStatus.completed)
+    //       : (_animationController.status == AnimationStatus.forward ||
+    //           _animationController.status == AnimationStatus.dismissed);
+    //   return loading;
+    // }
+    //
+    // double _getProgressMilliseconds() {
+    //   // print("<> _getProgressMilliseconds. ${_animationController.value} ${_animationController?.lastElapsedDuration?.inMicroseconds
+    //   //     ?.toDouble()}");
+    //   bool isUpRight = _getDirect();
+    //   return (isUpRight ? lowerBound : -(1.0 - upperBound)) *
+    //       _animationController.duration.inMicroseconds.toDouble() /
+    //       Duration.microsecondsPerMillisecond;
+    // }
+    //
+    // double _getEmptyMilliseconds() {
+    //   bool isUpRight = _getDirect();
+    //   return (isUpRight
+    //       ? 0.0
+    //       : upperBound * _animationController.duration.inMicroseconds.toDouble());
+    // }
+
+    // return  ((_animationController?.lastElapsedDuration?.inMicroseconds
+    //                 ?.toDouble() ??
+    //             _getEmptyMilliseconds()) /
+    //         Duration.microsecondsPerMillisecond);
+    double allTime = _animationController.duration.inMicroseconds.toDouble() /
+        Duration.microsecondsPerMillisecond;
+    return allTime * _animationController.value;
   }
 }
