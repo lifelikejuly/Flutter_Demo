@@ -20,6 +20,7 @@ import 'package:redux/redux.dart' as FlutterRedux;
 
 import 'home_page.dart';
 import 'page/lib/fishredux/list/page.dart';
+import 'page/lib/flutter_redux_demo.dart';
 import 'page/lib/redux_demo.dart';
 
 String CRASH_TAG = "---CRASH_TAG--- ";

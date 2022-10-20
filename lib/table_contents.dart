@@ -46,6 +46,7 @@ import 'page/diy/tabbar/diy_tabbar_demo.dart';
 import 'page/func/func_file_path_demo.dart';
 import 'page/func/func_matrix4_pentagon_demo.dart';
 import 'page/func/func_matrix4_u_demo.dart';
+import 'page/lib/flutter_redux_demo.dart';
 import 'page/lib/over_nested_scroll_demo.dart';
 import 'simple_import.dart';
 
@@ -119,7 +120,6 @@ class TableContents {
     "轮播Swiper": SwiperDemo(),
     "图片cache_image": CacheImageDemo(),
     "刷新SmartRefresher": RefreshDemo(),
-    "全局管理Redux": ReduxDemo(),
     "FishRedux开发": FishReduxDemo(),
     "视频播放VideoPlayer": VideoDemo(),
     "网络请求库Dio": HttpDemo(),
@@ -130,6 +130,8 @@ class TableContents {
     "图片阅读器photo_view": PhotoViewDemo(),
     "extended_nested_scroll_view": OldExtendedNestedScrollViewDemo(),
     "OverNestedScrollDemo":OverNestedScrollDemo(),
+    "FlutterRedux使用demo": FlutterReduxDemo(),
+    "Redux使用Demo":ReduxDemo(),
   };
 
   // 基础技术方案

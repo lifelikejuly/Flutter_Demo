@@ -119,17 +119,6 @@ enum Animation {
 
 /// Animation All List class
 class JAnimationManager {
-  // List<JAnimationInfo> _animations = List.empty(growable: true);
-
-  // List<JAnimationInfo> _scaleAnimations = List.empty(growable: true);
-  // List<JAnimationInfo> _rotationAnimations = List.empty(growable: true);
-  // List<JAnimationInfo> _transitionAnimations = List.empty(growable: true);
-  // List<JAnimationInfo> _opacityAnimations = List.empty(growable: true);
-  //
-  // Vector3 _scaleValue = Vector3.all(1.0);
-  // Vector3 _rotationValue = Vector3.all(0.0);
-  // Vector3 _transitionValue = Vector3.all(0.0);
-  // Vector3 _opacityValue = Vector3.all(1.0);
 
   Map<Animation, Vector3> _animationValueMap = {
     Animation.SCALE: Vector3.all(1.0),
@@ -145,18 +134,45 @@ class JAnimationManager {
     Animation.OPACITY: List.empty(growable: true),
   };
 
+  resetInit() {
+    _animationValueMap = {
+      Animation.SCALE: Vector3.all(1.0),
+      Animation.ROTATION: Vector3.all(0.0),
+      Animation.TRANSITION: Vector3.all(0.0),
+      Animation.OPACITY: Vector3.all(1.0),
+    };
+  }
+
+  reverseInit(){
+    calculateMaxOpacity();
+    calculateMaxMatrix();
+  }
+
   Duration _duration;
 
   /// calculate Opacity Value
   double calculateOpacity(double millTime) {
     Vector3 value = _animationValueMap[Animation.OPACITY];
     for (JAnimationInfo animation in _animationInfoMap[Animation.OPACITY]) {
-        value = _calculateValue(millTime, animation);
-        value ??= _animationValueMap[Animation.OPACITY];
-        _animationValueMap[Animation.OPACITY] = value;
+      value = _calculateValue(millTime, animation);
+      value ??= _animationValueMap[Animation.OPACITY];
+      _animationValueMap[Animation.OPACITY] = value;
     }
     value ??= _animationValueMap[Animation.OPACITY];
     return value.x.clamp(0.0, 1.0);
+  }
+
+  calculateMaxOpacity() {
+    Vector3 value = _animationValueMap[Animation.OPACITY];
+    int endTime = 0;
+    for (JAnimationInfo animation in _animationInfoMap[Animation.OPACITY]) {
+      if(animation.endTime >= endTime ){
+        value = animation.endValue;
+        endTime = animation.endTime;
+      }
+      value ??= _animationValueMap[Animation.OPACITY];
+      _animationValueMap[Animation.OPACITY] = value;
+    }
   }
 
   /// calculate Animation Matrix
@@ -189,8 +205,33 @@ class JAnimationManager {
       matrix4.setTranslation(value);
       _animationValueMap[Animation.TRANSITION] = value;
     }
-    // print("<> calculateMatrix $matrix4");
     return matrix4;
+  }
+
+  calculateMaxMatrix() {
+    int endTime = 0;
+    Vector3 value;
+    for (JAnimationInfo animation in _animationInfoMap[Animation.SCALE]) {
+      if(animation.endTime >= endTime){
+        value = animation.endValue;
+      }
+      value ??= _animationValueMap[Animation.SCALE];
+      _animationValueMap[Animation.SCALE] = value;
+    }
+    for (JAnimationInfo animation in _animationInfoMap[Animation.ROTATION]) {
+      if(animation.endTime >= endTime){
+        value = animation.endValue;
+      }
+      value ??= _animationValueMap[Animation.ROTATION];
+      _animationValueMap[Animation.ROTATION] = value;
+    }
+    for (JAnimationInfo animation in _animationInfoMap[Animation.TRANSITION]) {
+     if(animation.endTime >= endTime){
+        value = animation.endValue;
+      }
+      value ??= _animationValueMap[Animation.TRANSITION];
+      _animationValueMap[Animation.TRANSITION] = value;
+    }
   }
 
   /// calculate Animation Value
@@ -207,11 +248,15 @@ class JAnimationManager {
     return value;
   }
 
+  int startTime = 0;
+  int endTime = 0;
 
   JAnimationManager(List<JAnimationInfo> animations) {
-    int startTime = 0;
-    int endTime = 0;
-    animations.forEach((element) {
+    addAnimations(animations);
+  }
+
+  addAnimations(List<JAnimationInfo> animations){
+     animations.forEach((element) {
       int elementStartTime = element.startTime;
       int elementEndTime = element.endTime;
       startTime = min(elementStartTime, startTime);

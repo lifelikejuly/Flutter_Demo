@@ -1,135 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter_demo/thrid_libs/redux/redux.dart';
 
-enum ReduceActions { Increment, Reducement, change }
-
-// The reducer, which takes the previous count and increments it in response
-// to an Increment action.
-AppState counterReducer(AppState state, dynamic action) {
-  if (action == ReduceActions.Increment) {
-    return state..count += 1;
-  } else if (action == ReduceActions.Reducement) {
-    return state..count -= 1;
-  } else if (action == ReduceActions.change) {
-    return state..change = !state.change;
-  }
-
-  return state;
-}
-
-class AppState {
-  int count = 0;
-  bool change = false;
-}
+const String increment = 'INCREMENT';
+const String decrement = 'DECREMENT';
 
 class ReduxDemo extends StatefulWidget {
+  const ReduxDemo({Key key}) : super(key: key);
+
   @override
-  _ReduxDemoState createState() => _ReduxDemoState();
+  State<ReduxDemo> createState() => _ReduxDemoState();
 }
 
 class _ReduxDemoState extends State<ReduxDemo> {
+  Store store;
+
+
+
   @override
   void initState() {
     super.initState();
+
+    int counterReducer(int state, action) {
+      switch (action) {
+        case increment:
+          return state + 1;
+        case decrement:
+          return state - 1;
+        default:
+          return state;
+      }
+    }
+
+    loggingMiddleware2(Store<int> store, action, NextDispatcher next) {
+      print('<<<<${new DateTime.now()}>>>>: $action');
+      next(action);
+    }
+
+    store = new Store<int>(
+      counterReducer,
+      initialState: 0,
+      middleware: [LoggingMiddleware(), loggingMiddleware2],
+    );
+    final subscription = store.onChange.listen(print);
+
+
+    List<Function> functions = [];
+    functions.add(() => print("<> functions"));
+    functions.add(FunctionCall());
+    functions.forEach((element) {element.call();});
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        StoreBuilder<AppState>(
-          builder: (context, store) {
-            return Text("${store.state.count}");
-          },
-        ),
-        StoreConnector<AppState, DemoViewModel>(
-          converter: DemoViewModel.fromStore,
-          builder: (context, vm) {
-            print("StoreConnector DemoViewModel");
-            return Text("${vm.count}");
-          },
-          onInit: (store) {},
-          onInitialBuild: (vm) {},
-          onDispose: (store) {},
-          distinct: true,
-          rebuildOnChange: true,
-        ),
-        StoreConnector<AppState, DemoViewChangeModel>(
-          converter: DemoViewChangeModel.fromStore,
-          builder: (context, vm) {
-            print("StoreConnector DemoViewChangeModel");
-            return Text("${vm.change}");
-          },
-          onInit: (store) {},
-          onInitialBuild: (vm) {},
-          onDispose: (store) {},
-          distinct: true,
-//            ignoreChange: (state) {
-//              return true;
-//            },
-          rebuildOnChange: true,
-        ),
-        Row(
-          children: <Widget>[
-            RaisedButton(
-              child: Text("add"),
-              onPressed: () {
-                StoreProvider.of<AppState>(context)
-                    .dispatch(ReduceActions.Increment);
-              },
-            ),
-            RaisedButton(
-              child: Text("reduce"),
-              onPressed: () {
-                StoreProvider.of<AppState>(context)
-                    .dispatch(ReduceActions.Increment);
-              },
-            )
-          ],
-        ),
-        RaisedButton(
-          child: Text("change"),
-          onPressed: () {
-            StoreProvider.of<AppState>(context).dispatch(ReduceActions.change);
-          },
-        )
-      ],
+    return Container(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("INCREMENT"),
+            onTap: () {
+              store.dispatch("INCREMENT");
+            },
+          ),
+          ListTile(
+            title: Text("DECREMENT"),
+            onTap: () {
+              store.dispatch("DECREMENT");
+            },
+          ),
+        ],
+      ),
     );
   }
 }
 
-class DemoViewModel {
-  int count;
+class LoggingMiddleware extends MiddlewareClass<int> {
 
-  DemoViewModel({this.count});
-
-  static DemoViewModel fromStore(Store<AppState> store) {
-    return DemoViewModel(
-      count: store.state.count * 2,
-    );
-  }
-}
-
-class DemoViewChangeModel {
-  bool change;
-
-  DemoViewChangeModel({this.change});
-
-  static DemoViewChangeModel fromStore(Store<AppState> store) {
-    return DemoViewChangeModel(
-      change: store.state.change,
-    );
+  call(Store<int> store, action, NextDispatcher next) {
+    print('${new DateTime.now()}: $action');
+    next(action);
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DemoViewChangeModel &&
-          runtimeType == other.runtimeType &&
-          change == other.change;
-
-  @override
-  int get hashCode => change.hashCode;
+  // callIt(Object object, action, NextDispatcher next) {
+  //   print("<> LoggingMiddleware callIt");
+  // }
 }
+
+class FunctionCall {
+
+  FunctionCall();
+
+  call() => print("<> this is FunctionCall");
+}
+
+
