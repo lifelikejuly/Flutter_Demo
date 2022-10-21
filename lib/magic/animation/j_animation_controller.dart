@@ -95,35 +95,6 @@ class JAnimationController {
 
   // 获取时间
   double getMilliseconds() {
-    // bool _getDirect() {
-    //   bool loading = reverse
-    //       ? (_animationController.status == AnimationStatus.reverse ||
-    //           _animationController.status == AnimationStatus.completed)
-    //       : (_animationController.status == AnimationStatus.forward ||
-    //           _animationController.status == AnimationStatus.dismissed);
-    //   return loading;
-    // }
-    //
-    // double _getProgressMilliseconds() {
-    //   // print("<> _getProgressMilliseconds. ${_animationController.value} ${_animationController?.lastElapsedDuration?.inMicroseconds
-    //   //     ?.toDouble()}");
-    //   bool isUpRight = _getDirect();
-    //   return (isUpRight ? lowerBound : -(1.0 - upperBound)) *
-    //       _animationController.duration.inMicroseconds.toDouble() /
-    //       Duration.microsecondsPerMillisecond;
-    // }
-    //
-    // double _getEmptyMilliseconds() {
-    //   bool isUpRight = _getDirect();
-    //   return (isUpRight
-    //       ? 0.0
-    //       : upperBound * _animationController.duration.inMicroseconds.toDouble());
-    // }
-
-    // return  ((_animationController?.lastElapsedDuration?.inMicroseconds
-    //                 ?.toDouble() ??
-    //             _getEmptyMilliseconds()) /
-    //         Duration.microsecondsPerMillisecond);
     double allTime = _animationController.duration.inMicroseconds.toDouble() /
         Duration.microsecondsPerMillisecond;
     return allTime * _animationController.value;

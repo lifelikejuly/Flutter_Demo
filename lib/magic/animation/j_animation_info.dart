@@ -255,6 +255,7 @@ class JAnimationManager {
     addAnimations(animations);
   }
 
+  // 新增动画
   addAnimations(List<JAnimationInfo> animations){
      animations.forEach((element) {
       int elementStartTime = element.startTime;
@@ -274,6 +275,7 @@ class JAnimationManager {
       List<JAnimationInfo> animations, JAnimationInfo jAnimationInfo) {
     animations.add(jAnimationInfo);
     return;
+    //TODO
     if (animations.isEmpty) {
       // 空集合直接添加
       animations.add(jAnimationInfo);

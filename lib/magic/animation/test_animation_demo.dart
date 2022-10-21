@@ -3,6 +3,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/magic/animation/j_animation_info.dart';
 import 'package:flutter_demo/magic/animation/j_animation_widget.dart';
+import 'package:flutter_demo/magic/animation/parameter/animation_group.dart';
+import 'package:flutter_demo/magic/animation/parameter/animation_part.dart';
+import 'package:flutter_demo/magic/animation/widget/animation_group_widget.dart';
 
 import 'j_animation_controller.dart';
 
@@ -86,6 +89,43 @@ class _TestAnimationDemoState extends State<TestAnimationDemo> {
               width: 20,
               height: 20,
               color: Colors.red,
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          child: AnimationGroupWidget(
+            animationGroups: [
+              TransitionAnimationGroup(parts: [
+                AnimationPart(moment: 0, x: 0, y: 0),
+                AnimationPart(moment: 1000, x: 100, y: 100,curve: Curves.easeIn),
+                AnimationPart(moment: 2000, x: 100, y: 200,curve: Curves.easeIn),
+                AnimationPart(moment: 3000, x: 200, y: 200),
+                AnimationPart(moment: 4000, x: 300, y: 300),
+              ]),
+
+              TransitionAnimationGroup(parts: [
+                AnimationPart(moment: 5000, x: 300, y: 300),
+                AnimationPart(moment: 6000, x: 200, y: 200),
+              ]),
+
+              ScaleAnimationGroup(parts: [
+                AnimationPart(moment: 1000, x: 1.0, y: 1.0,z: 1.0),
+                AnimationPart(moment: 2000, x: 1.5, y: 1.5,z: 1.0,curve: Curves.easeIn),
+                AnimationPart(moment: 3000, x: 1.0, y: 1.0,z: 1.0),
+              ]),
+
+              ScaleAnimationGroup(parts: [
+                AnimationPart(moment: 4000, x: 1.0, y: 1.0,z: 1.0,curve: Curves.bounceIn),
+                AnimationPart(moment: 5000, x: 2.0, y: 2.0,z: 1.0),
+              ])
+            ],
+            child: Container(
+              child: Text("xxxxx"),
+              width: 20,
+              height: 20,
+              color: Colors.blue,
             ),
           ),
         ),
