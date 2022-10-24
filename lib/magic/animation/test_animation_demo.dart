@@ -1,13 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_demo/magic/animation/j_animation_info.dart';
 import 'package:flutter_demo/magic/animation/j_animation_widget.dart';
-import 'package:flutter_demo/magic/animation/parameter/animation_group.dart';
-import 'package:flutter_demo/magic/animation/parameter/animation_part.dart';
-import 'package:flutter_demo/magic/animation/widget/animation_group_widget.dart';
 
 import 'j_animation_controller.dart';
+
+import 'package:flutter_demo/magic/animation_group/animations.dart';
 
 class TestAnimationDemo extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _TestAnimationDemoState extends State<TestAnimationDemo> {
   GlobalKey globalKey1 = GlobalKey();
   GlobalKey globalKey2 = GlobalKey();
   GlobalKey globalKey3 = GlobalKey();
+
+  AnimationDriver animationDriver = AnimationDriver();
 
   @override
   void initState() {
@@ -62,6 +65,8 @@ class _TestAnimationDemoState extends State<TestAnimationDemo> {
             endTime: 6000),
       ]);
     });
+
+    animationDriver.reverse(from: 1.0);
   }
 
   @override
@@ -96,6 +101,7 @@ class _TestAnimationDemoState extends State<TestAnimationDemo> {
           top: 0,
           left: 0,
           child: AnimationGroupWidget(
+            animationDriver: animationDriver,
             animationGroups: [
               TransitionAnimationGroup(parts: [
                 AnimationPart(moment: 0, x: 0, y: 0),
@@ -110,16 +116,23 @@ class _TestAnimationDemoState extends State<TestAnimationDemo> {
                 AnimationPart(moment: 6000, x: 200, y: 200),
               ]),
 
-              ScaleAnimationGroup(parts: [
-                AnimationPart(moment: 1000, x: 1.0, y: 1.0,z: 1.0),
-                AnimationPart(moment: 2000, x: 1.5, y: 1.5,z: 1.0,curve: Curves.easeIn),
-                AnimationPart(moment: 3000, x: 1.0, y: 1.0,z: 1.0),
-              ]),
+              // ScaleAnimationGroup(parts: [
+              //   AnimationPart(moment: 1000, x: 1.0, y: 1.0,z: 1.0),
+              //   AnimationPart(moment: 2000, x: 1.5, y: 1.5,z: 1.0,curve: Curves.easeIn),
+              //   AnimationPart(moment: 3000, x: 1.0, y: 1.0,z: 1.0),
+              // ]),
+              //
+              // ScaleAnimationGroup(parts: [
+              //   AnimationPart(moment: 4000, x: 1.0, y: 1.0,z: 1.0,curve: Curves.bounceIn),
+              //   AnimationPart(moment: 5000, x: 2.0, y: 2.0,z: 1.0),
+              // ]),
 
-              ScaleAnimationGroup(parts: [
-                AnimationPart(moment: 4000, x: 1.0, y: 1.0,z: 1.0,curve: Curves.bounceIn),
-                AnimationPart(moment: 5000, x: 2.0, y: 2.0,z: 1.0),
-              ])
+              RotationAnimationGroup(
+                  parts: [
+                    AnimationPart(moment: 4000, x: 0, y: 0,z: 0,),
+                    AnimationPart(moment: 5000, x: 0, y: 0,z: pi,),
+                  ]
+              ),
             ],
             child: Container(
               child: Text("xxxxx"),
@@ -166,11 +179,13 @@ class _TestAnimationDemoState extends State<TestAnimationDemo> {
                 TextButton(
                     onPressed: () {
                       jAnimationController.toForward(from: 0);
+                      animationDriver.forward(from: 0);
                     },
                     child: Text("toForward")),
                 TextButton(
                     onPressed: () {
                       jAnimationController.toReverse(from: 1.0);
+                      animationDriver.reverse(from: 1.0);
                     },
                     child: Text("toReverse")),
                 Switch(

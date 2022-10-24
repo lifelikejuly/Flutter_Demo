@@ -1,14 +1,17 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_demo/magic/animation/parameter/animation_group.dart';
-import 'package:flutter_demo/magic/animation/parameter/animation_manager.dart';
+import '../parameter/animation_group.dart';
+import '../manager/animation_manager.dart';
+import '../manager/animation_driver.dart';
 
 class AnimationGroupWidget extends StatefulWidget {
   final Widget child;
   final List<AbsAnimationGroup> animationGroups;
+  final AnimationDriver animationDriver;
 
   AnimationGroupWidget({
     @required this.child,
     @required this.animationGroups,
+    @required this.animationDriver,
   });
 
   @override
@@ -17,6 +20,7 @@ class AnimationGroupWidget extends StatefulWidget {
 
 class _AnimationGroupWidgetState extends State<AnimationGroupWidget>
     with TickerProviderStateMixin {
+  AnimationDriver get animationDriver => widget.animationDriver;
   AnimationController _animationController;
   AnimationManager _animationManager;
 
@@ -29,10 +33,24 @@ class _AnimationGroupWidgetState extends State<AnimationGroupWidget>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this);
+
     _animationManager = AnimationManager(widget.animationGroups);
+    _animationController = AnimationController(vsync: this);
     _animationController.duration = _animationManager.duration;
-    _animationController.forward(from: 0);
+    animationDriver.reverseFunc = () {
+      _animationManager.isReverse(true);
+      _animationController?.reverse(from: animationDriver.from);
+    };
+
+    animationDriver.forwardFunc = () {
+      _animationManager.isReverse(false);
+      _animationController?.forward(from: animationDriver.from);
+    };
+    animationDriver.resetFunc = () {
+      _animationController.reset();
+      _animationManager?.reset();
+    };
+    animationDriver.init();
   }
 
   @override
