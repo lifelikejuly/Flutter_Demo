@@ -22,7 +22,7 @@ const Duration _kIndicatorSnapDuration = Duration(milliseconds: 150);
 
 // The duration of the ScaleTransition that starts when the refresh action
 // has completed.
-const Duration _kIndicatorScaleDuration = Duration(milliseconds: 200);
+const Duration _kIndicatorScaleDuration = Duration(milliseconds: 100);
 
 /// The signature for a function that's called when the user has dragged a
 /// [SidePullIndicator] far enough to demonstrate that they want the app to
@@ -43,73 +43,17 @@ enum _SidePullIndicatorMode {
   canceled, // Animating the indicator's fade-out after not arming.
 }
 
-/// A widget that supports the Material "swipe to refresh" idiom.
-///
-/// When the child's [Scrollable] descendant overscrolls, an animated circular
-/// progress indicator is faded into view. When the scroll ends, if the
-/// indicator has been dragged far enough for it to become completely opaque,
-/// the [onRefresh] callback is called. The callback is expected to update the
-/// scrollable's contents and then complete the [Future] it returns. The refresh
-/// indicator disappears after the callback's [Future] has completed.
-///
-/// ## Troubleshooting
-///
-/// ### Refresh indicator does not show up
-///
-/// The [SidePullIndicator] will appear if its scrollable descendant can be
-/// overscrolled, i.e. if the scrollable's content is bigger than its viewport.
-/// To ensure that the [SidePullIndicator] will always appear, even if the
-/// scrollable's content fits within its viewport, set the scrollable's
-/// [Scrollable.physics] property to [AlwaysScrollableScrollPhysics]:
-///
-/// ```dart
-/// ListView(
-///   physics: const AlwaysScrollableScrollPhysics(),
-///   children: ...
-/// )
-/// ```
-///
-/// A [SidePullIndicator] can only be used with a vertical scroll view.
-///
-/// See also:
-///
-///  * <https://material.io/design/platform-guidance/android-swipe-to-refresh.html>
-///  * [SidePullIndicatorState], can be used to programmatically show the refresh indicator.
-///  * [RefreshProgressIndicator], widget used by [SidePullIndicator] to show
-///    the inner circular progress spinner during refreshes.
-///  * [CupertinoSliverRefreshControl], an iOS equivalent of the pull-to-refresh pattern.
-///    Must be used as a sliver inside a [CustomScrollView] instead of wrapping
-///    around a [ScrollView] because it's a part of the scrollable instead of
-///    being overlaid on top of it.
-///
-///
-///  修改Flutter原生SidePullIndicator实现侧滑加载功能 后期可优化为公共组件
 class SidePullIndicator extends StatefulWidget {
-  /// Creates a refresh indicator.
-  ///
-  /// The [onRefresh], [child], and [notificationPredicate] arguments must be
-  /// non-null. The default
-  /// [displacement] is 40.0 logical pixels.
-  ///
-  /// The [semanticsLabel] is used to specify an accessibility label for this widget.
-  /// If it is null, it will be defaulted to [MaterialLocalizations.SidePullIndicatorSemanticLabel].
-  /// An empty string may be passed to avoid having anything read by screen reading software.
-  /// The [semanticsValue] may be used to specify progress on the widget.
   const SidePullIndicator(
       {Key key,
       @required this.child,
-      this.displacement = 40.0,
       @required this.onRefresh,
-      this.color,
-      this.backgroundColor,
       this.notificationPredicate = defaultScrollNotificationPredicate,
       this.semanticsLabel,
-      this.semanticsValue,
-      this.strokeWidth = 2.0})
+      this.semanticsValue})
       : assert(child != null),
         assert(onRefresh != null),
         assert(notificationPredicate != null),
-        assert(strokeWidth != null),
         super(key: key);
 
   /// The widget below this widget in the tree.
@@ -120,25 +64,11 @@ class SidePullIndicator extends StatefulWidget {
   /// Typically a [ListView] or [CustomScrollView].
   final Widget child;
 
-//  final Widget indicator;
-
-  /// The distance from the child's top or bottom edge to where the refresh
-  /// indicator will settle. During the drag that exposes the refresh indicator,
-  /// its actual displacement may significantly exceed this value.
-  final double displacement;
 
   /// A function that's called when the user has dragged the refresh indicator
   /// far enough to demonstrate that they want the app to refresh. The returned
   /// [Future] must complete when the refresh operation is finished.
   final RefreshCallback onRefresh;
-
-  /// The progress indicator's foreground color. The current theme's
-  /// [ThemeData.accentColor] by default.
-  final Color color;
-
-  /// The progress indicator's background color. The current theme's
-  /// [ThemeData.canvasColor] by default.
-  final Color backgroundColor;
 
   /// A check that specifies whether a [ScrollNotification] should be
   /// handled by this widget.
@@ -156,11 +86,6 @@ class SidePullIndicator extends StatefulWidget {
   /// {@macro flutter.material.progressIndicator.semanticsValue}
   final String semanticsValue;
 
-  /// Defines `strokeWidth` for `SidePullIndicator`.
-  ///
-  /// By default, the value of `strokeWidth` is 2.0 pixels.
-  final double strokeWidth;
-
   @override
   SidePullIndicatorState createState() => SidePullIndicatorState();
 }
@@ -170,54 +95,23 @@ class SidePullIndicator extends StatefulWidget {
 class SidePullIndicatorState extends State<SidePullIndicator>
     with TickerProviderStateMixin<SidePullIndicator> {
   AnimationController _positionController;
-  AnimationController _scaleController;
-
-  // Animation<double> _positionFactor;
-  // Animation<double> _scaleFactor;
-  // Animation<double> _value;
-  // Animation<Color> _valueColor;
 
   _SidePullIndicatorMode _mode;
   Future<void> _pendingRefreshFuture;
   bool _isIndicatorAtTop;
   double _dragOffset;
 
-  // static final Animatable<double> _threeQuarterTween =
-  //     Tween<double>(begin: 0.0, end: 0.75);
-  // static final Animatable<double> _kDragSizeFactorLimitTween =
-  //     Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
-  // static final Animatable<double> _oneToZeroTween =
-  //     Tween<double>(begin: 1.0, end: 0.0);
 
   @override
   void initState() {
     super.initState();
     _positionController = AnimationController(vsync: this);
-    // _positionFactor = _positionController.drive(_kDragSizeFactorLimitTween);
-    // _value = _positionController.drive(
-    //     _threeQuarterTween); // The "value" of the circular progress indicator during a drag.
-
-    _scaleController = AnimationController(vsync: this);
-    // _scaleFactor = _scaleController.drive(_oneToZeroTween);
   }
 
-  @override
-  void didChangeDependencies() {
-    // final ThemeData theme = Theme.of(context);
-    // _valueColor = _positionController.drive(
-    //   ColorTween(
-    //     begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
-    //     end: (widget.color ?? theme.accentColor).withOpacity(1.0),
-    //   ).chain(
-    //       CurveTween(curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
-    // );
-    super.didChangeDependencies();
-  }
 
   @override
   void dispose() {
     _positionController.dispose();
-    _scaleController.dispose();
     super.dispose();
   }
 
@@ -232,16 +126,15 @@ class SidePullIndicatorState extends State<SidePullIndicator>
       });
       return false;
     }
-//    print("notification.metrics.extentBefore ${notification.metrics.extentBefore} -- ${notification.metrics.extentAfter}");
     bool indicatorAtTopNow;
-    switch (notification.metrics.axisDirection) {
-      case AxisDirection.right:
+    switch (notification.metrics.axisDirection) { // 修改点
+      case AxisDirection.right: // 右侧滑动
         indicatorAtTopNow = true;
         break;
-      case AxisDirection.left:
+      case AxisDirection.left: // 左侧滑动
         indicatorAtTopNow = false;
         break;
-      case AxisDirection.up:
+      case AxisDirection.up: // 其他方向屏蔽
       case AxisDirection.down:
         indicatorAtTopNow = null;
         break;
@@ -286,22 +179,14 @@ class SidePullIndicatorState extends State<SidePullIndicator>
           break;
       }
     }
+    print("<><>  _mode ${_mode} end _dragOffset $_dragOffset notification $notification");
     return false;
   }
 
-  bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
-    if (notification.depth != 0 || !notification.leading) return false;
-    if (_mode == _SidePullIndicatorMode.drag) {
-      notification.disallowGlow();
-      return true;
-    }
-    return false;
-  }
-
-  bool _start(AxisDirection direction) {
+  bool _start(AxisDirection direction) { // 修改点
     assert(_mode == null);
     assert(_isIndicatorAtTop == null);
-    assert(_dragOffset == null);
+    // assert(_dragOffset == null);
     switch (direction) {
       case AxisDirection.right:
         _isIndicatorAtTop = true;
@@ -316,12 +201,11 @@ class SidePullIndicatorState extends State<SidePullIndicator>
         return false;
     }
     _dragOffset = 0.0;
-    _scaleController.value = 0.0;
     _positionController.value = 0.0;
     return true;
   }
 
-  void _checkDragOffset(double containerExtent) {
+  void _checkDragOffset(double containerExtent) { // 修改点
     assert(_mode == _SidePullIndicatorMode.drag ||
         _mode == _SidePullIndicatorMode.armed);
     double newValue =
@@ -347,22 +231,21 @@ class SidePullIndicatorState extends State<SidePullIndicator>
     setState(() {
       _mode = newMode;
     });
-    print("_dismiss ---- $_mode");
     switch (_mode) {
-      // 临时用这个来做处理 避免偏移
       case _SidePullIndicatorMode.done:
-        await _scaleController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        _positionController.value = 0.0;
+        // await _positionController.animateTo(0.0,
+        //     duration: _kIndicatorScaleDuration);
         break;
       case _SidePullIndicatorMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        _positionController.value = 0.0;
+        // await _positionController.animateTo(0.0,
+        //     duration: _kIndicatorScaleDuration);
         break;
       default:
         assert(false);
     }
     if (mounted && _mode == newMode) {
-      _dragOffset = null;
       _isIndicatorAtTop = null;
       setState(() {
         _mode = null;
@@ -409,45 +292,42 @@ class SidePullIndicatorState extends State<SidePullIndicator>
     });
   }
 
-  /// Show the refresh indicator and run the refresh callback as if it had
-  /// been started interactively. If this method is called while the refresh
-  /// callback is running, it quietly does nothing.
-  ///
-  /// Creating the [SidePullIndicator] with a [GlobalKey<SidePullIndicatorState>]
-  /// makes it possible to refer to the [SidePullIndicatorState].
-  ///
-  /// The future returned from this method completes when the
-  /// [SidePullIndicator.onRefresh] callback's future completes.
-  ///
-  /// If you await the future returned by this function from a [State], you
-  /// should check that the state is still [mounted] before calling [setState].
-  ///
-  /// When initiated in this manner, the refresh indicator is independent of any
-  /// actual scroll view. It defaults to showing the indicator at the top. To
-  /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true}) {
-    if (_mode != _SidePullIndicatorMode.refresh &&
-        _mode != _SidePullIndicatorMode.snap) {
-      if (_mode == null)
-        _start(atTop ? AxisDirection.right : AxisDirection.left);
-      _show();
-    }
-    return _pendingRefreshFuture;
-  }
+  // /// Show the refresh indicator and run the refresh callback as if it had
+  // /// been started interactively. If this method is called while the refresh
+  // /// callback is running, it quietly does nothing.
+  // ///
+  // /// Creating the [SidePullIndicator] with a [GlobalKey<SidePullIndicatorState>]
+  // /// makes it possible to refer to the [SidePullIndicatorState].
+  // ///
+  // /// The future returned from this method completes when the
+  // /// [SidePullIndicator.onRefresh] callback's future completes.
+  // ///
+  // /// If you await the future returned by this function from a [State], you
+  // /// should check that the state is still [mounted] before calling [setState].
+  // ///
+  // /// When initiated in this manner, the refresh indicator is independent of any
+  // /// actual scroll view. It defaults to showing the indicator at the top. To
+  // /// show it at the bottom, set `atTop` to false.
+  // Future<void> show({bool atTop = true}) {
+  //   if (_mode != _SidePullIndicatorMode.refresh &&
+  //       _mode != _SidePullIndicatorMode.snap) {
+  //     if (_mode == null)
+  //       _start(atTop ? AxisDirection.right : AxisDirection.left);
+  //     _show();
+  //   }
+  //   return _pendingRefreshFuture;
+  // }
 
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
     final Widget child = NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
-      child: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: _handleGlowNotification,
-        child: widget.child,
-      ),
+      child: widget.child,
     );
     assert(() {
       if (_mode == null) {
-        assert(_dragOffset == null);
+        // assert(_dragOffset == null);
         assert(_isIndicatorAtTop == null);
       } else {
         assert(_dragOffset != null);

@@ -27,7 +27,7 @@ class _SidePullDemoState extends State<SidePullDemo> {
     return colors.elementAt(random.nextInt(colors.length));
   }
 
-  _childContent() {
+  _childContent(Axis axis) {
     return ListView.builder(
       itemBuilder: (context, index) {
         Color color = getRandomColor();
@@ -50,7 +50,7 @@ class _SidePullDemoState extends State<SidePullDemo> {
       itemCount: lengthCount,
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
+      scrollDirection: axis,
     );
   }
 
@@ -61,7 +61,7 @@ class _SidePullDemoState extends State<SidePullDemo> {
         Container(
           height: 175,
           child: SidePullIndicator(
-            child: _childContent(),
+            child: _childContent(Axis.horizontal),
             onRefresh: () async {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
@@ -70,7 +70,18 @@ class _SidePullDemoState extends State<SidePullDemo> {
               );
             },
           ),
-        )
+          // child:_childContent(Axis.horizontal),
+        ),
+        Expanded(child: RefreshIndicator(
+          child: _childContent(Axis.vertical),
+          onRefresh:() async {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("触发了~~~！！！"),
+              ),
+            );
+          },
+        ))
       ],
     );
   }
