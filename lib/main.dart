@@ -32,30 +32,7 @@ Future<Null> _reportError(dynamic error, dynamic stackTrace) {
 }
 
 void main() {
-  /// 捕获Flutter层异常捕获
-  final defaultOnError = FlutterError.onError;
-  FlutterError.onError = (FlutterErrorDetails details){
-    try{
-      defaultOnError(details);
-    }catch(e,s){
-      FlutterError.dumpErrorToConsole(FlutterErrorDetails(
-        exception: e,
-        stack: s,
-      ));
-    }
-    print("$CRASH_TAG  --------run FlutterError.onError--------");
-    print("${details.exception} ${details.stack}");
-    FlutterError.resetErrorCount();
-    FlutterError.dumpErrorToConsole(details);
-  };
 
-  /// widget构建异常捕获
-  var _defaultErrorWidgetBuilder = ErrorWidget.builder;
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    print("$CRASH_TAG  --------run ErrorWidget.builder--------");
-    print("${details.exception} ${details.stack}");
-    return _defaultErrorWidgetBuilder(details);
-  };
   runZonedGuarded<Future<void>>(() async {
     runApp(ChangeNotifierProvider<ThemeNotifier>.value(
       //ChangeNotifierProvider调用value()方法，里面传出value和child
@@ -88,6 +65,31 @@ void main() {
     // }),
 
   );
+
+  /// 捕获Flutter层异常捕获
+  final defaultOnError = FlutterError.onError;
+  FlutterError.onError = (FlutterErrorDetails details){
+    try{
+      defaultOnError(details);
+    }catch(e,s){
+      FlutterError.dumpErrorToConsole(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+    }
+    print("$CRASH_TAG  --------run FlutterError.onError--------");
+    print("${details.exception} ${details.stack}");
+    FlutterError.resetErrorCount();
+    FlutterError.dumpErrorToConsole(details);
+  };
+
+  /// widget构建异常捕获
+  var _defaultErrorWidgetBuilder = ErrorWidget.builder;
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    print("$CRASH_TAG  --------run ErrorWidget.builder--------");
+    print("${details.exception} ${details.stack}");
+    return _defaultErrorWidgetBuilder(details);
+  };
 }
 
 
